@@ -5,21 +5,21 @@
 package pfmt
 
 // Uintptrp returns stringer/JSON/text marshaler for the uintptr pointer type.
-func Uintptrp(p *uintptr) uintptrP { return uintptrP{P: p} }
+func Uintptrp(p *uintptr) UintptrP { return UintptrP{p: p} }
 
-type uintptrP struct{ P *uintptr }
+type UintptrP struct{ p *uintptr }
 
-func (p uintptrP) String() string {
-	if p.P == nil {
+func (p UintptrP) String() string {
+	if p.p == nil {
 		return "null"
 	}
-	return uintptrV{V: *p.P}.String()
+	return uintptrV{V: *p.p}.String()
 }
 
-func (p uintptrP) MarshalText() ([]byte, error) {
+func (p UintptrP) MarshalText() ([]byte, error) {
 	return []byte(p.String()), nil
 }
 
-func (p uintptrP) MarshalJSON() ([]byte, error) {
+func (p UintptrP) MarshalJSON() ([]byte, error) {
 	return p.MarshalText()
 }

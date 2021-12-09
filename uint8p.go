@@ -5,21 +5,21 @@
 package pfmt
 
 // Uint8p returns stringer/JSON/text marshaler for the uint8 pointer type.
-func Uint8p(p *uint8) uint8P { return uint8P{P: p} }
+func Uint8p(p *uint8) Uint8P { return Uint8P{p: p} }
 
-type uint8P struct{ P *uint8 }
+type Uint8P struct{ p *uint8 }
 
-func (p uint8P) String() string {
-	if p.P == nil {
+func (p Uint8P) String() string {
+	if p.p == nil {
 		return "null"
 	}
-	return uint8V{V: *p.P}.String()
+	return uint8V{V: *p.p}.String()
 }
 
-func (p uint8P) MarshalText() ([]byte, error) {
+func (p Uint8P) MarshalText() ([]byte, error) {
 	return []byte(p.String()), nil
 }
 
-func (p uint8P) MarshalJSON() ([]byte, error) {
+func (p Uint8P) MarshalJSON() ([]byte, error) {
 	return p.MarshalText()
 }

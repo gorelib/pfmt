@@ -5,21 +5,21 @@
 package pfmt
 
 // Uint64p returns stringer/JSON/text marshaler for the uint64 pointer type.
-func Uint64p(p *uint64) uint64P { return uint64P{P: p} }
+func Uint64p(p *uint64) Uint64P { return Uint64P{p: p} }
 
-type uint64P struct{ P *uint64 }
+type Uint64P struct{ p *uint64 }
 
-func (p uint64P) String() string {
-	if p.P == nil {
+func (p Uint64P) String() string {
+	if p.p == nil {
 		return "null"
 	}
-	return uint64V{V: *p.P}.String()
+	return uint64V{V: *p.p}.String()
 }
 
-func (p uint64P) MarshalText() ([]byte, error) {
+func (p Uint64P) MarshalText() ([]byte, error) {
 	return []byte(p.String()), nil
 }
 
-func (p uint64P) MarshalJSON() ([]byte, error) {
+func (p Uint64P) MarshalJSON() ([]byte, error) {
 	return p.MarshalText()
 }

@@ -9,22 +9,22 @@ import (
 )
 
 // Runesps returns stringer/JSON/text marshaler for slice of pointers to rune slice type.
-func Runesps(a ...*[]rune) runeSPS { return runeSPS{A: a} }
+func Runesps(a ...*[]rune) RuneSPS { return RuneSPS{a: a} }
 
-type runeSPS struct{ A []*[]rune }
+type RuneSPS struct{ a []*[]rune }
 
-func (a runeSPS) String() string {
+func (a RuneSPS) String() string {
 	t, _ := a.MarshalText()
 	return string(t)
 }
 
-func (a runeSPS) MarshalText() ([]byte, error) {
-	if a.A == nil {
+func (a RuneSPS) MarshalText() ([]byte, error) {
+	if a.a == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
-	for i, p := range a.A {
-		b, err := runeSP{P: p}.MarshalText()
+	for i, p := range a.a {
+		b, err := Runesp(p).MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -39,14 +39,14 @@ func (a runeSPS) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (a runeSPS) MarshalJSON() ([]byte, error) {
-	if a.A == nil {
+func (a RuneSPS) MarshalJSON() ([]byte, error) {
+	if a.a == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, p := range a.A {
-		b, err := runeSP{P: p}.MarshalJSON()
+	for i, p := range a.a {
+		b, err := Runesp(p).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

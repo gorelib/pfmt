@@ -5,27 +5,27 @@
 package pfmt
 
 // Complex128p returns stringer/JSON/text marshaler for the complex128 pointer type.
-func Complex128p(p *complex128) complex128P { return complex128P{P: p} }
+func Complex128p(p *complex128) Complex128P { return Complex128P{p: p} }
 
-type complex128P struct{ P *complex128 }
+type Complex128P struct{ p *complex128 }
 
-func (p complex128P) String() string {
-	if p.P == nil {
+func (p Complex128P) String() string {
+	if p.p == nil {
 		return "null"
 	}
-	return complex128V{V: *p.P}.String()
+	return Complex128(*p.p).String()
 }
 
-func (p complex128P) MarshalText() ([]byte, error) {
-	if p.P == nil {
+func (p Complex128P) MarshalText() ([]byte, error) {
+	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return complex128V{V: *p.P}.MarshalText()
+	return Complex128(*p.p).MarshalText()
 }
 
-func (p complex128P) MarshalJSON() ([]byte, error) {
-	if p.P == nil {
+func (p Complex128P) MarshalJSON() ([]byte, error) {
+	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return complex128V{V: *p.P}.MarshalJSON()
+	return Complex128(*p.p).MarshalJSON()
 }

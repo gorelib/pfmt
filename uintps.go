@@ -7,22 +7,22 @@ package pfmt
 import "bytes"
 
 // Uintps returns stringer/JSON/text marshaler for the uint pointer slice type.
-func Uintps(a ...*uint) uintPS { return uintPS{A: a} }
+func Uintps(a ...*uint) UintPS { return UintPS{a: a} }
 
-type uintPS struct{ A []*uint }
+type UintPS struct{ a []*uint }
 
-func (a uintPS) String() string {
+func (a UintPS) String() string {
 	b, _ := a.MarshalText()
 	return string(b)
 }
 
-func (a uintPS) MarshalText() ([]byte, error) {
-	if a.A == nil {
+func (a UintPS) MarshalText() ([]byte, error) {
+	if a.a == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
-	for i, p := range a.A {
-		b, err := uintP{P: p}.MarshalText()
+	for i, p := range a.a {
+		b, err := Uintp(p).MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -37,14 +37,14 @@ func (a uintPS) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (a uintPS) MarshalJSON() ([]byte, error) {
-	if a.A == nil {
+func (a UintPS) MarshalJSON() ([]byte, error) {
+	if a.a == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, p := range a.A {
-		b, err := uintP{P: p}.MarshalJSON()
+	for i, p := range a.a {
+		b, err := Uintp(p).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

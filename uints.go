@@ -9,18 +9,18 @@ import (
 )
 
 // Uints returns stringer/JSON/text marshaler for the uint slice type.
-func Uints(s ...uint) uintS { return uintS{S: s} }
+func Uints(s ...uint) UintS { return UintS{s: s} }
 
-type uintS struct{ S []uint }
+type UintS struct{ s []uint }
 
-func (s uintS) String() string {
+func (s UintS) String() string {
 	b, _ := s.MarshalText()
 	return string(b)
 }
 
-func (s uintS) MarshalText() ([]byte, error) {
+func (s UintS) MarshalText() ([]byte, error) {
 	var buf bytes.Buffer
-	for i, v := range s.S {
+	for i, v := range s.s {
 		b, err := uintV{V: v}.MarshalText()
 		if err != nil {
 			return nil, err
@@ -36,10 +36,10 @@ func (s uintS) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (s uintS) MarshalJSON() ([]byte, error) {
+func (s UintS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, v := range s.S {
+	for i, v := range s.s {
 		b, err := uintV{V: v}.MarshalJSON()
 		if err != nil {
 			return nil, err

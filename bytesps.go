@@ -9,22 +9,22 @@ import (
 )
 
 // Bytesps returns stringer/JSON/text marshaler for slice of pointers to byte slice type.
-func Bytesps(a ...*[]byte) byteSPS { return byteSPS{A: a} }
+func Bytesps(a ...*[]byte) ByteSPS { return ByteSPS{a: a} }
 
-type byteSPS struct{ A []*[]byte }
+type ByteSPS struct{ a []*[]byte }
 
-func (a byteSPS) String() string {
+func (a ByteSPS) String() string {
 	t, _ := a.MarshalText()
 	return string(t)
 }
 
-func (a byteSPS) MarshalText() ([]byte, error) {
-	if a.A == nil {
+func (a ByteSPS) MarshalText() ([]byte, error) {
+	if a.a == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
-	for i, p := range a.A {
-		b, err := byteSP{P: p}.MarshalText()
+	for i, p := range a.a {
+		b, err := Bytesp(p).MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -39,14 +39,14 @@ func (a byteSPS) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (a byteSPS) MarshalJSON() ([]byte, error) {
-	if a.A == nil {
+func (a ByteSPS) MarshalJSON() ([]byte, error) {
+	if a.a == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, p := range a.A {
-		b, err := byteSP{P: p}.MarshalJSON()
+	for i, p := range a.a {
+		b, err := Bytesp(p).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

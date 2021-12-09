@@ -5,22 +5,22 @@
 package pfmt
 
 // Bool returns stringer/JSON/text marshaler for the bool type.
-func Bool(v bool) boolV { return boolV{V: v} }
+func Bool(v bool) BoolV { return BoolV{v: v} }
 
-type boolV struct{ V bool }
+type BoolV struct{ v bool }
 
-func (v boolV) String() string {
+func (v BoolV) String() string {
 	b, _ := v.MarshalText()
 	return string(b)
 }
 
-func (v boolV) MarshalText() ([]byte, error) {
-	if v.V {
+func (v BoolV) MarshalText() ([]byte, error) {
+	if v.v {
 		return []byte("true"), nil
 	}
 	return []byte("false"), nil
 }
 
-func (v boolV) MarshalJSON() ([]byte, error) {
+func (v BoolV) MarshalJSON() ([]byte, error) {
 	return v.MarshalText()
 }

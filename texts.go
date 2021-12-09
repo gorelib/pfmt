@@ -10,21 +10,21 @@ import (
 )
 
 // Texts returns stringer/JSON/text marshaler for the text marshaler slice type.
-func Texts(s ...encoding.TextMarshaler) textS { return textS{S: s} }
+func Texts(s ...encoding.TextMarshaler) TextS { return TextS{s: s} }
 
-type textS struct{ S []encoding.TextMarshaler }
+type TextS struct{ s []encoding.TextMarshaler }
 
-func (s textS) String() string {
+func (s TextS) String() string {
 	b, _ := s.MarshalText()
 	return string(b)
 }
 
-func (s textS) MarshalText() ([]byte, error) {
-	if s.S == nil {
+func (s TextS) MarshalText() ([]byte, error) {
+	if s.s == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
-	for i, v := range s.S {
+	for i, v := range s.s {
 		b, err := textV{V: v}.MarshalText()
 		if err != nil {
 			return nil, err
@@ -40,13 +40,13 @@ func (s textS) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (s textS) MarshalJSON() ([]byte, error) {
-	if s.S == nil {
+func (s TextS) MarshalJSON() ([]byte, error) {
+	if s.s == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, v := range s.S {
+	for i, v := range s.s {
 		b, err := textV{V: v}.MarshalJSON()
 		if err != nil {
 			return nil, err

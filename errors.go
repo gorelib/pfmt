@@ -11,23 +11,23 @@ import (
 )
 
 // Errors returns stringer/JSON/text marshaler for the error slice type.
-func Errors(s ...error) errorS { return errorS{S: s} }
+func Errors(s ...error) ErrorS { return ErrorS{s: s} }
 
-type errorS struct{ S []error }
+type ErrorS struct{ s []error }
 
-func (s errorS) String() string {
+func (s ErrorS) String() string {
 	b, _ := s.MarshalText()
 	return string(b)
 }
 
-func (s errorS) MarshalText() ([]byte, error) {
-	if s.S == nil {
+func (s ErrorS) MarshalText() ([]byte, error) {
+	if s.s == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
 	var tail bool
 
-	for _, v := range s.S {
+	for _, v := range s.s {
 		if v == nil {
 			continue
 		}
@@ -43,14 +43,14 @@ func (s errorS) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (s errorS) MarshalJSON() ([]byte, error) {
-	if s.S == nil {
+func (s ErrorS) MarshalJSON() ([]byte, error) {
+	if s.s == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, v := range s.S {
-		b, err := errorV{V: v}.MarshalJSON()
+	for i, v := range s.s {
+		b, err := Error(v).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

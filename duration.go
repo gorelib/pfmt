@@ -9,18 +9,18 @@ import (
 )
 
 // Duration returns stringer/JSON/text marshaler for the time duration type.
-func Duration(v time.Duration) durationV { return durationV{V: v} }
+func Duration(v time.Duration) DurationV { return DurationV{v: v} }
 
-type durationV struct{ V time.Duration }
+type DurationV struct{ v time.Duration }
 
-func (v durationV) String() string {
-	return v.V.String()
+func (v DurationV) String() string {
+	return v.v.String()
 }
 
-func (v durationV) MarshalText() ([]byte, error) {
+func (v DurationV) MarshalText() ([]byte, error) {
 	return []byte(v.String()), nil
 }
 
-func (v durationV) MarshalJSON() ([]byte, error) {
+func (v DurationV) MarshalJSON() ([]byte, error) {
 	return append([]byte(`"`), append([]byte(v.String()), []byte(`"`)...)...), nil
 }

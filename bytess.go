@@ -9,22 +9,22 @@ import (
 )
 
 // Bytess returns stringer/JSON/text marshaler for the slice of byte slice type.
-func Bytess(s ...[]byte) byteSS { return byteSS{S: s} }
+func Bytess(s ...[]byte) ByteSS { return ByteSS{s: s} }
 
-type byteSS struct{ S [][]byte }
+type ByteSS struct{ s [][]byte }
 
-func (s byteSS) String() string {
+func (s ByteSS) String() string {
 	b, _ := s.MarshalText()
 	return string(b)
 }
 
-func (s byteSS) MarshalText() ([]byte, error) {
-	if s.S == nil {
+func (s ByteSS) MarshalText() ([]byte, error) {
+	if s.s == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
-	for i, s := range s.S {
-		b, err := byteS{S: s}.MarshalText()
+	for i, s := range s.s {
+		b, err := Bytes(s...).MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -39,14 +39,14 @@ func (s byteSS) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (s byteSS) MarshalJSON() ([]byte, error) {
-	if s.S == nil {
+func (s ByteSS) MarshalJSON() ([]byte, error) {
+	if s.s == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, s := range s.S {
-		b, err := byteS{S: s}.MarshalJSON()
+	for i, s := range s.s {
+		b, err := Bytes(s...).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

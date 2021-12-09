@@ -7,22 +7,22 @@ package pfmt
 import "bytes"
 
 // Complex64s returns stringer/JSON/text marshaler for the complex64 type.
-func Complex64s(s ...complex64) complex64S { return complex64S{S: s} }
+func Complex64s(s ...complex64) Complex64S { return Complex64S{s: s} }
 
-type complex64S struct{ S []complex64 }
+type Complex64S struct{ s []complex64 }
 
-func (s complex64S) String() string {
+func (s Complex64S) String() string {
 	b, _ := s.MarshalText()
 	return string(b)
 }
 
-func (s complex64S) MarshalText() ([]byte, error) {
-	if s.S == nil {
+func (s Complex64S) MarshalText() ([]byte, error) {
+	if s.s == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
-	for i, v := range s.S {
-		b, err := complex64V{V: v}.MarshalText()
+	for i, v := range s.s {
+		b, err := Complex64(v).MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -37,14 +37,14 @@ func (s complex64S) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (s complex64S) MarshalJSON() ([]byte, error) {
-	if s.S == nil {
+func (s Complex64S) MarshalJSON() ([]byte, error) {
+	if s.s == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, v := range s.S {
-		b, err := complex64V{V: v}.MarshalJSON()
+	for i, v := range s.s {
+		b, err := Complex64(v).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

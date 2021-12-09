@@ -5,24 +5,24 @@
 package pfmt
 
 // Float32p returns stringer/JSON/text marshaler for the float32 pointer type.
-func Float32p(p *float32) float32P { return float32P{P: p} }
+func Float32p(p *float32) Float32P { return Float32P{p: p} }
 
-type float32P struct{ P *float32 }
+type Float32P struct{ p *float32 }
 
-func (p float32P) String() string {
-	if p.P == nil {
+func (p Float32P) String() string {
+	if p.p == nil {
 		return "null"
 	}
-	return float32V{V: *p.P}.String()
+	return float32V{V: *p.p}.String()
 }
 
-func (p float32P) MarshalText() ([]byte, error) {
-	if p.P == nil {
+func (p Float32P) MarshalText() ([]byte, error) {
+	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return float32V{V: *p.P}.MarshalText()
+	return float32V{V: *p.p}.MarshalText()
 }
 
-func (p float32P) MarshalJSON() ([]byte, error) {
+func (p Float32P) MarshalJSON() ([]byte, error) {
 	return p.MarshalText()
 }

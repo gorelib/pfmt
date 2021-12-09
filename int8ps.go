@@ -7,22 +7,22 @@ package pfmt
 import "bytes"
 
 // Int8ps returns stringer/JSON/text marshaler for the int8 pointer slice type.
-func Int8ps(a ...*int8) int8PS { return int8PS{A: a} }
+func Int8ps(a ...*int8) Int8PS { return Int8PS{a: a} }
 
-type int8PS struct{ A []*int8 }
+type Int8PS struct{ a []*int8 }
 
-func (a int8PS) String() string {
+func (a Int8PS) String() string {
 	b, _ := a.MarshalText()
 	return string(b)
 }
 
-func (a int8PS) MarshalText() ([]byte, error) {
-	if a.A == nil {
+func (a Int8PS) MarshalText() ([]byte, error) {
+	if a.a == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
-	for i, p := range a.A {
-		b, err := int8P{P: p}.MarshalText()
+	for i, p := range a.a {
+		b, err := Int8p(p).MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -37,14 +37,14 @@ func (a int8PS) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (a int8PS) MarshalJSON() ([]byte, error) {
-	if a.A == nil {
+func (a Int8PS) MarshalJSON() ([]byte, error) {
+	if a.a == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, p := range a.A {
-		b, err := int8P{P: p}.MarshalJSON()
+	for i, p := range a.a {
+		b, err := Int8p(p).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

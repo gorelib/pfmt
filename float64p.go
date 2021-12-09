@@ -5,21 +5,21 @@
 package pfmt
 
 // Float64p returns stringer/JSON/text marshaler for the  float64 pointer type.
-func Float64p(p *float64) float64P { return float64P{P: p} }
+func Float64p(p *float64) Float64P { return Float64P{p: p} }
 
-type float64P struct{ P *float64 }
+type Float64P struct{ p *float64 }
 
-func (p float64P) String() string {
-	if p.P == nil {
+func (p Float64P) String() string {
+	if p.p == nil {
 		return "null"
 	}
-	return float64V{V: *p.P}.String()
+	return float64V{V: *p.p}.String()
 }
 
-func (p float64P) MarshalText() ([]byte, error) {
+func (p Float64P) MarshalText() ([]byte, error) {
 	return []byte(p.String()), nil
 }
 
-func (p float64P) MarshalJSON() ([]byte, error) {
+func (p Float64P) MarshalJSON() ([]byte, error) {
 	return p.MarshalText()
 }

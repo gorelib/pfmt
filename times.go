@@ -10,21 +10,21 @@ import (
 )
 
 // Times returns stringer/JSON/text marshaler for the slice of byte slice type.
-func Times(s ...time.Time) timeS { return timeS{S: s} }
+func Times(s ...time.Time) TimeS { return TimeS{s: s} }
 
-type timeS struct{ S []time.Time }
+type TimeS struct{ s []time.Time }
 
-func (s timeS) String() string {
+func (s TimeS) String() string {
 	b, _ := s.MarshalText()
 	return string(b)
 }
 
-func (s timeS) MarshalText() ([]byte, error) {
-	if s.S == nil {
+func (s TimeS) MarshalText() ([]byte, error) {
+	if s.s == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
-	for i, v := range s.S {
+	for i, v := range s.s {
 		b, err := timeV{V: v}.MarshalText()
 		if err != nil {
 			return nil, err
@@ -40,13 +40,13 @@ func (s timeS) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (s timeS) MarshalJSON() ([]byte, error) {
-	if s.S == nil {
+func (s TimeS) MarshalJSON() ([]byte, error) {
+	if s.s == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, v := range s.S {
+	for i, v := range s.s {
 		b, err := timeV{V: v}.MarshalJSON()
 		if err != nil {
 			return nil, err

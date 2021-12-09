@@ -5,21 +5,21 @@
 package pfmt
 
 // Int32p returns stringer/JSON/text marshaler for the int32 pointer type.
-func Int32p(p *int32) int32P { return int32P{P: p} }
+func Int32p(p *int32) Int32P { return Int32P{p: p} }
 
-type int32P struct{ P *int32 }
+type Int32P struct{ p *int32 }
 
-func (p int32P) String() string {
-	if p.P == nil {
+func (p Int32P) String() string {
+	if p.p == nil {
 		return "null"
 	}
-	return int32V{V: *p.P}.String()
+	return int32V{V: *p.p}.String()
 }
 
-func (p int32P) MarshalText() ([]byte, error) {
+func (p Int32P) MarshalText() ([]byte, error) {
 	return []byte(p.String()), nil
 }
 
-func (p int32P) MarshalJSON() ([]byte, error) {
+func (p Int32P) MarshalJSON() ([]byte, error) {
 	return p.MarshalText()
 }

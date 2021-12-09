@@ -9,27 +9,27 @@ import (
 )
 
 // Durationp returns stringer/JSON/text marshaler for the  time duration pointer type.
-func Durationp(p *time.Duration) durationP { return durationP{P: p} }
+func Durationp(p *time.Duration) DurationP { return DurationP{p: p} }
 
-type durationP struct{ P *time.Duration }
+type DurationP struct{ p *time.Duration }
 
-func (p durationP) String() string {
-	if p.P == nil {
+func (p DurationP) String() string {
+	if p.p == nil {
 		return "null"
 	}
-	return durationV{V: *p.P}.String()
+	return Duration(*p.p).String()
 }
 
-func (p durationP) MarshalText() ([]byte, error) {
-	if p.P == nil {
+func (p DurationP) MarshalText() ([]byte, error) {
+	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return durationV{V: *p.P}.MarshalText()
+	return Duration(*p.p).MarshalText()
 }
 
-func (p durationP) MarshalJSON() ([]byte, error) {
-	if p.P == nil {
+func (p DurationP) MarshalJSON() ([]byte, error) {
+	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return durationV{V: *p.P}.MarshalJSON()
+	return Duration(*p.p).MarshalJSON()
 }

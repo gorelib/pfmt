@@ -7,22 +7,22 @@ package pfmt
 import "bytes"
 
 // Complex128ps returns stringer/JSON/text marshaler for the complex128 pointer slice type.
-func Complex128ps(a ...*complex128) complex128PS { return complex128PS{A: a} }
+func Complex128ps(a ...*complex128) Complex128PS { return Complex128PS{a: a} }
 
-type complex128PS struct{ A []*complex128 }
+type Complex128PS struct{ a []*complex128 }
 
-func (a complex128PS) String() string {
+func (a Complex128PS) String() string {
 	b, _ := a.MarshalText()
 	return string(b)
 }
 
-func (a complex128PS) MarshalText() ([]byte, error) {
-	if a.A == nil {
+func (a Complex128PS) MarshalText() ([]byte, error) {
+	if a.a == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
-	for i, p := range a.A {
-		b, err := complex128P{P: p}.MarshalText()
+	for i, p := range a.a {
+		b, err := Complex128p(p).MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -37,14 +37,14 @@ func (a complex128PS) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (a complex128PS) MarshalJSON() ([]byte, error) {
-	if a.A == nil {
+func (a Complex128PS) MarshalJSON() ([]byte, error) {
+	if a.a == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, p := range a.A {
-		b, err := complex128P{P: p}.MarshalJSON()
+	for i, p := range a.a {
+		b, err := Complex128p(p).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

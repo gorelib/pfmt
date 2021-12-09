@@ -7,22 +7,22 @@ package pfmt
 import "bytes"
 
 // Stringps returns stringer/JSON/text marshaler for the string pointer slice type.
-func Stringps(a ...*string) stringPS { return stringPS{A: a} }
+func Stringps(a ...*string) StringPS { return StringPS{a: a} }
 
-type stringPS struct{ A []*string }
+type StringPS struct{ a []*string }
 
-func (a stringPS) String() string {
+func (a StringPS) String() string {
 	b, _ := a.MarshalText()
 	return string(b)
 }
 
-func (a stringPS) MarshalText() ([]byte, error) {
-	if a.A == nil {
+func (a StringPS) MarshalText() ([]byte, error) {
+	if a.a == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
-	for i, p := range a.A {
-		b, err := stringP{P: p}.MarshalText()
+	for i, p := range a.a {
+		b, err := Stringp(p).MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -37,14 +37,14 @@ func (a stringPS) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (a stringPS) MarshalJSON() ([]byte, error) {
-	if a.A == nil {
+func (a StringPS) MarshalJSON() ([]byte, error) {
+	if a.a == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, p := range a.A {
-		b, err := stringP{P: p}.MarshalJSON()
+	for i, p := range a.a {
+		b, err := Stringp(p).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

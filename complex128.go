@@ -9,19 +9,19 @@ import (
 )
 
 // Complex128 returns stringer/JSON/text marshaler for the complex128 type.
-func Complex128(v complex128) complex128V { return complex128V{V: v} }
+func Complex128(v complex128) Complex128V { return Complex128V{v: v} }
 
-type complex128V struct{ V complex128 }
+type Complex128V struct{ v complex128 }
 
-func (v complex128V) String() string {
-	s := fmt.Sprintf("%g", v.V)
+func (v Complex128V) String() string {
+	s := fmt.Sprintf("%g", v.v)
 	return s[1 : len(s)-1]
 }
 
-func (v complex128V) MarshalText() ([]byte, error) {
+func (v Complex128V) MarshalText() ([]byte, error) {
 	return []byte(v.String()), nil
 }
 
-func (v complex128V) MarshalJSON() ([]byte, error) {
+func (v Complex128V) MarshalJSON() ([]byte, error) {
 	return append([]byte(`"`), append([]byte(v.String()), []byte(`"`)...)...), nil
 }

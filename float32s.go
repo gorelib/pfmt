@@ -9,18 +9,18 @@ import (
 )
 
 // Float32s returns stringer/JSON/text marshaler for the float32 slice type.
-func Float32s(s ...float32) float32S { return float32S{S: s} }
+func Float32s(s ...float32) Float32S { return Float32S{s: s} }
 
-type float32S struct{ S []float32 }
+type Float32S struct{ s []float32 }
 
-func (s float32S) String() string {
+func (s Float32S) String() string {
 	b, _ := s.MarshalText()
 	return string(b)
 }
 
-func (s float32S) MarshalText() ([]byte, error) {
+func (s Float32S) MarshalText() ([]byte, error) {
 	var buf bytes.Buffer
-	for i, v := range s.S {
+	for i, v := range s.s {
 		b, err := float32V{V: v}.MarshalText()
 		if err != nil {
 			return nil, err
@@ -36,10 +36,10 @@ func (s float32S) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (s float32S) MarshalJSON() ([]byte, error) {
+func (s Float32S) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, v := range s.S {
+	for i, v := range s.s {
 		b, err := float32V{V: v}.MarshalJSON()
 		if err != nil {
 			return nil, err

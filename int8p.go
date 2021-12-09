@@ -5,21 +5,21 @@
 package pfmt
 
 // Int8p returns stringer/JSON/text marshaler for the int8 pointer type.
-func Int8p(p *int8) int8P { return int8P{P: p} }
+func Int8p(p *int8) Int8P { return Int8P{p: p} }
 
-type int8P struct{ P *int8 }
+type Int8P struct{ p *int8 }
 
-func (p int8P) String() string {
-	if p.P == nil {
+func (p Int8P) String() string {
+	if p.p == nil {
 		return "null"
 	}
-	return int8V{V: *p.P}.String()
+	return int8V{V: *p.p}.String()
 }
 
-func (p int8P) MarshalText() ([]byte, error) {
+func (p Int8P) MarshalText() ([]byte, error) {
 	return []byte(p.String()), nil
 }
 
-func (p int8P) MarshalJSON() ([]byte, error) {
+func (p Int8P) MarshalJSON() ([]byte, error) {
 	return p.MarshalText()
 }

@@ -9,18 +9,18 @@ import (
 )
 
 // Uint16s returns stringer/JSON/text marshaler for the uint16 slice type.
-func Uint16s(s ...uint16) uint16S { return uint16S{S: s} }
+func Uint16s(s ...uint16) Uint16S { return Uint16S{s: s} }
 
-type uint16S struct{ S []uint16 }
+type Uint16S struct{ s []uint16 }
 
-func (s uint16S) String() string {
+func (s Uint16S) String() string {
 	b, _ := s.MarshalText()
 	return string(b)
 }
 
-func (s uint16S) MarshalText() ([]byte, error) {
+func (s Uint16S) MarshalText() ([]byte, error) {
 	var buf bytes.Buffer
-	for i, v := range s.S {
+	for i, v := range s.s {
 		b, err := uint16V{V: v}.MarshalText()
 		if err != nil {
 			return nil, err
@@ -36,10 +36,10 @@ func (s uint16S) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (s uint16S) MarshalJSON() ([]byte, error) {
+func (s Uint16S) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, v := range s.S {
+	for i, v := range s.s {
 		b, err := uint16V{V: v}.MarshalJSON()
 		if err != nil {
 			return nil, err

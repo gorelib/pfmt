@@ -9,22 +9,22 @@ import (
 )
 
 // JSON returns stringer/JSON/text marshaler for the KV slice type.
-func JSON(s ...KV) jsonV { return jsonV{S: s} }
+func JSON(s ...KV) JSONV { return JSONV{s: s} }
 
-type jsonV struct{ S []KV }
+type JSONV struct{ s []KV }
 
-func (s jsonV) String() string {
+func (s JSONV) String() string {
 	b, _ := s.MarshalText()
 	return string(b)
 }
 
-func (s jsonV) MarshalText() ([]byte, error) {
-	if s.S == nil {
+func (s JSONV) MarshalText() ([]byte, error) {
+	if s.s == nil {
 		return nil, nil
 	}
 	var buf bytes.Buffer
 	var tail bool
-	for _, s := range s.S {
+	for _, s := range s.s {
 		if s == nil {
 			continue
 		}
@@ -51,14 +51,14 @@ func (s jsonV) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (s jsonV) MarshalJSON() ([]byte, error) {
-	if s.S == nil {
+func (s JSONV) MarshalJSON() ([]byte, error) {
+	if s.s == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
 	buf.WriteString("{")
 	var tail bool
-	for _, s := range s.S {
+	for _, s := range s.s {
 		if s == nil {
 			continue
 		}

@@ -5,27 +5,27 @@
 package pfmt
 
 // Stringp returns stringer/JSON/text marshaler for the string pointer type.
-func Stringp(p *string) stringP { return stringP{P: p} }
+func Stringp(p *string) StringP { return StringP{p: p} }
 
-type stringP struct{ P *string }
+type StringP struct{ p *string }
 
-func (p stringP) String() string {
-	if p.P == nil {
+func (p StringP) String() string {
+	if p.p == nil {
 		return "null"
 	}
-	return stringV{V: *p.P}.String()
+	return stringV{V: *p.p}.String()
 }
 
-func (p stringP) MarshalText() ([]byte, error) {
-	if p.P == nil {
+func (p StringP) MarshalText() ([]byte, error) {
+	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return stringV{V: *p.P}.MarshalText()
+	return stringV{V: *p.p}.MarshalText()
 }
 
-func (p stringP) MarshalJSON() ([]byte, error) {
-	if p.P == nil {
+func (p StringP) MarshalJSON() ([]byte, error) {
+	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return stringV{V: *p.P}.MarshalJSON()
+	return stringV{V: *p.p}.MarshalJSON()
 }

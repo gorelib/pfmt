@@ -9,18 +9,18 @@ import (
 )
 
 // Uint64s returns stringer/JSON/text marshaler for the uint64 slice type.
-func Uint64s(s ...uint64) uint64S { return uint64S{S: s} }
+func Uint64s(s ...uint64) Uint64S { return Uint64S{s: s} }
 
-type uint64S struct{ S []uint64 }
+type Uint64S struct{ s []uint64 }
 
-func (s uint64S) String() string {
+func (s Uint64S) String() string {
 	b, _ := s.MarshalText()
 	return string(b)
 }
 
-func (s uint64S) MarshalText() ([]byte, error) {
+func (s Uint64S) MarshalText() ([]byte, error) {
 	var buf bytes.Buffer
-	for i, v := range s.S {
+	for i, v := range s.s {
 		b, err := uint64V{V: v}.MarshalText()
 		if err != nil {
 			return nil, err
@@ -36,10 +36,10 @@ func (s uint64S) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (s uint64S) MarshalJSON() ([]byte, error) {
+func (s Uint64S) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, v := range s.S {
+	for i, v := range s.s {
 		b, err := uint64V{V: v}.MarshalJSON()
 		if err != nil {
 			return nil, err

@@ -5,21 +5,21 @@
 package pfmt
 
 // Intp returns stringer/JSON/text marshaler for the int pointer type.
-func Intp(p *int) intP { return intP{P: p} }
+func Intp(p *int) IntP { return IntP{p: p} }
 
-type intP struct{ P *int }
+type IntP struct{ p *int }
 
-func (p intP) String() string {
-	if p.P == nil {
+func (p IntP) String() string {
+	if p.p == nil {
 		return "null"
 	}
-	return intV{V: *p.P}.String()
+	return intV{V: *p.p}.String()
 }
 
-func (p intP) MarshalText() ([]byte, error) {
+func (p IntP) MarshalText() ([]byte, error) {
 	return []byte(p.String()), nil
 }
 
-func (p intP) MarshalJSON() ([]byte, error) {
+func (p IntP) MarshalJSON() ([]byte, error) {
 	return p.MarshalText()
 }

@@ -9,22 +9,22 @@ import (
 )
 
 // Complex128s returns stringer/JSON/text marshaler for the complex128 slice type.
-func Complex128s(s ...complex128) complex128S { return complex128S{S: s} }
+func Complex128s(s ...complex128) Complex128S { return Complex128S{s: s} }
 
-type complex128S struct{ S []complex128 }
+type Complex128S struct{ s []complex128 }
 
-func (s complex128S) String() string {
+func (s Complex128S) String() string {
 	b, _ := s.MarshalText()
 	return string(b)
 }
 
-func (s complex128S) MarshalText() ([]byte, error) {
-	if s.S == nil {
+func (s Complex128S) MarshalText() ([]byte, error) {
+	if s.s == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
-	for i, v := range s.S {
-		b, err := complex128V{V: v}.MarshalText()
+	for i, v := range s.s {
+		b, err := Complex128(v).MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -39,14 +39,14 @@ func (s complex128S) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (s complex128S) MarshalJSON() ([]byte, error) {
-	if s.S == nil {
+func (s Complex128S) MarshalJSON() ([]byte, error) {
+	if s.s == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, v := range s.S {
-		b, err := complex128V{V: v}.MarshalJSON()
+	for i, v := range s.s {
+		b, err := Complex128(v).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

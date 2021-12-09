@@ -5,25 +5,25 @@
 package pfmt
 
 // Rawp returns stringer/JSON/text marshaler for the raw byte slice pointer.
-func Rawp(p *[]byte) rawP { return rawP{P: p} }
+func Rawp(p *[]byte) RawP { return RawP{p: p} }
 
-type rawP struct{ P *[]byte }
+type RawP struct{ p *[]byte }
 
-func (p rawP) String() string {
+func (p RawP) String() string {
 	t, _ := p.MarshalText()
 	return string(t)
 }
 
-func (p rawP) MarshalText() ([]byte, error) {
-	if p.P == nil {
+func (p RawP) MarshalText() ([]byte, error) {
+	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return rawV{V: *p.P}.MarshalText()
+	return rawV{V: *p.p}.MarshalText()
 }
 
-func (p rawP) MarshalJSON() ([]byte, error) {
-	if p.P == nil {
+func (p RawP) MarshalJSON() ([]byte, error) {
+	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return rawV{V: *p.P}.MarshalJSON()
+	return rawV{V: *p.p}.MarshalJSON()
 }

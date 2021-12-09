@@ -5,25 +5,25 @@
 package pfmt
 
 // Bytesp returns stringer/JSON/text marshaler for the pointer to byte slice type.
-func Bytesp(p *[]byte) byteSP { return byteSP{P: p} }
+func Bytesp(p *[]byte) ByteSP { return ByteSP{p: p} }
 
-type byteSP struct{ P *[]byte }
+type ByteSP struct{ p *[]byte }
 
-func (p byteSP) String() string {
+func (p ByteSP) String() string {
 	t, _ := p.MarshalText()
 	return string(t)
 }
 
-func (p byteSP) MarshalText() ([]byte, error) {
-	if p.P == nil {
+func (p ByteSP) MarshalText() ([]byte, error) {
+	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return byteS{S: *p.P}.MarshalText()
+	return Bytes(*p.p...).MarshalText()
 }
 
-func (p byteSP) MarshalJSON() ([]byte, error) {
-	if p.P == nil {
+func (p ByteSP) MarshalJSON() ([]byte, error) {
+	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return byteS{S: *p.P}.MarshalJSON()
+	return Bytes(*p.p...).MarshalJSON()
 }

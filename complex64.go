@@ -9,19 +9,19 @@ import (
 )
 
 // Complex64 returns stringer/JSON/text marshaler for the complex64 type.
-func Complex64(v complex64) complex64V { return complex64V{V: v} }
+func Complex64(v complex64) Complex64V { return Complex64V{v: v} }
 
-type complex64V struct{ V complex64 }
+type Complex64V struct{ v complex64 }
 
-func (v complex64V) String() string {
-	s := fmt.Sprintf("%g", v.V)
+func (v Complex64V) String() string {
+	s := fmt.Sprintf("%g", v.v)
 	return s[1 : len(s)-1]
 }
 
-func (v complex64V) MarshalText() ([]byte, error) {
+func (v Complex64V) MarshalText() ([]byte, error) {
 	return []byte(v.String()), nil
 }
 
-func (v complex64V) MarshalJSON() ([]byte, error) {
+func (v Complex64V) MarshalJSON() ([]byte, error) {
 	return append([]byte(`"`), append([]byte(v.String()), []byte(`"`)...)...), nil
 }

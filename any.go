@@ -11,12 +11,12 @@ import (
 )
 
 // Any returns stringer/JSON/text marshaler for any type.
-func Any(v interface{}) AnyV { return AnyV{V: v} }
+func Any(v interface{}) AnyV { return AnyV{v: v} }
 
-type AnyV struct{ V interface{} }
+type AnyV struct{ v interface{} }
 
 func (v AnyV) String() string {
-	switch x := v.V.(type) {
+	switch x := v.v.(type) {
 	case bool:
 		return Bool(x).String()
 	case *bool:
@@ -200,7 +200,7 @@ func (v AnyV) String() string {
 }
 
 func (v AnyV) MarshalText() ([]byte, error) {
-	switch x := v.V.(type) {
+	switch x := v.v.(type) {
 	case bool:
 		return Bool(x).MarshalText()
 	case *bool:
@@ -383,7 +383,7 @@ func (v AnyV) MarshalText() ([]byte, error) {
 }
 
 func (v AnyV) MarshalJSON() ([]byte, error) {
-	switch x := v.V.(type) {
+	switch x := v.v.(type) {
 	case bool:
 		return Bool(x).MarshalJSON()
 	case *bool:

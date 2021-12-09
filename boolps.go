@@ -9,22 +9,22 @@ import (
 )
 
 // Boolps returns stringer/JSON/text marshaler for slice of bool pointers type.
-func Boolps(s ...*bool) boolPS { return boolPS{S: s} }
+func Boolps(s ...*bool) BoolPS { return BoolPS{s: s} }
 
-type boolPS struct{ S []*bool }
+type BoolPS struct{ s []*bool }
 
-func (s boolPS) String() string {
+func (s BoolPS) String() string {
 	t, _ := s.MarshalText()
 	return string(t)
 }
 
-func (s boolPS) MarshalText() ([]byte, error) {
-	if s.S == nil {
+func (s BoolPS) MarshalText() ([]byte, error) {
+	if s.s == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
-	for i, p := range s.S {
-		b, err := boolP{P: p}.MarshalText()
+	for i, p := range s.s {
+		b, err := Boolp(p).MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -39,14 +39,14 @@ func (s boolPS) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (s boolPS) MarshalJSON() ([]byte, error) {
-	if s.S == nil {
+func (s BoolPS) MarshalJSON() ([]byte, error) {
+	if s.s == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, p := range s.S {
-		b, err := boolP{P: p}.MarshalJSON()
+	for i, p := range s.s {
+		b, err := Boolp(p).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

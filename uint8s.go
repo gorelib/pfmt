@@ -9,18 +9,18 @@ import (
 )
 
 // Uint8s returns stringer/JSON/text marshaler for the uint8 slice type.
-func Uint8s(s ...uint8) uint8S { return uint8S{S: s} }
+func Uint8s(s ...uint8) Uint8S { return Uint8S{s: s} }
 
-type uint8S struct{ S []uint8 }
+type Uint8S struct{ s []uint8 }
 
-func (s uint8S) String() string {
+func (s Uint8S) String() string {
 	b, _ := s.MarshalText()
 	return string(b)
 }
 
-func (s uint8S) MarshalText() ([]byte, error) {
+func (s Uint8S) MarshalText() ([]byte, error) {
 	var buf bytes.Buffer
-	for i, v := range s.S {
+	for i, v := range s.s {
 		b, err := uint8V{V: v}.MarshalText()
 		if err != nil {
 			return nil, err
@@ -36,10 +36,10 @@ func (s uint8S) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (s uint8S) MarshalJSON() ([]byte, error) {
+func (s Uint8S) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, v := range s.S {
+	for i, v := range s.s {
 		b, err := uint8V{V: v}.MarshalJSON()
 		if err != nil {
 			return nil, err

@@ -9,21 +9,21 @@ import (
 )
 
 // Raws returns stringer/JSON/text marshaler for the slice of byte slice type.
-func Raws(s ...[]byte) rawS { return rawS{S: s} }
+func Raws(s ...[]byte) RawS { return RawS{s: s} }
 
-type rawS struct{ S [][]byte }
+type RawS struct{ s [][]byte }
 
-func (s rawS) String() string {
+func (s RawS) String() string {
 	b, _ := s.MarshalText()
 	return string(b)
 }
 
-func (s rawS) MarshalText() ([]byte, error) {
-	if s.S == nil {
+func (s RawS) MarshalText() ([]byte, error) {
+	if s.s == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
-	for i, v := range s.S {
+	for i, v := range s.s {
 		b, err := rawV{V: v}.MarshalText()
 		if err != nil {
 			return nil, err
@@ -39,13 +39,13 @@ func (s rawS) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (s rawS) MarshalJSON() ([]byte, error) {
-	if s.S == nil {
+func (s RawS) MarshalJSON() ([]byte, error) {
+	if s.s == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, v := range s.S {
+	for i, v := range s.s {
 		b, err := rawV{V: v}.MarshalJSON()
 		if err != nil {
 			return nil, err

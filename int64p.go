@@ -5,21 +5,21 @@
 package pfmt
 
 // Int64p returns stringer/JSON/text marshaler for the int64 pointer type.
-func Int64p(p *int64) int64P { return int64P{P: p} }
+func Int64p(p *int64) Int64P { return Int64P{p: p} }
 
-type int64P struct{ P *int64 }
+type Int64P struct{ p *int64 }
 
-func (p int64P) String() string {
-	if p.P == nil {
+func (p Int64P) String() string {
+	if p.p == nil {
 		return "null"
 	}
-	return int64V{V: *p.P}.String()
+	return int64V{V: *p.p}.String()
 }
 
-func (p int64P) MarshalText() ([]byte, error) {
+func (p Int64P) MarshalText() ([]byte, error) {
 	return []byte(p.String()), nil
 }
 
-func (p int64P) MarshalJSON() ([]byte, error) {
+func (p Int64P) MarshalJSON() ([]byte, error) {
 	return p.MarshalText()
 }

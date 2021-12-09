@@ -9,9 +9,9 @@ import (
 )
 
 // Anys returns stringer/JSON/text marshaler for the slice of any type.
-func Anys(s ...interface{}) AnyS { return AnyS{S: s} }
+func Anys(s ...interface{}) AnyS { return AnyS{s: s} }
 
-type AnyS struct{ S []interface{} }
+type AnyS struct{ s []interface{} }
 
 func (s AnyS) String() string {
 	b, _ := s.MarshalText()
@@ -20,8 +20,8 @@ func (s AnyS) String() string {
 
 func (s AnyS) MarshalText() ([]byte, error) {
 	var buf bytes.Buffer
-	for i, v := range s.S {
-		b, err := AnyV{V: v}.MarshalText()
+	for i, v := range s.s {
+		b, err := Any(v).MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -39,8 +39,8 @@ func (s AnyS) MarshalText() ([]byte, error) {
 func (s AnyS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, v := range s.S {
-		b, err := AnyV{V: v}.MarshalJSON()
+	for i, v := range s.s {
+		b, err := Any(v).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

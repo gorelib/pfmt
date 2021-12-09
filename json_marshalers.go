@@ -10,30 +10,30 @@ import (
 )
 
 // JSONMarshalers returns stringer/JSON/text marshaler for the JSON marshaler slice type.
-func JSONMarshalers(s ...json.Marshaler) jsonMarshalerS { return jsonMarshalerS{S: s} }
+func JSONMarshalers(s ...json.Marshaler) JSONMarshalerS { return JSONMarshalerS{s: s} }
 
-type jsonMarshalerS struct{ S []json.Marshaler }
+type JSONMarshalerS struct{ s []json.Marshaler }
 
-func (s jsonMarshalerS) String() string {
+func (s JSONMarshalerS) String() string {
 	b, _ := s.MarshalText()
 	return string(b)
 }
 
-func (s jsonMarshalerS) MarshalText() ([]byte, error) {
-	if s.S == nil {
+func (s JSONMarshalerS) MarshalText() ([]byte, error) {
+	if s.s == nil {
 		return []byte("null"), nil
 	}
 	return s.MarshalJSON()
 }
 
-func (s jsonMarshalerS) MarshalJSON() ([]byte, error) {
-	if s.S == nil {
+func (s JSONMarshalerS) MarshalJSON() ([]byte, error) {
+	if s.s == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	var tail bool
-	for _, v := range s.S {
+	for _, v := range s.s {
 		if tail {
 			buf.WriteString(",")
 		}

@@ -5,27 +5,27 @@
 package pfmt
 
 // Runesp returns stringer/JSON/text marshaler for the rune pointer slice type.
-func Runesp(p *[]rune) runeSP { return runeSP{P: p} }
+func Runesp(p *[]rune) RuneSP { return RuneSP{p: p} }
 
-type runeSP struct{ P *[]rune }
+type RuneSP struct{ p *[]rune }
 
-func (p runeSP) String() string {
-	if p.P == nil {
+func (p RuneSP) String() string {
+	if p.p == nil {
 		return "null"
 	}
-	return runeS{S: *p.P}.String()
+	return Runes(*p.p...).String()
 }
 
-func (p runeSP) MarshalText() ([]byte, error) {
-	if p.P == nil {
+func (p RuneSP) MarshalText() ([]byte, error) {
+	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return runeS{S: *p.P}.MarshalText()
+	return Runes(*p.p...).MarshalText()
 }
 
-func (p runeSP) MarshalJSON() ([]byte, error) {
-	if p.P == nil {
+func (p RuneSP) MarshalJSON() ([]byte, error) {
+	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return runeS{S: *p.P}.MarshalJSON()
+	return Runes(*p.p...).MarshalJSON()
 }

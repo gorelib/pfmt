@@ -10,22 +10,22 @@ import (
 )
 
 // Timeps returns stringer/JSON/text marshaler for the time pointer slice type.
-func Timeps(a ...*time.Time) timePS { return timePS{A: a} }
+func Timeps(a ...*time.Time) TimePS { return TimePS{a: a} }
 
-type timePS struct{ A []*time.Time }
+type TimePS struct{ a []*time.Time }
 
-func (a timePS) String() string {
+func (a TimePS) String() string {
 	b, _ := a.MarshalText()
 	return string(b)
 }
 
-func (a timePS) MarshalText() ([]byte, error) {
-	if a.A == nil {
+func (a TimePS) MarshalText() ([]byte, error) {
+	if a.a == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
-	for i, p := range a.A {
-		b, err := timeP{P: p}.MarshalText()
+	for i, p := range a.a {
+		b, err := Timep(p).MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -40,14 +40,14 @@ func (a timePS) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (a timePS) MarshalJSON() ([]byte, error) {
-	if a.A == nil {
+func (a TimePS) MarshalJSON() ([]byte, error) {
+	if a.a == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, p := range a.A {
-		b, err := timeP{P: p}.MarshalJSON()
+	for i, p := range a.a {
+		b, err := Timep(p).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

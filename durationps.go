@@ -10,22 +10,22 @@ import (
 )
 
 // Durationps returns stringer/JSON/text marshaler for the time duration pointer slice type.
-func Durationps(s ...*time.Duration) durationPS { return durationPS{S: s} }
+func Durationps(s ...*time.Duration) DurationPS { return DurationPS{s: s} }
 
-type durationPS struct{ S []*time.Duration }
+type DurationPS struct{ s []*time.Duration }
 
-func (s durationPS) String() string {
+func (s DurationPS) String() string {
 	b, _ := s.MarshalText()
 	return string(b)
 }
 
-func (s durationPS) MarshalText() ([]byte, error) {
-	if s.S == nil {
+func (s DurationPS) MarshalText() ([]byte, error) {
+	if s.s == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
-	for i, p := range s.S {
-		b, err := durationP{P: p}.MarshalText()
+	for i, p := range s.s {
+		b, err := Durationp(p).MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -40,14 +40,14 @@ func (s durationPS) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (s durationPS) MarshalJSON() ([]byte, error) {
-	if s.S == nil {
+func (s DurationPS) MarshalJSON() ([]byte, error) {
+	if s.s == nil {
 		return []byte("null"), nil
 	}
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, p := range s.S {
-		b, err := durationP{P: p}.MarshalJSON()
+	for i, p := range s.s {
+		b, err := Durationp(p).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}
