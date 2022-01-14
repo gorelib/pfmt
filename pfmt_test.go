@@ -14,7 +14,7 @@ func TestSprint(t *testing.T) {
 	testInt := 42
 	testStr := "Hello, World!"
 
-	testTime, err := time.Parse(time.RFC3339, "2021-12-07T18:56:49Z")
+	testTime, err := time.Parse(time.RFC3339, "2022-12-07T18:56:49Z")
 	if err != nil {
 		t.Fatalf("time parse: %s", err)
 	}
@@ -59,13 +59,13 @@ func TestSprint(t *testing.T) {
 			name: "time",
 			line: line(),
 			args: []interface{}{testTime},
-			want: "2021-12-07T18:56:49Z",
+			want: "2022-12-07T18:56:49Z",
 		},
 		{
 			name: "time ptr",
 			line: line(),
 			args: []interface{}{&testTime},
-			want: "2021-12-07T18:56:49Z",
+			want: "2022-12-07T18:56:49Z",
 		},
 		{
 			name: "nil time ptr",
