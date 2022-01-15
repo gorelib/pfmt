@@ -12,7 +12,7 @@ import (
 )
 
 // Strings returns stringer/JSON/text marshaler for the string slice type.
-func Strings(s ...string) StringS { return StringS{s: s} }
+func Strings(s []string) StringS { return StringS{s: s} }
 
 type StringS struct{ s []string }
 

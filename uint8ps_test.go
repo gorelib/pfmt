@@ -16,7 +16,7 @@ var MarshalUint8psTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var f, f2 uint8 = 42, 77
-			return map[string]json.Marshaler{"uint8 pointer slice": pfmt.Uint8ps(&f, &f2)}
+			return map[string]json.Marshaler{"uint8 pointer slice": pfmt.Uint8ps([]*uint8{&f, &f2})}
 		}(),
 		want:     "42 77",
 		wantText: "42 77",
@@ -26,7 +26,7 @@ var MarshalUint8psTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of nil uint8 pointers": pfmt.Uint8ps(nil, nil)},
+		input:    map[string]json.Marshaler{"slice of nil uint8 pointers": pfmt.Uint8ps([]*uint8{nil, nil})},
 		want:     "null null",
 		wantText: "null null",
 		wantJSON: `{
@@ -35,7 +35,7 @@ var MarshalUint8psTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice without uint8 pointers": pfmt.Uint8ps()},
+		input:    map[string]json.Marshaler{"slice without uint8 pointers": pfmt.Uint8ps(nil)},
 		want:     "null",
 		wantText: "null",
 		wantJSON: `{
@@ -46,7 +46,7 @@ var MarshalUint8psTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var f, f2 uint8 = 42, 77
-			return map[string]json.Marshaler{"slice of any uint8 pointers": pfmt.Anys(&f, &f2)}
+			return map[string]json.Marshaler{"slice of any uint8 pointers": pfmt.Anys([]interface{}{&f, &f2})}
 		}(),
 		want:     "42 77",
 		wantText: "42 77",
@@ -58,7 +58,7 @@ var MarshalUint8psTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var f, f2 uint8 = 42, 77
-			return map[string]json.Marshaler{"slice of reflects of uint8 pointers": pfmt.Reflects(&f, &f2)}
+			return map[string]json.Marshaler{"slice of reflects of uint8 pointers": pfmt.Reflects([]interface{}{&f, &f2})}
 		}(),
 		want:     "42 77",
 		wantText: "42 77",

@@ -18,12 +18,12 @@ func (p ByteSP) MarshalText() ([]byte, error) {
 	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return Bytes(*p.p...).MarshalText()
+	return Bytes(*p.p).MarshalText()
 }
 
 func (p ByteSP) MarshalJSON() ([]byte, error) {
 	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return Bytes(*p.p...).MarshalJSON()
+	return Bytes(*p.p).MarshalJSON()
 }

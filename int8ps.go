@@ -7,7 +7,7 @@ package pfmt
 import "bytes"
 
 // Int8ps returns stringer/JSON/text marshaler for the int8 pointer slice type.
-func Int8ps(a ...*int8) Int8PS { return Int8PS{a: a} }
+func Int8ps(a []*int8) Int8PS { return Int8PS{a: a} }
 
 type Int8PS struct{ a []*int8 }
 

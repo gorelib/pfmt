@@ -10,7 +10,7 @@ import (
 )
 
 // Durations returns stringer/JSON/text marshaler for time duration slice type.
-func Durations(s ...time.Duration) DurationS { return DurationS{s: s} }
+func Durations(s []time.Duration) DurationS { return DurationS{s: s} }
 
 type DurationS struct{ s []time.Duration }
 

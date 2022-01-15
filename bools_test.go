@@ -14,7 +14,7 @@ import (
 var MarshalBoolsTests = []marshalTests{
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"bools true false": pfmt.Bools(true, false)},
+		input:    map[string]json.Marshaler{"bools true false": pfmt.Bools([]bool{true, false})},
 		want:     "true false",
 		wantText: "true false",
 		wantJSON: `{
@@ -23,7 +23,7 @@ var MarshalBoolsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"without bools": pfmt.Bools()},
+		input:    map[string]json.Marshaler{"without bools": pfmt.Bools(nil)},
 		want:     "",
 		wantText: "",
 		wantJSON: `{
@@ -32,7 +32,7 @@ var MarshalBoolsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"any bools": pfmt.Anys(true, false)},
+		input:    map[string]json.Marshaler{"any bools": pfmt.Anys([]interface{}{true, false})},
 		want:     "true false",
 		wantText: "true false",
 		wantJSON: `{
@@ -41,7 +41,7 @@ var MarshalBoolsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"reflects bools": pfmt.Reflects(true, false)},
+		input:    map[string]json.Marshaler{"reflects bools": pfmt.Reflects([]interface{}{true, false})},
 		want:     "true false",
 		wantText: "true false",
 		wantJSON: `{

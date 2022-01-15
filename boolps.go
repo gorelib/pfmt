@@ -9,7 +9,7 @@ import (
 )
 
 // Boolps returns stringer/JSON/text marshaler for slice of bool pointers type.
-func Boolps(s ...*bool) BoolPS { return BoolPS{s: s} }
+func Boolps(s []*bool) BoolPS { return BoolPS{s: s} }
 
 type BoolPS struct{ s []*bool }
 

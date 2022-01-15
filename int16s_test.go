@@ -14,7 +14,7 @@ import (
 var MarshalInt16sTests = []marshalTests{
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"int16 slice": pfmt.Int16s(123, 321)},
+		input:    map[string]json.Marshaler{"int16 slice": pfmt.Int16s([]int16{123, 321})},
 		want:     "123 321",
 		wantText: "123 321",
 		wantJSON: `{
@@ -23,7 +23,7 @@ var MarshalInt16sTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice without int16": pfmt.Int16s()},
+		input:    map[string]json.Marshaler{"slice without int16": pfmt.Int16s(nil)},
 		want:     "",
 		wantText: "",
 		wantJSON: `{
@@ -34,7 +34,7 @@ var MarshalInt16sTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var i, i2 int16 = 123, 321
-			return map[string]json.Marshaler{"slice of any int16": pfmt.Anys(i, i2)}
+			return map[string]json.Marshaler{"slice of any int16": pfmt.Anys([]interface{}{i, i2})}
 		}(),
 		want:     "123 321",
 		wantText: "123 321",
@@ -46,7 +46,7 @@ var MarshalInt16sTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var i, i2 int16 = 123, 321
-			return map[string]json.Marshaler{"slice of int16 reflects": pfmt.Reflects(i, i2)}
+			return map[string]json.Marshaler{"slice of int16 reflects": pfmt.Reflects([]interface{}{i, i2})}
 		}(),
 		want:     "123 321",
 		wantText: "123 321",

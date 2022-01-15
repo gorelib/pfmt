@@ -9,7 +9,7 @@ import (
 )
 
 // Int16s returns stringer/JSON/text marshaler for the int16 slice type.
-func Int16s(s ...int16) Int16S { return Int16S{s: s} }
+func Int16s(s []int16) Int16S { return Int16S{s: s} }
 
 type Int16S struct{ s []int16 }
 

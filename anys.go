@@ -9,7 +9,7 @@ import (
 )
 
 // Anys returns stringer/JSON/text marshaler for the slice of any type.
-func Anys(s ...interface{}) AnyS { return AnyS{s: s} }
+func Anys(s []interface{}) AnyS { return AnyS{s: s} }
 
 type AnyS struct{ s []interface{} }
 

@@ -10,7 +10,7 @@ import (
 )
 
 // Durationps returns stringer/JSON/text marshaler for the time duration pointer slice type.
-func Durationps(s ...*time.Duration) DurationPS { return DurationPS{s: s} }
+func Durationps(s []*time.Duration) DurationPS { return DurationPS{s: s} }
 
 type DurationPS struct{ s []*time.Duration }
 

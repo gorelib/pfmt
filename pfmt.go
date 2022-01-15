@@ -10,13 +10,13 @@ import (
 // Spaces are always added between operands and a newline is appended.
 // It returns the number of bytes written and any write error encountered.
 func Println(a ...interface{}) (n int, errno error) {
-	return fmt.Println(Anys(a...))
+	return fmt.Println(Anys(a))
 }
 
 // Sprint formats using the default formats for its operands and returns the resulting string.
 // Spaces are added between operands when neither is a string.
 func Sprint(a ...interface{}) string {
-	return Anys(a...).String()
+	return Anys(a).String()
 }
 
 // Formatter returns formatter.

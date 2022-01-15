@@ -7,7 +7,7 @@ package pfmt
 import "bytes"
 
 // Uint64ps returns stringer/JSON/text marshaler for the uint64 pointer slice type.
-func Uint64ps(a ...*uint64) Uint64PS { return Uint64PS{a: a} }
+func Uint64ps(a []*uint64) Uint64PS { return Uint64PS{a: a} }
 
 type Uint64PS struct{ a []*uint64 }
 

@@ -9,7 +9,7 @@ import (
 )
 
 // Int64s returns stringer/JSON/text marshaler for the int64 slice type.
-func Int64s(s ...int64) Int64S { return Int64S{s: s} }
+func Int64s(s []int64) Int64S { return Int64S{s: s} }
 
 type Int64S struct{ s []int64 }
 

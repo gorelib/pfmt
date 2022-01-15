@@ -9,7 +9,7 @@ import (
 )
 
 // Bools returns stringer/JSON/text marshaler for the bool slice type.
-func Bools(s ...bool) BoolS { return BoolS{s: s} }
+func Bools(s []bool) BoolS { return BoolS{s: s} }
 
 type BoolS struct{ s []bool }
 

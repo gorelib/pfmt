@@ -7,7 +7,7 @@ package pfmt
 import "bytes"
 
 // Complex128ps returns stringer/JSON/text marshaler for the complex128 pointer slice type.
-func Complex128ps(a ...*complex128) Complex128PS { return Complex128PS{a: a} }
+func Complex128ps(a []*complex128) Complex128PS { return Complex128PS{a: a} }
 
 type Complex128PS struct{ a []*complex128 }
 

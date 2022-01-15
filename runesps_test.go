@@ -16,7 +16,7 @@ var MarshalRunespsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			p, p2 := []rune("Hello, Wörld!"), []rune("Hello, World!")
-			return map[string]json.Marshaler{"slice of rune slice pointers": pfmt.Runesps(&p, &p2)}
+			return map[string]json.Marshaler{"slice of rune slice pointers": pfmt.Runesps([]*[]rune{&p, &p2})}
 		}(),
 		want:     "Hello, Wörld! Hello, World!",
 		wantText: "Hello, Wörld! Hello, World!",
@@ -28,7 +28,7 @@ var MarshalRunespsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			p, p2 := []rune{}, []rune{}
-			return map[string]json.Marshaler{"slice of empty rune slice pointers": pfmt.Runesps(&p, &p2)}
+			return map[string]json.Marshaler{"slice of empty rune slice pointers": pfmt.Runesps([]*[]rune{&p, &p2})}
 		}(),
 		want:     " ",
 		wantText: " ",
@@ -38,7 +38,7 @@ var MarshalRunespsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of nil rune slice pointers": pfmt.Runesps(nil, nil)},
+		input:    map[string]json.Marshaler{"slice of nil rune slice pointers": pfmt.Runesps([]*[]rune{nil, nil})},
 		want:     "null null",
 		wantText: "null null",
 		wantJSON: `{
@@ -47,7 +47,7 @@ var MarshalRunespsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"empty slice of rune slice pointers": pfmt.Runesps()},
+		input:    map[string]json.Marshaler{"empty slice of rune slice pointers": pfmt.Runesps(nil)},
 		want:     "null",
 		wantText: "null",
 		wantJSON: `{

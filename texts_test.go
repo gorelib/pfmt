@@ -5,6 +5,7 @@
 package pfmt_test
 
 import (
+	"encoding"
 	"encoding/json"
 	"testing"
 
@@ -14,7 +15,7 @@ import (
 var MarshalTextsTests = []marshalTests{
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"texts": pfmt.Texts(pfmt.String("Hello, Wörld!"), pfmt.String("Hello, World!"))},
+		input:    map[string]json.Marshaler{"texts": pfmt.Texts([]encoding.TextMarshaler{pfmt.String("Hello, Wörld!"), pfmt.String("Hello, World!")})},
 		want:     `Hello, Wörld! Hello, World!`,
 		wantText: `Hello, Wörld! Hello, World!`,
 		wantJSON: `{
@@ -23,7 +24,7 @@ var MarshalTextsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of text jsons": pfmt.Texts(pfmt.String(`{"foo":"bar"}`), pfmt.String("[42]"))},
+		input:    map[string]json.Marshaler{"slice of text jsons": pfmt.Texts([]encoding.TextMarshaler{pfmt.String(`{"foo":"bar"}`), pfmt.String("[42]")})},
 		want:     `{\"foo\":\"bar\"} [42]`,
 		wantText: `{\"foo\":\"bar\"} [42]`,
 		wantJSON: `{
@@ -32,7 +33,7 @@ var MarshalTextsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of texts with unescaped null byte": pfmt.Texts(pfmt.String("Hello, Wörld!\x00"), pfmt.String("Hello, World!"))},
+		input:    map[string]json.Marshaler{"slice of texts with unescaped null byte": pfmt.Texts([]encoding.TextMarshaler{pfmt.String("Hello, Wörld!\x00"), pfmt.String("Hello, World!")})},
 		want:     "Hello, Wörld!\\u0000 Hello, World!",
 		wantText: "Hello, Wörld!\\u0000 Hello, World!",
 		wantJSON: `{
@@ -41,7 +42,7 @@ var MarshalTextsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of empty texts": pfmt.Texts(pfmt.String(""), pfmt.String(""))},
+		input:    map[string]json.Marshaler{"slice of empty texts": pfmt.Texts([]encoding.TextMarshaler{pfmt.String(""), pfmt.String("")})},
 		want:     " ",
 		wantText: " ",
 		wantJSON: `{
@@ -50,7 +51,7 @@ var MarshalTextsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of text nils": pfmt.Texts(nil, nil)},
+		input:    map[string]json.Marshaler{"slice of text nils": pfmt.Texts([]encoding.TextMarshaler{nil, nil})},
 		want:     " ",
 		wantText: " ",
 		wantJSON: `{

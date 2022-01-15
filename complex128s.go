@@ -9,7 +9,7 @@ import (
 )
 
 // Complex128s returns stringer/JSON/text marshaler for the complex128 slice type.
-func Complex128s(s ...complex128) Complex128S { return Complex128S{s: s} }
+func Complex128s(s []complex128) Complex128S { return Complex128S{s: s} }
 
 type Complex128S struct{ s []complex128 }
 

@@ -17,7 +17,7 @@ var MarshalRawpsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			p, p2 := []byte(`{"foo":{"bar":{"xyz":"Hello, Wörld!"}}}`), []byte("[42]")
-			return map[string]json.Marshaler{"slice of raw jsons": pfmt.Rawps(&p, &p2)}
+			return map[string]json.Marshaler{"slice of raw jsons": pfmt.Rawps([]*[]byte{&p, &p2})}
 		}(),
 		want:     `{"foo":{"bar":{"xyz":"Hello, Wörld!"}}} [42]`,
 		wantText: `{"foo":{"bar":{"xyz":"Hello, Wörld!"}}} [42]`,
@@ -29,7 +29,7 @@ var MarshalRawpsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			p, p2 := []byte(`Hello, "Wörld"!`), []byte("[42]")
-			return map[string]json.Marshaler{"rawps with quote": pfmt.Rawps(&p, &p2)}
+			return map[string]json.Marshaler{"rawps with quote": pfmt.Rawps([]*[]byte{&p, &p2})}
 		}(),
 		want:      `Hello, "Wörld"! [42]`,
 		wantText:  `Hello, "Wörld"! [42]`,
@@ -39,7 +39,7 @@ var MarshalRawpsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			p, p2 := []byte(`"Hello, Wörld!"`), []byte("[42]")
-			return map[string]json.Marshaler{"quoted rawps": pfmt.Rawps(&p, &p2)}
+			return map[string]json.Marshaler{"quoted rawps": pfmt.Rawps([]*[]byte{&p, &p2})}
 		}(),
 		want:     `"Hello, Wörld!" [42]`,
 		wantText: `"Hello, Wörld!" [42]`,
@@ -51,7 +51,7 @@ var MarshalRawpsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			p, p2 := []byte(`"Hello, "Wörld"!"`), []byte("[42]")
-			return map[string]json.Marshaler{"rawps with nested quote": pfmt.Rawps(&p, &p2)}
+			return map[string]json.Marshaler{"rawps with nested quote": pfmt.Rawps([]*[]byte{&p, &p2})}
 		}(),
 		want:      `"Hello, "Wörld"!" [42]`,
 		wantText:  `"Hello, "Wörld"!" [42]`,
@@ -61,7 +61,7 @@ var MarshalRawpsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			p, p2 := []byte(`"{"foo":"bar"}"`), []byte("[42]")
-			return map[string]json.Marshaler{"raw quoted jsons": pfmt.Rawps(&p, &p2)}
+			return map[string]json.Marshaler{"raw quoted jsons": pfmt.Rawps([]*[]byte{&p, &p2})}
 		}(),
 		want:      `"{"foo":"bar"}" [42]`,
 		wantText:  `"{"foo":"bar"}" [42]`,
@@ -71,7 +71,7 @@ var MarshalRawpsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			p, p2 := []byte(`xyz{"foo":"bar"}`), []byte("[42]")
-			return map[string]json.Marshaler{"slice of raw malformed json objects": pfmt.Rawps(&p, &p2)}
+			return map[string]json.Marshaler{"slice of raw malformed json objects": pfmt.Rawps([]*[]byte{&p, &p2})}
 		}(),
 		want:      `xyz{"foo":"bar"} [42]`,
 		wantText:  `xyz{"foo":"bar"} [42]`,
@@ -81,7 +81,7 @@ var MarshalRawpsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			p, p2 := []byte(`{"foo":"bar""}`), []byte("[42]")
-			return map[string]json.Marshaler{"slice of raw malformed json key/value": pfmt.Rawps(&p, &p2)}
+			return map[string]json.Marshaler{"slice of raw malformed json key/value": pfmt.Rawps([]*[]byte{&p, &p2})}
 		}(),
 		want:      `{"foo":"bar""} [42]`,
 		wantText:  `{"foo":"bar""} [42]`,
@@ -91,7 +91,7 @@ var MarshalRawpsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			p, p2 := append([]byte(`{"foo":"`), append([]byte{0}, []byte(`xyz"}`)...)...), []byte("[42]")
-			return map[string]json.Marshaler{"slice of raw json with unescaped null byte": pfmt.Rawps(&p, &p2)}
+			return map[string]json.Marshaler{"slice of raw json with unescaped null byte": pfmt.Rawps([]*[]byte{&p, &p2})}
 		}(),
 		want:      "{\"foo\":\"\u0000xyz\"} [42]",
 		wantText:  "{\"foo\":\"\u0000xyz\"} [42]",
@@ -101,7 +101,7 @@ var MarshalRawpsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			p, p2 := []byte{}, []byte{}
-			return map[string]json.Marshaler{"slice of empty rawps": pfmt.Rawps(&p, &p2)}
+			return map[string]json.Marshaler{"slice of empty rawps": pfmt.Rawps([]*[]byte{&p, &p2})}
 		}(),
 		want:      " ",
 		wantText:  " ",
@@ -111,7 +111,7 @@ var MarshalRawpsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var p, p2 []byte
-			return map[string]json.Marshaler{"slice of raw nils": pfmt.Rawps(&p, &p2)}
+			return map[string]json.Marshaler{"slice of raw nils": pfmt.Rawps([]*[]byte{&p, &p2})}
 		}(),
 		want:     "null null",
 		wantText: "null null",

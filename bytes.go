@@ -14,7 +14,7 @@ import (
 var bufPool = sync.Pool{New: func() interface{} { return new(bytes.Buffer) }}
 
 // Bytes returns stringer/JSON/text marshaler for slice of bytes type.
-func Bytes(s ...byte) ByteS { return ByteS{s: s} }
+func Bytes(s []byte) ByteS { return ByteS{s: s} }
 
 type ByteS struct{ s []byte }
 

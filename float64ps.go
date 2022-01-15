@@ -7,7 +7,7 @@ package pfmt
 import "bytes"
 
 // Float64ps returns stringer/JSON/text marshaler for the float64 pointer slice type.
-func Float64ps(a ...*float64) Float64PS { return Float64PS{a: a} }
+func Float64ps(a []*float64) Float64PS { return Float64PS{a: a} }
 
 type Float64PS struct{ a []*float64 }
 

@@ -9,7 +9,7 @@ import (
 )
 
 // Errorps returns stringer/JSON/text marshaler for the slice of error pointers type.
-func Errorps(s ...*error) ErrorPS { return ErrorPS{s: s} }
+func Errorps(s []*error) ErrorPS { return ErrorPS{s: s} }
 
 type ErrorPS struct{ s []*error }
 

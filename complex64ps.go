@@ -7,7 +7,7 @@ package pfmt
 import "bytes"
 
 // Complex64ps returns stringer/JSON/text marshaler for the slice of complex64 pointers type.
-func Complex64ps(s ...*complex64) Complex64PS { return Complex64PS{s: s} }
+func Complex64ps(s []*complex64) Complex64PS { return Complex64PS{s: s} }
 
 type Complex64PS struct{ s []*complex64 }
 

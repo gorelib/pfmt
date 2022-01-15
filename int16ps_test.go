@@ -16,7 +16,7 @@ var MarshalInt16psTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var f, f2 int16 = 123, 321
-			return map[string]json.Marshaler{"int16 pointer slice": pfmt.Int16ps(&f, &f2)}
+			return map[string]json.Marshaler{"int16 pointer slice": pfmt.Int16ps([]*int16{&f, &f2})}
 		}(),
 		want:     "123 321",
 		wantText: "123 321",
@@ -26,7 +26,7 @@ var MarshalInt16psTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of nil int16 pointers": pfmt.Int16ps(nil, nil)},
+		input:    map[string]json.Marshaler{"slice of nil int16 pointers": pfmt.Int16ps([]*int16{nil, nil})},
 		want:     "null null",
 		wantText: "null null",
 		wantJSON: `{
@@ -35,7 +35,7 @@ var MarshalInt16psTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice without int16 pointers": pfmt.Int16ps()},
+		input:    map[string]json.Marshaler{"slice without int16 pointers": pfmt.Int16ps(nil)},
 		want:     "null",
 		wantText: "null",
 		wantJSON: `{
@@ -46,7 +46,7 @@ var MarshalInt16psTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var f, f2 int16 = 123, 321
-			return map[string]json.Marshaler{"slice of any int16 pointers": pfmt.Anys(&f, &f2)}
+			return map[string]json.Marshaler{"slice of any int16 pointers": pfmt.Anys([]interface{}{&f, &f2})}
 		}(),
 		want:     "123 321",
 		wantText: "123 321",
@@ -58,7 +58,7 @@ var MarshalInt16psTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var f, f2 int16 = 123, 321
-			return map[string]json.Marshaler{"slice of reflects of int16 pointers": pfmt.Reflects(&f, &f2)}
+			return map[string]json.Marshaler{"slice of reflects of int16 pointers": pfmt.Reflects([]interface{}{&f, &f2})}
 		}(),
 		want:     "123 321",
 		wantText: "123 321",

@@ -13,19 +13,19 @@ func (p RuneSP) String() string {
 	if p.p == nil {
 		return "null"
 	}
-	return Runes(*p.p...).String()
+	return Runes(*p.p).String()
 }
 
 func (p RuneSP) MarshalText() ([]byte, error) {
 	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return Runes(*p.p...).MarshalText()
+	return Runes(*p.p).MarshalText()
 }
 
 func (p RuneSP) MarshalJSON() ([]byte, error) {
 	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return Runes(*p.p...).MarshalJSON()
+	return Runes(*p.p).MarshalJSON()
 }

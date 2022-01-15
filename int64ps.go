@@ -7,7 +7,7 @@ package pfmt
 import "bytes"
 
 // Int64ps returns stringer/JSON/text marshaler for the int64 pointer slice type.
-func Int64ps(a ...*int64) Int64PS { return Int64PS{a: a} }
+func Int64ps(a []*int64) Int64PS { return Int64PS{a: a} }
 
 type Int64PS struct{ a []*int64 }
 

@@ -16,7 +16,7 @@ var MarshalFloat32psTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var f, f2 float32 = 0.123456789, 0.987654321
-			return map[string]json.Marshaler{"float32 pointer slice": pfmt.Float32ps(&f, &f2)}
+			return map[string]json.Marshaler{"float32 pointer slice": pfmt.Float32ps([]*float32{&f, &f2})}
 		}(),
 		want:     "0.12345679 0.9876543",
 		wantText: "0.12345679 0.9876543",
@@ -26,7 +26,7 @@ var MarshalFloat32psTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of nil float32 pointers": pfmt.Float32ps(nil, nil)},
+		input:    map[string]json.Marshaler{"slice of nil float32 pointers": pfmt.Float32ps([]*float32{nil, nil})},
 		want:     "null null",
 		wantText: "null null",
 		wantJSON: `{
@@ -35,7 +35,7 @@ var MarshalFloat32psTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice without float32 pointers": pfmt.Float32ps()},
+		input:    map[string]json.Marshaler{"slice without float32 pointers": pfmt.Float32ps(nil)},
 		want:     "null",
 		wantText: "null",
 		wantJSON: `{
@@ -46,7 +46,7 @@ var MarshalFloat32psTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var f, f2 float32 = 0.123456789, 0.987654321
-			return map[string]json.Marshaler{"slice of any float32 pointers": pfmt.Anys(&f, &f2)}
+			return map[string]json.Marshaler{"slice of any float32 pointers": pfmt.Anys([]interface{}{&f, &f2})}
 		}(),
 		want:     "0.12345679 0.9876543",
 		wantText: "0.12345679 0.9876543",
@@ -58,7 +58,7 @@ var MarshalFloat32psTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var f, f2 float32 = 0.123456789, 0.987654321
-			return map[string]json.Marshaler{"slice of reflects of float32 pointers": pfmt.Reflects(&f, &f2)}
+			return map[string]json.Marshaler{"slice of reflects of float32 pointers": pfmt.Reflects([]interface{}{&f, &f2})}
 		}(),
 		want:     "0.12345679 0.9876543",
 		wantText: "0.12345679 0.9876543",

@@ -9,7 +9,7 @@ import (
 )
 
 // Uint32s returns stringer/JSON/text marshaler for the uint32 slice type.
-func Uint32s(s ...uint32) Uint32S { return Uint32S{s: s} }
+func Uint32s(s []uint32) Uint32S { return Uint32S{s: s} }
 
 type Uint32S struct{ s []uint32 }
 

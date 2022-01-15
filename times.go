@@ -10,7 +10,7 @@ import (
 )
 
 // Times returns stringer/JSON/text marshaler for the slice of byte slice type.
-func Times(s ...time.Time) TimeS { return TimeS{s: s} }
+func Times(s []time.Time) TimeS { return TimeS{s: s} }
 
 type TimeS struct{ s []time.Time }
 

@@ -16,7 +16,7 @@ var MarshalFloat64psTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var f, f2 float64 = 0.123456789, 0.987654321
-			return map[string]json.Marshaler{"float64 pointer slice": pfmt.Float64ps(&f, &f2)}
+			return map[string]json.Marshaler{"float64 pointer slice": pfmt.Float64ps([]*float64{&f, &f2})}
 		}(),
 		want:     "0.123456789 0.987654321",
 		wantText: "0.123456789 0.987654321",
@@ -26,7 +26,7 @@ var MarshalFloat64psTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of nil float64 pointers": pfmt.Float64ps(nil, nil)},
+		input:    map[string]json.Marshaler{"slice of nil float64 pointers": pfmt.Float64ps([]*float64{nil, nil})},
 		want:     "null null",
 		wantText: "null null",
 		wantJSON: `{
@@ -35,7 +35,7 @@ var MarshalFloat64psTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice without float64 pointers": pfmt.Float64ps()},
+		input:    map[string]json.Marshaler{"slice without float64 pointers": pfmt.Float64ps(nil)},
 		want:     "null",
 		wantText: "null",
 		wantJSON: `{
@@ -46,7 +46,7 @@ var MarshalFloat64psTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var f, f2 float64 = 0.123456789, 0.987654321
-			return map[string]json.Marshaler{"slice of any float64 pointers": pfmt.Anys(&f, &f2)}
+			return map[string]json.Marshaler{"slice of any float64 pointers": pfmt.Anys([]interface{}{&f, &f2})}
 		}(),
 		want:     "0.123456789 0.987654321",
 		wantText: "0.123456789 0.987654321",
@@ -58,7 +58,7 @@ var MarshalFloat64psTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var f, f2 float64 = 0.123456789, 0.987654321
-			return map[string]json.Marshaler{"slice of reflects of float64 pointers": pfmt.Reflects(&f, &f2)}
+			return map[string]json.Marshaler{"slice of reflects of float64 pointers": pfmt.Reflects([]interface{}{&f, &f2})}
 		}(),
 		want:     "0.123456789 0.987654321",
 		wantText: "0.123456789 0.987654321",

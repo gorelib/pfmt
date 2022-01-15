@@ -16,7 +16,7 @@ var MarshalStringpsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var f, f2 string = "Hello, Wörld!", "Hello, World!"
-			return map[string]json.Marshaler{"string pointer slice": pfmt.Stringps(&f, &f2)}
+			return map[string]json.Marshaler{"string pointer slice": pfmt.Stringps([]*string{&f, &f2})}
 		}(),
 		want:     "Hello, Wörld! Hello, World!",
 		wantText: "Hello, Wörld! Hello, World!",
@@ -26,7 +26,7 @@ var MarshalStringpsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of nil string pointers": pfmt.Stringps(nil, nil)},
+		input:    map[string]json.Marshaler{"slice of nil string pointers": pfmt.Stringps([]*string{nil, nil})},
 		want:     "null null",
 		wantText: "null null",
 		wantJSON: `{
@@ -35,7 +35,7 @@ var MarshalStringpsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice without string pointers": pfmt.Stringps()},
+		input:    map[string]json.Marshaler{"slice without string pointers": pfmt.Stringps(nil)},
 		want:     "null",
 		wantText: "null",
 		wantJSON: `{
@@ -46,7 +46,7 @@ var MarshalStringpsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var f, f2 string = "Hello, Wörld!", "Hello, World!"
-			return map[string]json.Marshaler{"slice of any string pointers": pfmt.Anys(&f, &f2)}
+			return map[string]json.Marshaler{"slice of any string pointers": pfmt.Anys([]interface{}{&f, &f2})}
 		}(),
 		want:     "Hello, Wörld! Hello, World!",
 		wantText: "Hello, Wörld! Hello, World!",
@@ -58,7 +58,7 @@ var MarshalStringpsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var f, f2 string = "Hello, Wörld!", "Hello, World!"
-			return map[string]json.Marshaler{"slice of reflects of string pointers": pfmt.Reflects(&f, &f2)}
+			return map[string]json.Marshaler{"slice of reflects of string pointers": pfmt.Reflects([]interface{}{&f, &f2})}
 		}(),
 		want:     "Hello, Wörld! Hello, World!",
 		wantText: "Hello, Wörld! Hello, World!",

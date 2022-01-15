@@ -7,7 +7,7 @@ package pfmt
 import "bytes"
 
 // Uint16ps returns stringer/JSON/text marshaler for the uint16 pointer slice type.
-func Uint16ps(a ...*uint16) Uint16PS { return Uint16PS{a: a} }
+func Uint16ps(a []*uint16) Uint16PS { return Uint16PS{a: a} }
 
 type Uint16PS struct{ a []*uint16 }
 

@@ -17,7 +17,7 @@ var MarshalTimepsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var t, t2 time.Time = time.Date(1970, time.January, 1, 2, 3, 4, 42, time.UTC), time.Date(1970, time.December, 5, 4, 3, 2, 1, time.UTC)
-			return map[string]json.Marshaler{"time pointer slice": pfmt.Timeps(&t, &t2)}
+			return map[string]json.Marshaler{"time pointer slice": pfmt.Timeps([]*time.Time{&t, &t2})}
 		}(),
 		want:     "1970-01-01T02:03:04.000000042Z 1970-12-05T04:03:02.000000001Z",
 		wantText: "1970-01-01T02:03:04.000000042Z 1970-12-05T04:03:02.000000001Z",
@@ -27,7 +27,7 @@ var MarshalTimepsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of nil time pointers": pfmt.Timeps(nil, nil)},
+		input:    map[string]json.Marshaler{"slice of nil time pointers": pfmt.Timeps([]*time.Time{nil, nil})},
 		want:     "null null",
 		wantText: "null null",
 		wantJSON: `{
@@ -36,7 +36,7 @@ var MarshalTimepsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice without time pointers": pfmt.Timeps()},
+		input:    map[string]json.Marshaler{"slice without time pointers": pfmt.Timeps(nil)},
 		want:     "null",
 		wantText: "null",
 		wantJSON: `{
@@ -47,7 +47,7 @@ var MarshalTimepsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var t, t2 time.Time = time.Date(1970, time.January, 1, 2, 3, 4, 42, time.UTC), time.Date(1970, time.December, 5, 4, 3, 2, 1, time.UTC)
-			return map[string]json.Marshaler{"slice of any time pointers": pfmt.Anys(&t, &t2)}
+			return map[string]json.Marshaler{"slice of any time pointers": pfmt.Anys([]interface{}{&t, &t2})}
 		}(),
 		want:     "1970-01-01T02:03:04.000000042Z 1970-12-05T04:03:02.000000001Z",
 		wantText: "1970-01-01T02:03:04.000000042Z 1970-12-05T04:03:02.000000001Z",
@@ -59,7 +59,7 @@ var MarshalTimepsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var t, t2 time.Time = time.Date(1970, time.January, 1, 2, 3, 4, 42, time.UTC), time.Date(1970, time.December, 5, 4, 3, 2, 1, time.UTC)
-			return map[string]json.Marshaler{"slice of reflects of time pointers": pfmt.Reflects(&t, &t2)}
+			return map[string]json.Marshaler{"slice of reflects of time pointers": pfmt.Reflects([]interface{}{&t, &t2})}
 		}(),
 		want:     "1970-01-01 02:03:04.000000042 +0000 UTC 1970-12-05 04:03:02.000000001 +0000 UTC",
 		wantText: "1970-01-01 02:03:04.000000042 +0000 UTC 1970-12-05 04:03:02.000000001 +0000 UTC",

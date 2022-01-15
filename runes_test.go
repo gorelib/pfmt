@@ -14,7 +14,7 @@ import (
 var MarshalRunesTests = []marshalTests{
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"runes": pfmt.Runes([]rune("Hello, Wörld!")...)},
+		input:    map[string]json.Marshaler{"runes": pfmt.Runes([]rune("Hello, Wörld!"))},
 		want:     "Hello, Wörld!",
 		wantText: "Hello, Wörld!",
 		wantJSON: `{
@@ -23,7 +23,7 @@ var MarshalRunesTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"empty runes": pfmt.Runes([]rune{}...)},
+		input:    map[string]json.Marshaler{"empty runes": pfmt.Runes([]rune{})},
 		want:     "",
 		wantText: "",
 		wantJSON: `{
@@ -34,7 +34,7 @@ var MarshalRunesTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var p []rune
-			return map[string]json.Marshaler{"nil runes": pfmt.Runes(p...)}
+			return map[string]json.Marshaler{"nil runes": pfmt.Runes(p)}
 		}(),
 		want:     "null",
 		wantText: "null",
@@ -44,7 +44,7 @@ var MarshalRunesTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"rune slice with zero rune": pfmt.Runes([]rune{rune(0)}...)},
+		input:    map[string]json.Marshaler{"rune slice with zero rune": pfmt.Runes([]rune{rune(0)})},
 		want:     "\\u0000",
 		wantText: "\\u0000",
 		wantJSON: `{

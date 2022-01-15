@@ -17,7 +17,7 @@ var MarshalErrorpsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			err, err2 := errors.New("something went wrong"), errors.New("we have a problem")
-			return map[string]json.Marshaler{"error pointer slice": pfmt.Errorps(&err, &err2)}
+			return map[string]json.Marshaler{"error pointer slice": pfmt.Errorps([]*error{&err, &err2})}
 		}(),
 		want:     "something went wrong we have a problem",
 		wantText: "something went wrong we have a problem",
@@ -27,14 +27,14 @@ var MarshalErrorpsTests = []marshalTests{
 	},
 	{
 		line:  line(),
-		input: map[string]json.Marshaler{"nil error pointers": pfmt.Errorps(nil, nil)},
+		input: map[string]json.Marshaler{"nil error pointers": pfmt.Errorps([]*error{nil, nil})},
 		wantJSON: `{
 			"nil error pointers":[null,null]
 		}`,
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"without error pointers": pfmt.Errorps()},
+		input:    map[string]json.Marshaler{"without error pointers": pfmt.Errorps(nil)},
 		want:     "null",
 		wantText: "null",
 		wantJSON: `{
@@ -45,7 +45,7 @@ var MarshalErrorpsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			err, err2 := errors.New("something went wrong"), errors.New("we have a problem")
-			return map[string]json.Marshaler{"slice of any error pointers": pfmt.Anys(&err, &err2)}
+			return map[string]json.Marshaler{"slice of any error pointers": pfmt.Anys([]interface{}{&err, &err2})}
 		}(),
 		want:     "something went wrong we have a problem",
 		wantText: "something went wrong we have a problem",
@@ -57,7 +57,7 @@ var MarshalErrorpsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			err, err2 := errors.New("something went wrong"), errors.New("we have a problem")
-			return map[string]json.Marshaler{"slice of reflect of error pointers": pfmt.Reflects(&err, &err2)}
+			return map[string]json.Marshaler{"slice of reflect of error pointers": pfmt.Reflects([]interface{}{&err, &err2})}
 		}(),
 		want:     "{something went wrong} {we have a problem}",
 		wantText: "{something went wrong} {we have a problem}",

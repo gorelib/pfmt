@@ -14,7 +14,7 @@ import (
 var MarshalFloat64sTests = []marshalTests{
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"float64 slice": pfmt.Float64s(0.123456789, 0.987654641)},
+		input:    map[string]json.Marshaler{"float64 slice": pfmt.Float64s([]float64{0.123456789, 0.987654641})},
 		want:     "0.123456789 0.987654641",
 		wantText: "0.123456789 0.987654641",
 		wantJSON: `{
@@ -23,7 +23,7 @@ var MarshalFloat64sTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice without float64": pfmt.Float64s()},
+		input:    map[string]json.Marshaler{"slice without float64": pfmt.Float64s(nil)},
 		want:     "",
 		wantText: "",
 		wantJSON: `{
@@ -34,7 +34,7 @@ var MarshalFloat64sTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var f, f2 float64 = 0.123456789, 0.987654641
-			return map[string]json.Marshaler{"slice of any float64": pfmt.Anys(f, f2)}
+			return map[string]json.Marshaler{"slice of any float64": pfmt.Anys([]interface{}{f, f2})}
 		}(),
 		want:     "0.123456789 0.987654641",
 		wantText: "0.123456789 0.987654641",
@@ -46,7 +46,7 @@ var MarshalFloat64sTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var f, f2 float64 = 0.123456789, 0.987654641
-			return map[string]json.Marshaler{"slice of float64 reflects": pfmt.Reflects(f, f2)}
+			return map[string]json.Marshaler{"slice of float64 reflects": pfmt.Reflects([]interface{}{f, f2})}
 		}(),
 		want:     "0.123456789 0.987654641",
 		wantText: "0.123456789 0.987654641",

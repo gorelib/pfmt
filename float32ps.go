@@ -7,7 +7,7 @@ package pfmt
 import "bytes"
 
 // Float32ps returns stringer/JSON/text marshaler for the float32 pointer slice type.
-func Float32ps(a ...*float32) Float32PS { return Float32PS{a: a} }
+func Float32ps(a []*float32) Float32PS { return Float32PS{a: a} }
 
 type Float32PS struct{ a []*float32 }
 

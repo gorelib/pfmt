@@ -10,7 +10,7 @@ import (
 
 // Reflects returns stringer/JSON/text marshaler uses reflection for the slice of some type.
 
-func Reflects(s ...interface{}) ReflectS { return ReflectS{s: s} }
+func Reflects(s []interface{}) ReflectS { return ReflectS{s: s} }
 
 type ReflectS struct{ s []interface{} }
 

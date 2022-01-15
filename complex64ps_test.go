@@ -17,7 +17,7 @@ var MarshalComplex64psTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var c, c2 complex64 = complex(1, 23), complex(3, 21)
-			return map[string]json.Marshaler{"slice of complex64 pointers": pfmt.Complex64ps(&c, &c2)}
+			return map[string]json.Marshaler{"slice of complex64 pointers": pfmt.Complex64ps([]*complex64{&c, &c2})}
 		}(),
 		want:     "1+23i 3+21i",
 		wantText: "1+23i 3+21i",
@@ -27,7 +27,7 @@ var MarshalComplex64psTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of nil complex64 pointers": pfmt.Complex64ps(nil, nil)},
+		input:    map[string]json.Marshaler{"slice of nil complex64 pointers": pfmt.Complex64ps([]*complex64{nil, nil})},
 		want:     "null null",
 		wantText: "null null",
 		wantJSON: `{
@@ -36,7 +36,7 @@ var MarshalComplex64psTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice without complex64 pointers": pfmt.Complex64ps()},
+		input:    map[string]json.Marshaler{"slice without complex64 pointers": pfmt.Complex64ps(nil)},
 		want:     "null",
 		wantText: "null",
 		wantJSON: `{
@@ -47,7 +47,7 @@ var MarshalComplex64psTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var c, c2 complex64 = complex(1, 23), complex(3, 21)
-			return map[string]json.Marshaler{"slice of any complex64 pointers": pfmt.Anys(&c, &c2)}
+			return map[string]json.Marshaler{"slice of any complex64 pointers": pfmt.Anys([]interface{}{&c, &c2})}
 		}(),
 		want:     "1+23i 3+21i",
 		wantText: "1+23i 3+21i",
@@ -59,7 +59,7 @@ var MarshalComplex64psTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var c, c2 complex64 = complex(1, 23), complex(3, 21)
-			return map[string]json.Marshaler{"slice of reflects of complex64 pointers": pfmt.Reflects(&c, &c2)}
+			return map[string]json.Marshaler{"slice of reflects of complex64 pointers": pfmt.Reflects([]interface{}{&c, &c2})}
 		}(),
 		want:      "(1+23i) (3+21i)",
 		wantText:  "(1+23i) (3+21i)",

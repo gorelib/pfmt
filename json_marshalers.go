@@ -10,7 +10,7 @@ import (
 )
 
 // JSONMarshalers returns stringer/JSON/text marshaler for the JSON marshaler slice type.
-func JSONMarshalers(s ...json.Marshaler) JSONMarshalerS { return JSONMarshalerS{s: s} }
+func JSONMarshalers(s []json.Marshaler) JSONMarshalerS { return JSONMarshalerS{s: s} }
 
 type JSONMarshalerS struct{ s []json.Marshaler }
 

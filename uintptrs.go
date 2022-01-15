@@ -9,7 +9,7 @@ import (
 )
 
 // Uintptrs returns stringer/JSON/text marshaler for the uintptr slice type.
-func Uintptrs(s ...uintptr) UintptrS { return UintptrS{s: s} }
+func Uintptrs(s []uintptr) UintptrS { return UintptrS{s: s} }
 
 type UintptrS struct{ s []uintptr }
 

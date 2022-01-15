@@ -14,7 +14,7 @@ import (
 var MarshalStringsTests = []marshalTests{
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"strings": pfmt.Strings("Hello, Wörld!", "Hello, World!")},
+		input:    map[string]json.Marshaler{"strings": pfmt.Strings([]string{"Hello, Wörld!", "Hello, World!"})},
 		want:     "Hello, Wörld! Hello, World!",
 		wantText: "Hello, Wörld! Hello, World!",
 		wantJSON: `{
@@ -23,7 +23,7 @@ var MarshalStringsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"empty strings": pfmt.Strings("", "")},
+		input:    map[string]json.Marshaler{"empty strings": pfmt.Strings([]string{"", ""})},
 		want:     " ",
 		wantText: " ",
 		wantJSON: `{
@@ -32,7 +32,7 @@ var MarshalStringsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"strings with zero byte": pfmt.Strings(string(byte(0)), string(byte(0)))},
+		input:    map[string]json.Marshaler{"strings with zero byte": pfmt.Strings([]string{string(byte(0)), string(byte(0))})},
 		want:     "\\u0000 \\u0000",
 		wantText: "\\u0000 \\u0000",
 		wantJSON: `{
@@ -41,7 +41,7 @@ var MarshalStringsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"without strings": pfmt.Strings()},
+		input:    map[string]json.Marshaler{"without strings": pfmt.Strings(nil)},
 		want:     "",
 		wantText: "",
 		wantJSON: `{

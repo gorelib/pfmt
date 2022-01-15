@@ -7,7 +7,7 @@ package pfmt
 import "bytes"
 
 // Uint32ps returns stringer/JSON/text marshaler for the uint32 pointer slice type.
-func Uint32ps(a ...*uint32) Uint32PS { return Uint32PS{a: a} }
+func Uint32ps(a []*uint32) Uint32PS { return Uint32PS{a: a} }
 
 type Uint32PS struct{ a []*uint32 }
 

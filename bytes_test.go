@@ -14,7 +14,7 @@ import (
 var MarshalBytesTests = []marshalTests{
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"bytes": pfmt.Bytes([]byte("Hello, Wörld!")...)},
+		input:    map[string]json.Marshaler{"bytes": pfmt.Bytes([]byte("Hello, Wörld!"))},
 		want:     "Hello, Wörld!",
 		wantText: "Hello, Wörld!",
 		wantJSON: `{
@@ -23,7 +23,7 @@ var MarshalBytesTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"bytes with quote": pfmt.Bytes([]byte(`Hello, "World"!`)...)},
+		input:    map[string]json.Marshaler{"bytes with quote": pfmt.Bytes([]byte(`Hello, "World"!`))},
 		want:     `Hello, \"World\"!`,
 		wantText: `Hello, \"World\"!`,
 		wantJSON: `{
@@ -32,7 +32,7 @@ var MarshalBytesTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"bytes quote": pfmt.Bytes([]byte(`"Hello, World!"`)...)},
+		input:    map[string]json.Marshaler{"bytes quote": pfmt.Bytes([]byte(`"Hello, World!"`))},
 		want:     `\"Hello, World!\"`,
 		wantText: `\"Hello, World!\"`,
 		wantJSON: `{
@@ -41,7 +41,7 @@ var MarshalBytesTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"bytes nested quote": pfmt.Bytes([]byte(`"Hello, "World"!"`)...)},
+		input:    map[string]json.Marshaler{"bytes nested quote": pfmt.Bytes([]byte(`"Hello, "World"!"`))},
 		want:     `\"Hello, \"World\"!\"`,
 		wantText: `\"Hello, \"World\"!\"`,
 		wantJSON: `{
@@ -50,7 +50,7 @@ var MarshalBytesTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"bytes json": pfmt.Bytes([]byte(`{"foo":"bar"}`)...)},
+		input:    map[string]json.Marshaler{"bytes json": pfmt.Bytes([]byte(`{"foo":"bar"}`))},
 		want:     `{\"foo\":\"bar\"}`,
 		wantText: `{\"foo\":\"bar\"}`,
 		wantJSON: `{
@@ -59,7 +59,7 @@ var MarshalBytesTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"bytes json quote": pfmt.Bytes([]byte(`"{"foo":"bar"}"`)...)},
+		input:    map[string]json.Marshaler{"bytes json quote": pfmt.Bytes([]byte(`"{"foo":"bar"}"`))},
 		want:     `\"{\"foo\":\"bar\"}\"`,
 		wantText: `\"{\"foo\":\"bar\"}\"`,
 		wantJSON: `{
@@ -68,7 +68,7 @@ var MarshalBytesTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"empty bytes": pfmt.Bytes([]byte{}...)},
+		input:    map[string]json.Marshaler{"empty bytes": pfmt.Bytes([]byte{})},
 		want:     "",
 		wantText: "",
 		wantJSON: `{
@@ -79,7 +79,7 @@ var MarshalBytesTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var p []byte
-			return map[string]json.Marshaler{"nil bytes": pfmt.Bytes(p...)}
+			return map[string]json.Marshaler{"nil bytes": pfmt.Bytes(p)}
 		}(),
 		want:     "null",
 		wantText: "null",

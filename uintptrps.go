@@ -7,7 +7,7 @@ package pfmt
 import "bytes"
 
 // Uintptrps returns stringer/JSON/text marshaler for the slice of a pointer to a uintptr type.
-func Uintptrps(a ...*uintptr) UintptrPS { return UintptrPS{a: a} }
+func Uintptrps(a []*uintptr) UintptrPS { return UintptrPS{a: a} }
 
 type UintptrPS struct{ a []*uintptr }
 

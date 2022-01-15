@@ -10,7 +10,7 @@ import (
 )
 
 // Timeps returns stringer/JSON/text marshaler for the time pointer slice type.
-func Timeps(a ...*time.Time) TimePS { return TimePS{a: a} }
+func Timeps(a []*time.Time) TimePS { return TimePS{a: a} }
 
 type TimePS struct{ a []*time.Time }
 

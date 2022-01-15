@@ -7,7 +7,7 @@ package pfmt
 import "bytes"
 
 // Intps returns stringer/JSON/text marshaler for the int pointer slice type.
-func Intps(a ...*int) IntPS { return IntPS{a: a} }
+func Intps(a []*int) IntPS { return IntPS{a: a} }
 
 type IntPS struct{ a []*int }
 

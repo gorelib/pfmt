@@ -9,7 +9,7 @@ import (
 )
 
 // Int32s returns stringer/JSON/text marshaler for the int32 slice type.
-func Int32s(s ...int32) Int32S { return Int32S{s: s} }
+func Int32s(s []int32) Int32S { return Int32S{s: s} }
 
 type Int32S struct{ s []int32 }
 

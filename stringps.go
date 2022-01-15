@@ -7,7 +7,7 @@ package pfmt
 import "bytes"
 
 // Stringps returns stringer/JSON/text marshaler for the string pointer slice type.
-func Stringps(a ...*string) StringPS { return StringPS{a: a} }
+func Stringps(a []*string) StringPS { return StringPS{a: a} }
 
 type StringPS struct{ a []*string }
 

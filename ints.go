@@ -9,7 +9,7 @@ import (
 )
 
 // Ints returns stringer/JSON/text marshaler for the int slice type.
-func Ints(s ...int) IntS { return IntS{s: s} }
+func Ints(s []int) IntS { return IntS{s: s} }
 
 type IntS struct{ s []int }
 

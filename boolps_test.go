@@ -16,7 +16,7 @@ var MarshalBoolpsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			b, b2 := true, false
-			return map[string]json.Marshaler{"bool pointers to true and false": pfmt.Boolps(&b, &b2)}
+			return map[string]json.Marshaler{"bool pointers to true and false": pfmt.Boolps([]*bool{&b, &b2})}
 		}(),
 		want:     "true false",
 		wantText: "true false",
@@ -26,7 +26,7 @@ var MarshalBoolpsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"bool pointers to nil": pfmt.Boolps(nil, nil)},
+		input:    map[string]json.Marshaler{"bool pointers to nil": pfmt.Boolps([]*bool{nil, nil})},
 		want:     "null null",
 		wantText: "null null",
 		wantJSON: `{
@@ -35,7 +35,7 @@ var MarshalBoolpsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"without bool pointers": pfmt.Boolps()},
+		input:    map[string]json.Marshaler{"without bool pointers": pfmt.Boolps(nil)},
 		want:     "null",
 		wantText: "null",
 		wantJSON: `{

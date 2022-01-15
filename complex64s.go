@@ -7,7 +7,7 @@ package pfmt
 import "bytes"
 
 // Complex64s returns stringer/JSON/text marshaler for the complex64 type.
-func Complex64s(s ...complex64) Complex64S { return Complex64S{s: s} }
+func Complex64s(s []complex64) Complex64S { return Complex64S{s: s} }
 
 type Complex64S struct{ s []complex64 }
 

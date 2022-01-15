@@ -9,7 +9,7 @@ import (
 )
 
 // Uints returns stringer/JSON/text marshaler for the uint slice type.
-func Uints(s ...uint) UintS { return UintS{s: s} }
+func Uints(s []uint) UintS { return UintS{s: s} }
 
 type UintS struct{ s []uint }
 

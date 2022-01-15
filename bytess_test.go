@@ -15,7 +15,7 @@ import (
 var MarshalBytessTests = []marshalTests{
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of byte slices": pfmt.Bytess([]byte("Hello, Wörld!"), []byte("Hello, World!"))},
+		input:    map[string]json.Marshaler{"slice of byte slices": pfmt.Bytess([][]byte{[]byte("Hello, Wörld!"), []byte("Hello, World!")})},
 		want:     "Hello, Wörld! Hello, World!",
 		wantText: "Hello, Wörld! Hello, World!",
 		wantJSON: `{
@@ -24,7 +24,7 @@ var MarshalBytessTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of byte slices with quote": pfmt.Bytess([]byte(`Hello, "Wörld"!`), []byte(`Hello, "World"!`))},
+		input:    map[string]json.Marshaler{"slice of byte slices with quote": pfmt.Bytess([][]byte{[]byte(`Hello, "Wörld"!`), []byte(`Hello, "World"!`)})},
 		want:     `Hello, \"Wörld\"! Hello, \"World\"!`,
 		wantText: `Hello, \"Wörld\"! Hello, \"World\"!`,
 		wantJSON: `{
@@ -33,7 +33,7 @@ var MarshalBytessTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"quoted slice of byte slices": pfmt.Bytess([]byte(`"Hello, Wörld!"`), []byte(`"Hello, World!"`))},
+		input:    map[string]json.Marshaler{"quoted slice of byte slices": pfmt.Bytess([][]byte{[]byte(`"Hello, Wörld!"`), []byte(`"Hello, World!"`)})},
 		want:     `\"Hello, Wörld!\" \"Hello, World!\"`,
 		wantText: `\"Hello, Wörld!\" \"Hello, World!\"`,
 		wantJSON: `{
@@ -42,7 +42,7 @@ var MarshalBytessTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of byte slices with nested quote": pfmt.Bytess([]byte(`"Hello, "Wörld"!"`), []byte(`"Hello, "World"!"`))},
+		input:    map[string]json.Marshaler{"slice of byte slices with nested quote": pfmt.Bytess([][]byte{[]byte(`"Hello, "Wörld"!"`), []byte(`"Hello, "World"!"`)})},
 		want:     `\"Hello, \"Wörld\"!\" \"Hello, \"World\"!\"`,
 		wantText: `\"Hello, \"Wörld\"!\" \"Hello, \"World\"!\"`,
 		wantJSON: `{
@@ -51,7 +51,7 @@ var MarshalBytessTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of byte slices with json": pfmt.Bytess([]byte(`{"foo":"bar"}`), []byte(`{"baz":"xyz"}`))},
+		input:    map[string]json.Marshaler{"slice of byte slices with json": pfmt.Bytess([][]byte{[]byte(`{"foo":"bar"}`), []byte(`{"baz":"xyz"}`)})},
 		want:     `{\"foo\":\"bar\"} {\"baz\":\"xyz\"}`,
 		wantText: `{\"foo\":\"bar\"} {\"baz\":\"xyz\"}`,
 		wantJSON: `{
@@ -60,7 +60,7 @@ var MarshalBytessTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of byte slices with quoted json": pfmt.Bytess([]byte(`"{"foo":"bar"}"`), []byte(`"{"baz":"xyz"}"`))},
+		input:    map[string]json.Marshaler{"slice of byte slices with quoted json": pfmt.Bytess([][]byte{[]byte(`"{"foo":"bar"}"`), []byte(`"{"baz":"xyz"}"`)})},
 		want:     `\"{\"foo\":\"bar\"}\" \"{\"baz\":\"xyz\"}\"`,
 		wantText: `\"{\"foo\":\"bar\"}\" \"{\"baz\":\"xyz\"}\"`,
 		wantJSON: `{
@@ -69,7 +69,7 @@ var MarshalBytessTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of empty byte slice": pfmt.Bytess([]byte{}, []byte{})},
+		input:    map[string]json.Marshaler{"slice of empty byte slice": pfmt.Bytess([][]byte{[]byte{}, []byte{}})},
 		want:     " ",
 		wantText: " ",
 		wantJSON: `{
@@ -78,7 +78,7 @@ var MarshalBytessTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of nil byte slice": pfmt.Bytess(nil, nil)},
+		input:    map[string]json.Marshaler{"slice of nil byte slice": pfmt.Bytess([][]byte{nil, nil})},
 		want:     "null null",
 		wantText: "null null",
 		wantJSON: `{
@@ -87,7 +87,7 @@ var MarshalBytessTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"empty slice of byte slices": pfmt.Bytess()},
+		input:    map[string]json.Marshaler{"empty slice of byte slices": pfmt.Bytess(nil)},
 		want:     "null",
 		wantText: "null",
 		wantJSON: `{

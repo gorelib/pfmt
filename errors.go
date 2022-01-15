@@ -11,7 +11,7 @@ import (
 )
 
 // Errors returns stringer/JSON/text marshaler for the error slice type.
-func Errors(s ...error) ErrorS { return ErrorS{s: s} }
+func Errors(s []error) ErrorS { return ErrorS{s: s} }
 
 type ErrorS struct{ s []error }
 

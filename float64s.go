@@ -9,7 +9,7 @@ import (
 )
 
 // Float64s returns stringer/JSON/text marshaler for the float64 slice type.
-func Float64s(s ...float64) Float64S { return Float64S{s: s} }
+func Float64s(s []float64) Float64S { return Float64S{s: s} }
 
 type Float64S struct{ s []float64 }
 

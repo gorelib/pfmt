@@ -9,7 +9,7 @@ import (
 )
 
 // Bytess returns stringer/JSON/text marshaler for the slice of byte slice type.
-func Bytess(s ...[]byte) ByteSS { return ByteSS{s: s} }
+func Bytess(s [][]byte) ByteSS { return ByteSS{s: s} }
 
 type ByteSS struct{ s [][]byte }
 
@@ -24,7 +24,7 @@ func (s ByteSS) MarshalText() ([]byte, error) {
 	}
 	var buf bytes.Buffer
 	for i, s := range s.s {
-		b, err := Bytes(s...).MarshalText()
+		b, err := Bytes(s).MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -46,7 +46,7 @@ func (s ByteSS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, s := range s.s {
-		b, err := Bytes(s...).MarshalJSON()
+		b, err := Bytes(s).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

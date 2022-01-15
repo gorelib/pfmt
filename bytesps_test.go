@@ -16,7 +16,7 @@ var MarshalBytespsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			p, p2 := []byte("Hello, Wörld!"), []byte("Hello, World!")
-			return map[string]json.Marshaler{"slice of byte slice pointers": pfmt.Bytesps(&p, &p2)}
+			return map[string]json.Marshaler{"slice of byte slice pointers": pfmt.Bytesps([]*[]byte{&p, &p2})}
 		}(),
 		want:     "Hello, Wörld! Hello, World!",
 		wantText: "Hello, Wörld! Hello, World!",
@@ -28,7 +28,7 @@ var MarshalBytespsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			p, p2 := []byte{}, []byte{}
-			return map[string]json.Marshaler{"slice of empty byte slice pointers": pfmt.Bytesps(&p, &p2)}
+			return map[string]json.Marshaler{"slice of empty byte slice pointers": pfmt.Bytesps([]*[]byte{&p, &p2})}
 		}(),
 		want:     " ",
 		wantText: " ",
@@ -38,7 +38,7 @@ var MarshalBytespsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of nil byte slice pointers": pfmt.Bytesps(nil, nil)},
+		input:    map[string]json.Marshaler{"slice of nil byte slice pointers": pfmt.Bytesps([]*[]byte{nil, nil})},
 		want:     "null null",
 		wantText: "null null",
 		wantJSON: `{
@@ -47,7 +47,7 @@ var MarshalBytespsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"empty slice of byte slice pointers": pfmt.Bytesps()},
+		input:    map[string]json.Marshaler{"empty slice of byte slice pointers": pfmt.Bytesps(nil)},
 		want:     "null",
 		wantText: "null",
 		wantJSON: `{

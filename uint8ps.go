@@ -7,7 +7,7 @@ package pfmt
 import "bytes"
 
 // Uint8ps returns stringer/JSON/text marshaler for the uint8 pointer slice type.
-func Uint8ps(a ...*uint8) Uint8PS { return Uint8PS{a: a} }
+func Uint8ps(a []*uint8) Uint8PS { return Uint8PS{a: a} }
 
 type Uint8PS struct{ a []*uint8 }
 

@@ -15,7 +15,7 @@ import (
 var MarshalDurationsTests = []marshalTests{
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of durations": pfmt.Durations(42*time.Nanosecond, 42*time.Second)},
+		input:    map[string]json.Marshaler{"slice of durations": pfmt.Durations([]time.Duration{42 * time.Nanosecond, 42 * time.Second})},
 		want:     "42ns 42s",
 		wantText: "42ns 42s",
 		wantJSON: `{
@@ -24,7 +24,7 @@ var MarshalDurationsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice without durations": pfmt.Durations()},
+		input:    map[string]json.Marshaler{"slice without durations": pfmt.Durations(nil)},
 		want:     "null",
 		wantText: "null",
 		wantJSON: `{
@@ -35,7 +35,7 @@ var MarshalDurationsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var d, d2 = 42 * time.Nanosecond, 42 * time.Second
-			return map[string]json.Marshaler{"slice of any durations": pfmt.Anys(d, d2)}
+			return map[string]json.Marshaler{"slice of any durations": pfmt.Anys([]interface{}{d, d2})}
 		}(),
 		want:     "42ns 42s",
 		wantText: "42ns 42s",
@@ -47,7 +47,7 @@ var MarshalDurationsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var d, d2 = 42 * time.Nanosecond, 42 * time.Second
-			return map[string]json.Marshaler{"slice of reflect of durations": pfmt.Reflects(d, d2)}
+			return map[string]json.Marshaler{"slice of reflect of durations": pfmt.Reflects([]interface{}{d, d2})}
 		}(),
 		want:     "42ns 42s",
 		wantText: "42ns 42s",

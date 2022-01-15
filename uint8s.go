@@ -9,7 +9,7 @@ import (
 )
 
 // Uint8s returns stringer/JSON/text marshaler for the uint8 slice type.
-func Uint8s(s ...uint8) Uint8S { return Uint8S{s: s} }
+func Uint8s(s []uint8) Uint8S { return Uint8S{s: s} }
 
 type Uint8S struct{ s []uint8 }
 

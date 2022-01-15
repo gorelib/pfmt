@@ -10,7 +10,7 @@ import (
 )
 
 // Texts returns stringer/JSON/text marshaler for the text marshaler slice type.
-func Texts(s ...encoding.TextMarshaler) TextS { return TextS{s: s} }
+func Texts(s []encoding.TextMarshaler) TextS { return TextS{s: s} }
 
 type TextS struct{ s []encoding.TextMarshaler }
 

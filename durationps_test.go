@@ -17,7 +17,7 @@ var MarshalDurationpsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var d, d2 = 42 * time.Nanosecond, 42 * time.Second
-			return map[string]json.Marshaler{"slice of durations pointers": pfmt.Durationps(&d, &d2)}
+			return map[string]json.Marshaler{"slice of durations pointers": pfmt.Durationps([]*time.Duration{&d, &d2})}
 		}(),
 		want:     "42ns 42s",
 		wantText: "42ns 42s",
@@ -27,7 +27,7 @@ var MarshalDurationpsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice of nil durations pointers": pfmt.Durationps(nil, nil)},
+		input:    map[string]json.Marshaler{"slice of nil durations pointers": pfmt.Durationps([]*time.Duration{nil, nil})},
 		want:     "null null",
 		wantText: "null null",
 		wantJSON: `{
@@ -36,7 +36,7 @@ var MarshalDurationpsTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"slice without durations pointers": pfmt.Durationps()},
+		input:    map[string]json.Marshaler{"slice without durations pointers": pfmt.Durationps(nil)},
 		want:     "null",
 		wantText: "null",
 		wantJSON: `{
@@ -47,7 +47,7 @@ var MarshalDurationpsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var d, d2 = 42 * time.Nanosecond, 42 * time.Second
-			return map[string]json.Marshaler{"slice of any duration pointers": pfmt.Anys(&d, &d2)}
+			return map[string]json.Marshaler{"slice of any duration pointers": pfmt.Anys([]interface{}{&d, &d2})}
 		}(),
 		want:     "42ns 42s",
 		wantText: "42ns 42s",
@@ -59,7 +59,7 @@ var MarshalDurationpsTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var d, d2 = 42 * time.Nanosecond, 42 * time.Second
-			return map[string]json.Marshaler{"slice of reflect of duration pointers": pfmt.Reflects(&d, &d2)}
+			return map[string]json.Marshaler{"slice of reflect of duration pointers": pfmt.Reflects([]interface{}{&d, &d2})}
 		}(),
 		want:     "42ns 42s",
 		wantText: "42ns 42s",

@@ -207,7 +207,7 @@ var MarshalBytespTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"errors": pfmt.Errors(errors.New("something went wrong"), errors.New("wrong"))},
+		input:    map[string]json.Marshaler{"errors": pfmt.Errors([]error{errors.New("something went wrong"), errors.New("wrong")})},
 		want:     "something went wrong wrong",
 		wantText: "something went wrong wrong",
 		wantJSON: `{
@@ -216,7 +216,7 @@ var MarshalBytespTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"nil errors": pfmt.Errors(nil, nil)},
+		input:    map[string]json.Marshaler{"nil errors": pfmt.Errors([]error{nil, nil})},
 		want:     "",
 		wantText: "",
 		wantJSON: `{
@@ -225,7 +225,7 @@ var MarshalBytespTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"without errors": pfmt.Errors()},
+		input:    map[string]json.Marshaler{"without errors": pfmt.Errors(nil)},
 		want:     "null",
 		wantText: "null",
 		wantJSON: `{
@@ -874,7 +874,7 @@ var MarshalBytespTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"runes": pfmt.Runes([]rune("Hello, Wörld!")...)},
+		input:    map[string]json.Marshaler{"runes": pfmt.Runes([]rune("Hello, Wörld!"))},
 		want:     "Hello, Wörld!",
 		wantText: "Hello, Wörld!",
 		wantJSON: `{
@@ -883,7 +883,7 @@ var MarshalBytespTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"empty runes": pfmt.Runes([]rune{}...)},
+		input:    map[string]json.Marshaler{"empty runes": pfmt.Runes([]rune{})},
 		want:     "",
 		wantText: "",
 		wantJSON: `{
@@ -894,7 +894,7 @@ var MarshalBytespTests = []marshalTests{
 		line: line(),
 		input: func() map[string]json.Marshaler {
 			var p []rune
-			return map[string]json.Marshaler{"nil runes": pfmt.Runes(p...)}
+			return map[string]json.Marshaler{"nil runes": pfmt.Runes(p)}
 		}(),
 		want:     "null",
 		wantText: "null",
@@ -904,7 +904,7 @@ var MarshalBytespTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"rune slice with zero rune": pfmt.Runes([]rune{rune(0)}...)},
+		input:    map[string]json.Marshaler{"rune slice with zero rune": pfmt.Runes([]rune{rune(0)})},
 		want:     "\\u0000",
 		wantText: "\\u0000",
 		wantJSON: `{
@@ -1075,7 +1075,7 @@ var MarshalBytespTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"strings": pfmt.Strings("Hello, Wörld!", "Hello, World!")},
+		input:    map[string]json.Marshaler{"strings": pfmt.Strings([]string{"Hello, Wörld!", "Hello, World!"})},
 		want:     "Hello, Wörld! Hello, World!",
 		wantText: "Hello, Wörld! Hello, World!",
 		wantJSON: `{
@@ -1084,7 +1084,7 @@ var MarshalBytespTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"empty strings": pfmt.Strings("", "")},
+		input:    map[string]json.Marshaler{"empty strings": pfmt.Strings([]string{"", ""})},
 		want:     " ",
 		wantText: " ",
 		wantJSON: `{
@@ -1093,7 +1093,7 @@ var MarshalBytespTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"strings with zero byte": pfmt.Strings(string(byte(0)), string(byte(0)))},
+		input:    map[string]json.Marshaler{"strings with zero byte": pfmt.Strings([]string{string(byte(0)), string(byte(0))})},
 		want:     "\\u0000 \\u0000",
 		wantText: "\\u0000 \\u0000",
 		wantJSON: `{
@@ -1102,7 +1102,7 @@ var MarshalBytespTests = []marshalTests{
 	},
 	{
 		line:     line(),
-		input:    map[string]json.Marshaler{"without strings": pfmt.Strings()},
+		input:    map[string]json.Marshaler{"without strings": pfmt.Strings(nil)},
 		want:     "",
 		wantText: "",
 		wantJSON: `{
