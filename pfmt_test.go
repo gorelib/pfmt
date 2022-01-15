@@ -74,6 +74,7 @@ func TestSprint(t *testing.T) {
 			want: "null",
 		},
 	}
+
 	for _, tt := range tests {
 		tt := tt
 		t.Run(tt.line+"/"+tt.name, func(t *testing.T) {

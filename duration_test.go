@@ -12,36 +12,36 @@ import (
 	"github.com/pprint/pfmt"
 )
 
-var MarshalDurationTests = []marshalTests{
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"duration": pfmt.Duration(42 * time.Nanosecond)},
-		want:     "42ns",
-		wantText: "42ns",
-		wantJSON: `{
+func TestMarshalDuration(t *testing.T) {
+	tests := []marshalTest{
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"duration": pfmt.Duration(42 * time.Nanosecond)},
+			want:     "42ns",
+			wantText: "42ns",
+			wantJSON: `{
 			"duration":"42ns"
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"any duration": pfmt.Any(42 * time.Nanosecond)},
-		want:     "42ns",
-		wantText: "42ns",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"any duration": pfmt.Any(42 * time.Nanosecond)},
+			want:     "42ns",
+			wantText: "42ns",
+			wantJSON: `{
 			"any duration":"42ns"
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"reflect duration": pfmt.Reflect(42 * time.Nanosecond)},
-		want:     "42ns",
-		wantText: "42ns",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"reflect duration": pfmt.Reflect(42 * time.Nanosecond)},
+			want:     "42ns",
+			wantText: "42ns",
+			wantJSON: `{
 			"reflect duration":42
 		}`,
-	},
-}
+		},
+	}
 
-func TestMarshalDuration(t *testing.T) {
-	testMarshal(t, MarshalDurationTests)
+	testMarshal(t, tests)
 }

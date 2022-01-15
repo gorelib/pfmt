@@ -6,9 +6,9 @@ package pfmt_test
 
 import "testing"
 
-// FIXME: test missing!!!
-var MarshalJSONTests = []marshalTests{}
-
 func TestMarshalJSON(t *testing.T) {
-	testMarshal(t, MarshalJSONTests)
+	// FIXME: test missing!!!
+	tests := []marshalTest{}
+
+	testMarshal(t, tests)
 }

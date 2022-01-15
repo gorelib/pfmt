@@ -4,13 +4,11 @@
 
 package pfmt_test
 
-import (
-	"testing"
-)
-
-// FIXME: test missing!!!
-var MarshalAnysTests = []marshalTests{}
+import "testing"
 
 func TestAnysMarshal(t *testing.T) {
-	testMarshal(t, MarshalAnysTests)
+	// FIXME: test missing!!!
+	tests := []marshalTest{}
+
+	testMarshal(t, tests)
 }

@@ -11,54 +11,54 @@ import (
 	"github.com/pprint/pfmt"
 )
 
-var MarshalUintptrpTests = []marshalTests{
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			var i uintptr = 42
-			return map[string]json.Marshaler{"uintptr pointer": pfmt.Uintptrp(&i)}
-		}(),
-		want:     "42",
-		wantText: "42",
-		wantJSON: `{
+func TestMarshalUintptrp(t *testing.T) {
+	tests := []marshalTest{
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				var i uintptr = 42
+				return map[string]json.Marshaler{"uintptr pointer": pfmt.Uintptrp(&i)}
+			}(),
+			want:     "42",
+			wantText: "42",
+			wantJSON: `{
 			"uintptr pointer":42
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"nil uintptr pointer": pfmt.Uintptrp(nil)},
-		want:     "null",
-		wantText: "null",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"nil uintptr pointer": pfmt.Uintptrp(nil)},
+			want:     "null",
+			wantText: "null",
+			wantJSON: `{
 			"nil uintptr pointer":null
 		}`,
-	},
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			var i uintptr = 42
-			return map[string]json.Marshaler{"any uintptr pointer": pfmt.Any(&i)}
-		}(),
-		want:     "42",
-		wantText: "42",
-		wantJSON: `{
+		},
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				var i uintptr = 42
+				return map[string]json.Marshaler{"any uintptr pointer": pfmt.Any(&i)}
+			}(),
+			want:     "42",
+			wantText: "42",
+			wantJSON: `{
 			"any uintptr pointer":42
 		}`,
-	},
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			var i uintptr = 42
-			return map[string]json.Marshaler{"reflect uintptr pointer": pfmt.Reflect(&i)}
-		}(),
-		want:     "42",
-		wantText: "42",
-		wantJSON: `{
+		},
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				var i uintptr = 42
+				return map[string]json.Marshaler{"reflect uintptr pointer": pfmt.Reflect(&i)}
+			}(),
+			want:     "42",
+			wantText: "42",
+			wantJSON: `{
 			"reflect uintptr pointer":42
 		}`,
-	},
-}
+		},
+	}
 
-func TestMarshalUintptrp(t *testing.T) {
-	testMarshal(t, MarshalUintptrpTests)
+	testMarshal(t, tests)
 }

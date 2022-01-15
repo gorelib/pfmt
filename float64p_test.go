@@ -11,78 +11,78 @@ import (
 	"github.com/pprint/pfmt"
 )
 
-var MarshalFloat64pTests = []marshalTests{
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			var f float64 = 4.2
-			return map[string]json.Marshaler{"float64 pointer": pfmt.Float64p(&f)}
-		}(),
-		want:     "4.2",
-		wantText: "4.2",
-		wantJSON: `{
+func TestMarshalFloat64p(t *testing.T) {
+	tests := []marshalTest{
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				var f float64 = 4.2
+				return map[string]json.Marshaler{"float64 pointer": pfmt.Float64p(&f)}
+			}(),
+			want:     "4.2",
+			wantText: "4.2",
+			wantJSON: `{
 			"float64 pointer":4.2
 		}`,
-	},
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			var f float64 = 0.123456789
-			return map[string]json.Marshaler{"high precision float64 pointer": pfmt.Float64p(&f)}
-		}(),
-		want:     "0.123456789",
-		wantText: "0.123456789",
-		wantJSON: `{
+		},
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				var f float64 = 0.123456789
+				return map[string]json.Marshaler{"high precision float64 pointer": pfmt.Float64p(&f)}
+			}(),
+			want:     "0.123456789",
+			wantText: "0.123456789",
+			wantJSON: `{
 			"high precision float64 pointer":0.123456789
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"float64 nil pointer": pfmt.Float64p(nil)},
-		want:     "null",
-		wantText: "null",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"float64 nil pointer": pfmt.Float64p(nil)},
+			want:     "null",
+			wantText: "null",
+			wantJSON: `{
 			"float64 nil pointer":null
 		}`,
-	},
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			var f float64 = 4.2
-			return map[string]json.Marshaler{"any float64 pointer": pfmt.Any(&f)}
-		}(),
-		want:     "4.2",
-		wantText: "4.2",
-		wantJSON: `{
+		},
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				var f float64 = 4.2
+				return map[string]json.Marshaler{"any float64 pointer": pfmt.Any(&f)}
+			}(),
+			want:     "4.2",
+			wantText: "4.2",
+			wantJSON: `{
 			"any float64 pointer":4.2
 		}`,
-	},
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			var f float64 = 4.2
-			return map[string]json.Marshaler{"reflect float64 pointer": pfmt.Reflect(&f)}
-		}(),
-		want:     "4.2",
-		wantText: "4.2",
-		wantJSON: `{
+		},
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				var f float64 = 4.2
+				return map[string]json.Marshaler{"reflect float64 pointer": pfmt.Reflect(&f)}
+			}(),
+			want:     "4.2",
+			wantText: "4.2",
+			wantJSON: `{
 			"reflect float64 pointer":4.2
 		}`,
-	},
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			var f *float64
-			return map[string]json.Marshaler{"reflect float64 pointer to nil": pfmt.Reflect(f)}
-		}(),
-		want:     "null",
-		wantText: "null",
-		wantJSON: `{
+		},
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				var f *float64
+				return map[string]json.Marshaler{"reflect float64 pointer to nil": pfmt.Reflect(f)}
+			}(),
+			want:     "null",
+			wantText: "null",
+			wantJSON: `{
 			"reflect float64 pointer to nil":null
 		}`,
-	},
-}
+		},
+	}
 
-func TestMarshalFloat64p(t *testing.T) {
-	testMarshal(t, MarshalFloat64pTests)
+	testMarshal(t, tests)
 }

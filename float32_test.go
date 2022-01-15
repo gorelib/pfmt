@@ -11,63 +11,63 @@ import (
 	"github.com/pprint/pfmt"
 )
 
-var MarshalFloat32Tests = []marshalTests{
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"high precision float32": pfmt.Float32(0.123456789)},
-		want:     "0.12345679",
-		wantText: "0.12345679",
-		wantJSON: `{
+func TestMarshalFloat32(t *testing.T) {
+	tests := []marshalTest{
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"high precision float32": pfmt.Float32(0.123456789)},
+			want:     "0.12345679",
+			wantText: "0.12345679",
+			wantJSON: `{
 			"high precision float32":0.123456789
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"zero float32": pfmt.Float32(0)},
-		want:     "0",
-		wantText: "0",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"zero float32": pfmt.Float32(0)},
+			want:     "0",
+			wantText: "0",
+			wantJSON: `{
 			"zero float32":0
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"any float32": pfmt.Any(4.2)},
-		want:     "4.2",
-		wantText: "4.2",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"any float32": pfmt.Any(4.2)},
+			want:     "4.2",
+			wantText: "4.2",
+			wantJSON: `{
 			"any float32":4.2
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"any zero float32": pfmt.Any(0)},
-		want:     "0",
-		wantText: "0",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"any zero float32": pfmt.Any(0)},
+			want:     "0",
+			wantText: "0",
+			wantJSON: `{
 			"any zero float32":0
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"reflect float32": pfmt.Reflect(4.2)},
-		want:     "4.2",
-		wantText: "4.2",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"reflect float32": pfmt.Reflect(4.2)},
+			want:     "4.2",
+			wantText: "4.2",
+			wantJSON: `{
 			"reflect float32":4.2
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"reflect zero float32": pfmt.Reflect(0)},
-		want:     "0",
-		wantText: "0",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"reflect zero float32": pfmt.Reflect(0)},
+			want:     "0",
+			wantText: "0",
+			wantJSON: `{
 			"reflect zero float32":0
 		}`,
-	},
-}
+		},
+	}
 
-func TestMarshalFloat32(t *testing.T) {
-	testMarshal(t, MarshalFloat32Tests)
+	testMarshal(t, tests)
 }

@@ -11,90 +11,90 @@ import (
 	"github.com/pprint/pfmt"
 )
 
-var MarshalStringTests = []marshalTests{
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"string": pfmt.String("Hello, Wörld!")},
-		want:     "Hello, Wörld!",
-		wantText: "Hello, Wörld!",
-		wantJSON: `{
+func TestMarshalString(t *testing.T) {
+	tests := []marshalTest{
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"string": pfmt.String("Hello, Wörld!")},
+			want:     "Hello, Wörld!",
+			wantText: "Hello, Wörld!",
+			wantJSON: `{
 			"string":"Hello, Wörld!"
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"empty string": pfmt.String("")},
-		want:     "",
-		wantText: "",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"empty string": pfmt.String("")},
+			want:     "",
+			wantText: "",
+			wantJSON: `{
 			"empty string":""
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"string with zero byte": pfmt.String(string(byte(0)))},
-		want:     "\\u0000",
-		wantText: "\\u0000",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"string with zero byte": pfmt.String(string(byte(0)))},
+			want:     "\\u0000",
+			wantText: "\\u0000",
+			wantJSON: `{
 			"string with zero byte":"\u0000"
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"any string": pfmt.Any("Hello, Wörld!")},
-		want:     "Hello, Wörld!",
-		wantText: "Hello, Wörld!",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"any string": pfmt.Any("Hello, Wörld!")},
+			want:     "Hello, Wörld!",
+			wantText: "Hello, Wörld!",
+			wantJSON: `{
 			"any string":"Hello, Wörld!"
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"any empty string": pfmt.Any("")},
-		want:     "",
-		wantText: "",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"any empty string": pfmt.Any("")},
+			want:     "",
+			wantText: "",
+			wantJSON: `{
 			"any empty string":""
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"any string with zero byte": pfmt.Any(string(byte(0)))},
-		want:     "\\u0000",
-		wantText: "\\u0000",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"any string with zero byte": pfmt.Any(string(byte(0)))},
+			want:     "\\u0000",
+			wantText: "\\u0000",
+			wantJSON: `{
 			"any string with zero byte":"\u0000"
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"reflect string": pfmt.Reflect("Hello, Wörld!")},
-		want:     "Hello, Wörld!",
-		wantText: "Hello, Wörld!",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"reflect string": pfmt.Reflect("Hello, Wörld!")},
+			want:     "Hello, Wörld!",
+			wantText: "Hello, Wörld!",
+			wantJSON: `{
 			"reflect string":"Hello, Wörld!"
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"reflect empty string": pfmt.Reflect("")},
-		want:     "",
-		wantText: "",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"reflect empty string": pfmt.Reflect("")},
+			want:     "",
+			wantText: "",
+			wantJSON: `{
 			"reflect empty string":""
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"reflect string with zero byte": pfmt.Reflect(string(byte(0)))},
-		want:     "\u0000",
-		wantText: "\u0000",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"reflect string with zero byte": pfmt.Reflect(string(byte(0)))},
+			want:     "\u0000",
+			wantText: "\u0000",
+			wantJSON: `{
 			"reflect string with zero byte":"\u0000"
 		}`,
-	},
-}
+		},
+	}
 
-func TestMarshalString(t *testing.T) {
-	testMarshal(t, MarshalStringTests)
+	testMarshal(t, tests)
 }

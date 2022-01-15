@@ -11,51 +11,51 @@ import (
 	"github.com/pprint/pfmt"
 )
 
-var MarshalComplex64sTests = []marshalTests{
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"slice of complex64s": pfmt.Complex64s([]complex64{complex(1, 23), complex(3, 21)})},
-		want:     "1+23i 3+21i",
-		wantText: "1+23i 3+21i",
-		wantJSON: `{
+func TestMarshalComplex64s(t *testing.T) {
+	tests := []marshalTest{
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"slice of complex64s": pfmt.Complex64s([]complex64{complex(1, 23), complex(3, 21)})},
+			want:     "1+23i 3+21i",
+			wantText: "1+23i 3+21i",
+			wantJSON: `{
 			"slice of complex64s":["1+23i","3+21i"]
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"slice without complex64s": pfmt.Complex64s(nil)},
-		want:     "null",
-		wantText: "null",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"slice without complex64s": pfmt.Complex64s(nil)},
+			want:     "null",
+			wantText: "null",
+			wantJSON: `{
 			"slice without complex64s":null
 		}`,
-	},
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			var c, c2 complex64 = complex(1, 23), complex(3, 21)
-			return map[string]json.Marshaler{"slice of any complex64s": pfmt.Anys([]interface{}{c, c2})}
-		}(),
-		want:     "1+23i 3+21i",
-		wantText: "1+23i 3+21i",
-		wantJSON: `{
+		},
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				var c, c2 complex64 = complex(1, 23), complex(3, 21)
+				return map[string]json.Marshaler{"slice of any complex64s": pfmt.Anys([]interface{}{c, c2})}
+			}(),
+			want:     "1+23i 3+21i",
+			wantText: "1+23i 3+21i",
+			wantJSON: `{
 			"slice of any complex64s":["1+23i","3+21i"]
 		}`,
-	},
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			var c, c2 complex64 = complex(1, 23), complex(3, 21)
-			return map[string]json.Marshaler{"slice of reflect complex64": pfmt.Anys([]interface{}{c, c2})}
-		}(),
-		want:     "1+23i 3+21i",
-		wantText: "1+23i 3+21i",
-		wantJSON: `{
+		},
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				var c, c2 complex64 = complex(1, 23), complex(3, 21)
+				return map[string]json.Marshaler{"slice of reflect complex64": pfmt.Anys([]interface{}{c, c2})}
+			}(),
+			want:     "1+23i 3+21i",
+			wantText: "1+23i 3+21i",
+			wantJSON: `{
 			"slice of reflect complex64":["1+23i","3+21i"]
 		}`,
-	},
-}
+		},
+	}
 
-func TestMarshalComplex64s(t *testing.T) {
-	testMarshal(t, MarshalComplex64sTests)
+	testMarshal(t, tests)
 }

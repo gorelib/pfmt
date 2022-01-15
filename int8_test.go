@@ -11,36 +11,36 @@ import (
 	"github.com/pprint/pfmt"
 )
 
-var MarshalInt8Tests = []marshalTests{
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"int8": pfmt.Int8(42)},
-		want:     "42",
-		wantText: "42",
-		wantJSON: `{
+func TestMarshalInt8(t *testing.T) {
+	tests := []marshalTest{
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"int8": pfmt.Int8(42)},
+			want:     "42",
+			wantText: "42",
+			wantJSON: `{
 			"int8":42
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"any int8": pfmt.Any(42)},
-		want:     "42",
-		wantText: "42",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"any int8": pfmt.Any(42)},
+			want:     "42",
+			wantText: "42",
+			wantJSON: `{
 			"any int8":42
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"reflect int8": pfmt.Reflect(42)},
-		want:     "42",
-		wantText: "42",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"reflect int8": pfmt.Reflect(42)},
+			want:     "42",
+			wantText: "42",
+			wantJSON: `{
 			"reflect int8":42
 		}`,
-	},
-}
+		},
+	}
 
-func TestMarshalInt8(t *testing.T) {
-	testMarshal(t, MarshalInt8Tests)
+	testMarshal(t, tests)
 }

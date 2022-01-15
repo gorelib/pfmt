@@ -12,57 +12,57 @@ import (
 	"github.com/pprint/pfmt"
 )
 
-var MarshalTimepTests = []marshalTests{
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			t := time.Date(1970, time.January, 1, 0, 0, 0, 42, time.UTC)
-			return map[string]json.Marshaler{"time pointer": &t}
-		}(),
-		want:     "1970-01-01 00:00:00.000000042 +0000 UTC",
-		wantText: "1970-01-01T00:00:00.000000042Z",
-		wantJSON: `{
+func TestMarshalTimep(t *testing.T) {
+	tests := []marshalTest{
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				t := time.Date(1970, time.January, 1, 0, 0, 0, 42, time.UTC)
+				return map[string]json.Marshaler{"time pointer": &t}
+			}(),
+			want:     "1970-01-01 00:00:00.000000042 +0000 UTC",
+			wantText: "1970-01-01T00:00:00.000000042Z",
+			wantJSON: `{
 			"time pointer":"1970-01-01T00:00:00.000000042Z"
 		}`,
-	},
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			var t time.Time
-			return map[string]json.Marshaler{"nil time pointer": t}
-		}(),
-		want:     "0001-01-01 00:00:00 +0000 UTC",
-		wantText: "0001-01-01T00:00:00Z",
-		wantJSON: `{
+		},
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				var t time.Time
+				return map[string]json.Marshaler{"nil time pointer": t}
+			}(),
+			want:     "0001-01-01 00:00:00 +0000 UTC",
+			wantText: "0001-01-01T00:00:00Z",
+			wantJSON: `{
 			"nil time pointer":"0001-01-01T00:00:00Z"
 		}`,
-	},
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			t := time.Date(1970, time.January, 1, 0, 0, 0, 42, time.UTC)
-			return map[string]json.Marshaler{"any time pointer": pfmt.Any(&t)}
-		}(),
-		want:     `1970-01-01 00:00:00.000000042 +0000 UTC`,
-		wantText: `1970-01-01T00:00:00.000000042Z`,
-		wantJSON: `{
+		},
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				t := time.Date(1970, time.January, 1, 0, 0, 0, 42, time.UTC)
+				return map[string]json.Marshaler{"any time pointer": pfmt.Any(&t)}
+			}(),
+			want:     `1970-01-01 00:00:00.000000042 +0000 UTC`,
+			wantText: `1970-01-01T00:00:00.000000042Z`,
+			wantJSON: `{
 			"any time pointer":"1970-01-01T00:00:00.000000042Z"
 		}`,
-	},
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			t := time.Date(1970, time.January, 1, 0, 0, 0, 42, time.UTC)
-			return map[string]json.Marshaler{"reflect time pointer": pfmt.Reflect(&t)}
-		}(),
-		want:     "1970-01-01 00:00:00.000000042 +0000 UTC",
-		wantText: "1970-01-01 00:00:00.000000042 +0000 UTC",
-		wantJSON: `{
+		},
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				t := time.Date(1970, time.January, 1, 0, 0, 0, 42, time.UTC)
+				return map[string]json.Marshaler{"reflect time pointer": pfmt.Reflect(&t)}
+			}(),
+			want:     "1970-01-01 00:00:00.000000042 +0000 UTC",
+			wantText: "1970-01-01 00:00:00.000000042 +0000 UTC",
+			wantJSON: `{
 			"reflect time pointer":"1970-01-01T00:00:00.000000042Z"
 		}`,
-	},
-}
+		},
+	}
 
-func TestMarshalTimep(t *testing.T) {
-	testMarshal(t, MarshalTimepTests)
+	testMarshal(t, tests)
 }

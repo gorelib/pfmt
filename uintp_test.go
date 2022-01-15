@@ -11,54 +11,54 @@ import (
 	"github.com/pprint/pfmt"
 )
 
-var MarshalUintpTests = []marshalTests{
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			var i uint = 42
-			return map[string]json.Marshaler{"uint pointer": pfmt.Uintp(&i)}
-		}(),
-		want:     "42",
-		wantText: "42",
-		wantJSON: `{
+func TestMarshalUintp(t *testing.T) {
+	tests := []marshalTest{
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				var i uint = 42
+				return map[string]json.Marshaler{"uint pointer": pfmt.Uintp(&i)}
+			}(),
+			want:     "42",
+			wantText: "42",
+			wantJSON: `{
 			"uint pointer":42
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"nil uint pointer": pfmt.Uintp(nil)},
-		want:     "null",
-		wantText: "null",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"nil uint pointer": pfmt.Uintp(nil)},
+			want:     "null",
+			wantText: "null",
+			wantJSON: `{
 			"nil uint pointer":null
 		}`,
-	},
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			var i uint = 42
-			return map[string]json.Marshaler{"any uint pointer": pfmt.Any(&i)}
-		}(),
-		want:     "42",
-		wantText: "42",
-		wantJSON: `{
+		},
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				var i uint = 42
+				return map[string]json.Marshaler{"any uint pointer": pfmt.Any(&i)}
+			}(),
+			want:     "42",
+			wantText: "42",
+			wantJSON: `{
 			"any uint pointer":42
 		}`,
-	},
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			var i uint = 42
-			return map[string]json.Marshaler{"reflect uint pointer": pfmt.Reflect(&i)}
-		}(),
-		want:     "42",
-		wantText: "42",
-		wantJSON: `{
+		},
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				var i uint = 42
+				return map[string]json.Marshaler{"reflect uint pointer": pfmt.Reflect(&i)}
+			}(),
+			want:     "42",
+			wantText: "42",
+			wantJSON: `{
 			"reflect uint pointer":42
 		}`,
-	},
-}
+		},
+	}
 
-func TestMarshalUintp(t *testing.T) {
-	testMarshal(t, MarshalUintpTests)
+	testMarshal(t, tests)
 }

@@ -11,42 +11,42 @@ import (
 	"github.com/pprint/pfmt"
 )
 
-var MarshalInt16Tests = []marshalTests{
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"int16": pfmt.Int16(42)},
-		want:     "42",
-		wantText: "42",
-		wantJSON: `{
+func TestMarshalInt16(t *testing.T) {
+	tests := []marshalTest{
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"int16": pfmt.Int16(42)},
+			want:     "42",
+			wantText: "42",
+			wantJSON: `{
 			"int16":42
 		}`,
-	},
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			var i int16 = 42
-			return map[string]json.Marshaler{"any int16": pfmt.Any(i)}
-		}(),
-		want:     "42",
-		wantText: "42",
-		wantJSON: `{
+		},
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				var i int16 = 42
+				return map[string]json.Marshaler{"any int16": pfmt.Any(i)}
+			}(),
+			want:     "42",
+			wantText: "42",
+			wantJSON: `{
 			"any int16":42
 		}`,
-	},
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			var i int16 = 42
-			return map[string]json.Marshaler{"reflect int16": pfmt.Reflect(i)}
-		}(),
-		want:     "42",
-		wantText: "42",
-		wantJSON: `{
+		},
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				var i int16 = 42
+				return map[string]json.Marshaler{"reflect int16": pfmt.Reflect(i)}
+			}(),
+			want:     "42",
+			wantText: "42",
+			wantJSON: `{
 			"reflect int16":42
 		}`,
-	},
-}
+		},
+	}
 
-func TestMarshalInt16(t *testing.T) {
-	testMarshal(t, MarshalInt16Tests)
+	testMarshal(t, tests)
 }

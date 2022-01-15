@@ -12,36 +12,36 @@ import (
 	"github.com/pprint/pfmt"
 )
 
-var MarshalTimeTestTests = []marshalTests{
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"time": time.Date(1970, time.January, 1, 2, 3, 4, 42, time.UTC)},
-		want:     "1970-01-01 02:03:04.000000042 +0000 UTC",
-		wantText: "1970-01-01T02:03:04.000000042Z",
-		wantJSON: `{
+func TestTimeMarshalTest(t *testing.T) {
+	tests := []marshalTest{
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"time": time.Date(1970, time.January, 1, 2, 3, 4, 42, time.UTC)},
+			want:     "1970-01-01 02:03:04.000000042 +0000 UTC",
+			wantText: "1970-01-01T02:03:04.000000042Z",
+			wantJSON: `{
 			"time":"1970-01-01T02:03:04.000000042Z"
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"any time": pfmt.Any(time.Date(1970, time.January, 1, 2, 3, 4, 42, time.UTC))},
-		want:     `1970-01-01 02:03:04.000000042 +0000 UTC`,
-		wantText: `1970-01-01T02:03:04.000000042Z`,
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"any time": pfmt.Any(time.Date(1970, time.January, 1, 2, 3, 4, 42, time.UTC))},
+			want:     `1970-01-01 02:03:04.000000042 +0000 UTC`,
+			wantText: `1970-01-01T02:03:04.000000042Z`,
+			wantJSON: `{
 			"any time":"1970-01-01T02:03:04.000000042Z"
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"reflect time": pfmt.Reflect(time.Date(1970, time.January, 1, 2, 3, 4, 42, time.UTC))},
-		want:     "1970-01-01 02:03:04.000000042 +0000 UTC",
-		wantText: "1970-01-01 02:03:04.000000042 +0000 UTC",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"reflect time": pfmt.Reflect(time.Date(1970, time.January, 1, 2, 3, 4, 42, time.UTC))},
+			want:     "1970-01-01 02:03:04.000000042 +0000 UTC",
+			wantText: "1970-01-01 02:03:04.000000042 +0000 UTC",
+			wantJSON: `{
 			"reflect time":"1970-01-01T02:03:04.000000042Z"
 		}`,
-	},
-}
+		},
+	}
 
-func TestTimeMarshalTest(t *testing.T) {
-	testMarshal(t, MarshalTimeTestTests)
+	testMarshal(t, tests)
 }

@@ -12,52 +12,52 @@ import (
 	"github.com/pprint/pfmt"
 )
 
-var MarshalComplex64pTests = []marshalTests{
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			var c complex64 = complex(1, 23)
-			return map[string]json.Marshaler{"complex64 pointer": pfmt.Complex64p(&c)}
-		}(),
-		want:     "1+23i",
-		wantText: "1+23i",
-		wantJSON: `{
+func TestMarshalComplex64p(t *testing.T) {
+	tests := []marshalTest{
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				var c complex64 = complex(1, 23)
+				return map[string]json.Marshaler{"complex64 pointer": pfmt.Complex64p(&c)}
+			}(),
+			want:     "1+23i",
+			wantText: "1+23i",
+			wantJSON: `{
 			"complex64 pointer":"1+23i"
 		}`,
-	},
-	{
-		line:     line(),
-		input:    map[string]json.Marshaler{"nil complex64 pointer": pfmt.Complex64p(nil)},
-		want:     "null",
-		wantText: "null",
-		wantJSON: `{
+		},
+		{
+			line:     line(),
+			input:    map[string]json.Marshaler{"nil complex64 pointer": pfmt.Complex64p(nil)},
+			want:     "null",
+			wantText: "null",
+			wantJSON: `{
 			"nil complex64 pointer":null
 		}`,
-	},
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			var c complex64 = complex(1, 23)
-			return map[string]json.Marshaler{"any complex64 pointer": pfmt.Any(&c)}
-		}(),
-		want:     "1+23i",
-		wantText: "1+23i",
-		wantJSON: `{
+		},
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				var c complex64 = complex(1, 23)
+				return map[string]json.Marshaler{"any complex64 pointer": pfmt.Any(&c)}
+			}(),
+			want:     "1+23i",
+			wantText: "1+23i",
+			wantJSON: `{
 			"any complex64 pointer":"1+23i"
 		}`,
-	},
-	{
-		line: line(),
-		input: func() map[string]json.Marshaler {
-			var c complex64 = complex(1, 23)
-			return map[string]json.Marshaler{"reflect complex64 pointer": pfmt.Reflect(&c)}
-		}(),
-		want:      "(1+23i)",
-		wantText:  "(1+23i)",
-		wantError: errors.New("json: error calling MarshalJSON for type json.Marshaler: json: unsupported type: complex64"),
-	},
-}
+		},
+		{
+			line: line(),
+			input: func() map[string]json.Marshaler {
+				var c complex64 = complex(1, 23)
+				return map[string]json.Marshaler{"reflect complex64 pointer": pfmt.Reflect(&c)}
+			}(),
+			want:      "(1+23i)",
+			wantText:  "(1+23i)",
+			wantError: errors.New("json: error calling MarshalJSON for type json.Marshaler: json: unsupported type: complex64"),
+		},
+	}
 
-func TestMarshalComplex64p(t *testing.T) {
-	testMarshal(t, MarshalComplex64pTests)
+	testMarshal(t, tests)
 }

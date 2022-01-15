@@ -8,9 +8,9 @@ import (
 	"testing"
 )
 
-// FIXME: test missing!!!
-var MarshalReflectsTests = []marshalTests{}
-
 func TestMarshalReflects(t *testing.T) {
-	testMarshal(t, MarshalReflectsTests)
+	// FIXME: test missing!!!
+	tests := []marshalTest{}
+
+	testMarshal(t, tests)
 }
