@@ -13,7 +13,7 @@ func (p Uint8P) String() string {
 	if p.p == nil {
 		return "null"
 	}
-	return uint8V{V: *p.p}.String()
+	return Uint8V{V: *p.p}.String()
 }
 
 func (p Uint8P) MarshalText() ([]byte, error) {

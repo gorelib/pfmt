@@ -4,9 +4,7 @@
 
 package pfmt
 
-import (
-	"bytes"
-)
+import "bytes"
 
 // Complex128s returns stringer/JSON/text marshaler for the complex128 slice type.
 func Complex128s(s []complex128) Complex128S { return Complex128S{s: s} }

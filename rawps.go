@@ -4,9 +4,7 @@
 
 package pfmt
 
-import (
-	"bytes"
-)
+import "bytes"
 
 // Rawps returns stringer/JSON/text marshaler for the slice of byte slice pointers type.
 func Rawps(s []*[]byte) RawPS { return RawPS{s: s} }

@@ -4,9 +4,7 @@
 
 package pfmt
 
-import (
-	"bytes"
-)
+import "bytes"
 
 // Raws returns stringer/JSON/text marshaler for the slice of byte slice type.
 func Raws(s [][]byte) RawS { return RawS{s: s} }
@@ -24,7 +22,7 @@ func (s RawS) MarshalText() ([]byte, error) {
 	}
 	var buf bytes.Buffer
 	for i, v := range s.s {
-		b, err := rawV{V: v}.MarshalText()
+		b, err := RawV{V: v}.MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -46,7 +44,7 @@ func (s RawS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, v := range s.s {
-		b, err := rawV{V: v}.MarshalJSON()
+		b, err := RawV{V: v}.MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

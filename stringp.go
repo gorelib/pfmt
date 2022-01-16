@@ -13,19 +13,19 @@ func (p StringP) String() string {
 	if p.p == nil {
 		return "null"
 	}
-	return stringV{V: *p.p}.String()
+	return StringV{V: *p.p}.String()
 }
 
 func (p StringP) MarshalText() ([]byte, error) {
 	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return stringV{V: *p.p}.MarshalText()
+	return StringV{V: *p.p}.MarshalText()
 }
 
 func (p StringP) MarshalJSON() ([]byte, error) {
 	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return stringV{V: *p.p}.MarshalJSON()
+	return StringV{V: *p.p}.MarshalJSON()
 }

@@ -44,7 +44,7 @@ func (s StringS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, v := range s.s {
-		b, err := stringV{V: v}.MarshalJSON()
+		b, err := StringV{V: v}.MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

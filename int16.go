@@ -4,23 +4,21 @@
 
 package pfmt
 
-import (
-	"strconv"
-)
+import "strconv"
 
 // Int16 returns stringer/JSON/text marshaler for the int16 type.
-func Int16(v int16) int16V { return int16V{V: v} }
+func Int16(v int16) Int16V { return Int16V{V: v} }
 
-type int16V struct{ V int16 }
+type Int16V struct{ V int16 }
 
-func (v int16V) String() string {
+func (v Int16V) String() string {
 	return strconv.Itoa(int(v.V))
 }
 
-func (v int16V) MarshalText() ([]byte, error) {
+func (v Int16V) MarshalText() ([]byte, error) {
 	return []byte(v.String()), nil
 }
 
-func (v int16V) MarshalJSON() ([]byte, error) {
+func (v Int16V) MarshalJSON() ([]byte, error) {
 	return v.MarshalText()
 }

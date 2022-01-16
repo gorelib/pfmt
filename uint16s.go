@@ -4,9 +4,7 @@
 
 package pfmt
 
-import (
-	"bytes"
-)
+import "bytes"
 
 // Uint16s returns stringer/JSON/text marshaler for the uint16 slice type.
 func Uint16s(s []uint16) Uint16S { return Uint16S{s: s} }
@@ -21,7 +19,7 @@ func (s Uint16S) String() string {
 func (s Uint16S) MarshalText() ([]byte, error) {
 	var buf bytes.Buffer
 	for i, v := range s.s {
-		b, err := uint16V{V: v}.MarshalText()
+		b, err := Uint16V{V: v}.MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -40,7 +38,7 @@ func (s Uint16S) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, v := range s.s {
-		b, err := uint16V{V: v}.MarshalJSON()
+		b, err := Uint16V{V: v}.MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

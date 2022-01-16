@@ -9,18 +9,18 @@ import (
 )
 
 // Time returns stringer/JSON/text marshaler for the time type.
-func Time(v time.Time) timeV { return timeV{V: v} }
+func Time(v time.Time) TimeV { return TimeV{V: v} }
 
-type timeV struct{ V time.Time }
+type TimeV struct{ V time.Time }
 
-func (v timeV) String() string {
+func (v TimeV) String() string {
 	return v.V.String()
 }
 
-func (v timeV) MarshalText() ([]byte, error) {
+func (v TimeV) MarshalText() ([]byte, error) {
 	return v.V.MarshalText()
 }
 
-func (v timeV) MarshalJSON() ([]byte, error) {
+func (v TimeV) MarshalJSON() ([]byte, error) {
 	return v.V.MarshalJSON()
 }

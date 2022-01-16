@@ -4,23 +4,21 @@
 
 package pfmt
 
-import (
-	"strconv"
-)
+import "strconv"
 
 // Int8 returns stringer/JSON/text marshaler for the int8 type.
-func Int8(v int8) int8V { return int8V{V: v} }
+func Int8(v int8) Int8V { return Int8V{V: v} }
 
-type int8V struct{ V int8 }
+type Int8V struct{ V int8 }
 
-func (v int8V) String() string {
+func (v Int8V) String() string {
 	return strconv.Itoa(int(v.V))
 }
 
-func (v int8V) MarshalText() ([]byte, error) {
+func (v Int8V) MarshalText() ([]byte, error) {
 	return []byte(v.String()), nil
 }
 
-func (v int8V) MarshalJSON() ([]byte, error) {
+func (v Int8V) MarshalJSON() ([]byte, error) {
 	return v.MarshalText()
 }

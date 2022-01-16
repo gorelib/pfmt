@@ -13,7 +13,7 @@ func (p Uint16P) String() string {
 	if p.p == nil {
 		return "null"
 	}
-	return uint16V{V: *p.p}.String()
+	return Uint16V{V: *p.p}.String()
 }
 
 func (p Uint16P) MarshalText() ([]byte, error) {

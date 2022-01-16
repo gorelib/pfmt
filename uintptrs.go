@@ -4,9 +4,7 @@
 
 package pfmt
 
-import (
-	"bytes"
-)
+import "bytes"
 
 // Uintptrs returns stringer/JSON/text marshaler for the uintptr slice type.
 func Uintptrs(s []uintptr) UintptrS { return UintptrS{s: s} }
@@ -21,7 +19,7 @@ func (s UintptrS) String() string {
 func (s UintptrS) MarshalText() ([]byte, error) {
 	var buf bytes.Buffer
 	for i, v := range s.s {
-		b, err := uintptrV{V: v}.MarshalText()
+		b, err := UintptrV{V: v}.MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -40,7 +38,7 @@ func (s UintptrS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, v := range s.s {
-		b, err := uintptrV{V: v}.MarshalJSON()
+		b, err := UintptrV{V: v}.MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

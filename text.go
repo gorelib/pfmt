@@ -12,11 +12,11 @@ import (
 )
 
 // Text returns stringer/JSON/text marshaler for the encoding.TextMarshaler type.
-func Text(v encoding.TextMarshaler) textV { return textV{V: v} }
+func Text(v encoding.TextMarshaler) TextV { return TextV{V: v} }
 
-type textV struct{ V encoding.TextMarshaler }
+type TextV struct{ V encoding.TextMarshaler }
 
-func (v textV) String() string {
+func (v TextV) String() string {
 	if v.V == nil {
 		return ""
 	}
@@ -35,7 +35,7 @@ func (v textV) String() string {
 	return buf.String()
 }
 
-func (v textV) MarshalText() ([]byte, error) {
+func (v TextV) MarshalText() ([]byte, error) {
 	if v.V == nil {
 		return nil, nil
 	}
@@ -52,7 +52,7 @@ func (v textV) MarshalText() ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-func (v textV) MarshalJSON() ([]byte, error) {
+func (v TextV) MarshalJSON() ([]byte, error) {
 	if v.V == nil {
 		return []byte("null"), nil
 	}

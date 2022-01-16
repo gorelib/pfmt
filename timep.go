@@ -17,19 +17,19 @@ func (p TimeP) String() string {
 	if p.p == nil {
 		return "null"
 	}
-	return timeV{V: *p.p}.String()
+	return TimeV{V: *p.p}.String()
 }
 
 func (p TimeP) MarshalText() ([]byte, error) {
 	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return timeV{V: *p.p}.MarshalText()
+	return TimeV{V: *p.p}.MarshalText()
 }
 
 func (p TimeP) MarshalJSON() ([]byte, error) {
 	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return timeV{V: *p.p}.MarshalJSON()
+	return TimeV{V: *p.p}.MarshalJSON()
 }

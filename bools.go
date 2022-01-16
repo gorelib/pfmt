@@ -4,9 +4,7 @@
 
 package pfmt
 
-import (
-	"bytes"
-)
+import "bytes"
 
 // Bools returns stringer/JSON/text marshaler for the bool slice type.
 func Bools(s []bool) BoolS { return BoolS{s: s} }

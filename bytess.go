@@ -4,9 +4,7 @@
 
 package pfmt
 
-import (
-	"bytes"
-)
+import "bytes"
 
 // Bytess returns stringer/JSON/text marshaler for the slice of byte slice type.
 func Bytess(s [][]byte) ByteSS { return ByteSS{s: s} }

@@ -4,23 +4,21 @@
 
 package pfmt
 
-import (
-	"strconv"
-)
+import "strconv"
 
 // Uint64 returns stringer/JSON/text marshaler for the uint64 type.
-func Uint64(v uint64) uint64V { return uint64V{V: v} }
+func Uint64(v uint64) Uint64V { return Uint64V{V: v} }
 
-type uint64V struct{ V uint64 }
+type Uint64V struct{ V uint64 }
 
-func (v uint64V) String() string {
+func (v Uint64V) String() string {
 	return strconv.FormatUint(v.V, 10)
 }
 
-func (v uint64V) MarshalText() ([]byte, error) {
+func (v Uint64V) MarshalText() ([]byte, error) {
 	return []byte(v.String()), nil
 }
 
-func (v uint64V) MarshalJSON() ([]byte, error) {
+func (v Uint64V) MarshalJSON() ([]byte, error) {
 	return v.MarshalText()
 }

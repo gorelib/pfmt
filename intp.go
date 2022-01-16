@@ -13,7 +13,7 @@ func (p IntP) String() string {
 	if p.p == nil {
 		return "null"
 	}
-	return intV{V: *p.p}.String()
+	return IntV{V: *p.p}.String()
 }
 
 func (p IntP) MarshalText() ([]byte, error) {

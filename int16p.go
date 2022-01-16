@@ -13,7 +13,7 @@ func (p Int16P) String() string {
 	if p.p == nil {
 		return "null"
 	}
-	return int16V{V: *p.p}.String()
+	return Int16V{V: *p.p}.String()
 }
 
 func (p Int16P) MarshalText() ([]byte, error) {

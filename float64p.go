@@ -13,7 +13,7 @@ func (p Float64P) String() string {
 	if p.p == nil {
 		return "null"
 	}
-	return float64V{V: *p.p}.String()
+	return Float64V{V: *p.p}.String()
 }
 
 func (p Float64P) MarshalText() ([]byte, error) {

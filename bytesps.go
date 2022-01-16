@@ -4,9 +4,7 @@
 
 package pfmt
 
-import (
-	"bytes"
-)
+import "bytes"
 
 // Bytesps returns stringer/JSON/text marshaler for slice of pointers to byte slice type.
 func Bytesps(a []*[]byte) ByteSPS { return ByteSPS{a: a} }

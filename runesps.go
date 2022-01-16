@@ -4,9 +4,7 @@
 
 package pfmt
 
-import (
-	"bytes"
-)
+import "bytes"
 
 // Runesps returns stringer/JSON/text marshaler for slice of pointers to rune slice type.
 func Runesps(a []*[]rune) RuneSPS { return RuneSPS{a: a} }

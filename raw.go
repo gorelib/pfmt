@@ -5,24 +5,24 @@
 package pfmt
 
 // Raw returns stringer/JSON/text marshaler for the raw byte slice.
-func Raw(v []byte) rawV { return rawV{V: v} }
+func Raw(v []byte) RawV { return RawV{V: v} }
 
-type rawV struct{ V []byte }
+type RawV struct{ V []byte }
 
-func (v rawV) String() string {
+func (v RawV) String() string {
 	if v.V == nil {
 		return "null"
 	}
 	return string(v.V)
 }
 
-func (v rawV) MarshalText() ([]byte, error) {
+func (v RawV) MarshalText() ([]byte, error) {
 	if v.V == nil {
 		return []byte("null"), nil
 	}
 	return v.V, nil
 }
 
-func (v rawV) MarshalJSON() ([]byte, error) {
+func (v RawV) MarshalJSON() ([]byte, error) {
 	return v.MarshalText()
 }

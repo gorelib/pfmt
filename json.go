@@ -4,9 +4,7 @@
 
 package pfmt
 
-import (
-	"bytes"
-)
+import "bytes"
 
 // JSON returns stringer/JSON/text marshaler for the KV slice type.
 func JSON(s ...KV) JSONV { return JSONV{s: s} }

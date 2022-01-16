@@ -4,9 +4,7 @@
 
 package pfmt
 
-import (
-	"bytes"
-)
+import "bytes"
 
 // Float64s returns stringer/JSON/text marshaler for the float64 slice type.
 func Float64s(s []float64) Float64S { return Float64S{s: s} }
@@ -21,7 +19,7 @@ func (s Float64S) String() string {
 func (s Float64S) MarshalText() ([]byte, error) {
 	var buf bytes.Buffer
 	for i, v := range s.s {
-		b, err := float64V{V: v}.MarshalText()
+		b, err := Float64V{V: v}.MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -40,7 +38,7 @@ func (s Float64S) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, v := range s.s {
-		b, err := float64V{V: v}.MarshalJSON()
+		b, err := Float64V{V: v}.MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

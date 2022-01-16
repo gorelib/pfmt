@@ -18,12 +18,12 @@ func (p RawP) MarshalText() ([]byte, error) {
 	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return rawV{V: *p.p}.MarshalText()
+	return RawV{V: *p.p}.MarshalText()
 }
 
 func (p RawP) MarshalJSON() ([]byte, error) {
 	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return rawV{V: *p.p}.MarshalJSON()
+	return RawV{V: *p.p}.MarshalJSON()
 }

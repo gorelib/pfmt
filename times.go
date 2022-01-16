@@ -25,7 +25,7 @@ func (s TimeS) MarshalText() ([]byte, error) {
 	}
 	var buf bytes.Buffer
 	for i, v := range s.s {
-		b, err := timeV{V: v}.MarshalText()
+		b, err := TimeV{V: v}.MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -47,7 +47,7 @@ func (s TimeS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, v := range s.s {
-		b, err := timeV{V: v}.MarshalJSON()
+		b, err := TimeV{V: v}.MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

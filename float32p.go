@@ -13,14 +13,14 @@ func (p Float32P) String() string {
 	if p.p == nil {
 		return "null"
 	}
-	return float32V{V: *p.p}.String()
+	return Float32V{V: *p.p}.String()
 }
 
 func (p Float32P) MarshalText() ([]byte, error) {
 	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return float32V{V: *p.p}.MarshalText()
+	return Float32V{V: *p.p}.MarshalText()
 }
 
 func (p Float32P) MarshalJSON() ([]byte, error) {

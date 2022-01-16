@@ -4,9 +4,7 @@
 
 package pfmt
 
-import (
-	"bytes"
-)
+import "bytes"
 
 // Int8s returns stringer/JSON/text marshaler for the int8 slice type.
 func Int8s(s []int8) Int8S { return Int8S{s: s} }
@@ -21,7 +19,7 @@ func (s Int8S) String() string {
 func (s Int8S) MarshalText() ([]byte, error) {
 	var buf bytes.Buffer
 	for i, v := range s.s {
-		b, err := int8V{V: v}.MarshalText()
+		b, err := Int8V{V: v}.MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -40,7 +38,7 @@ func (s Int8S) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, v := range s.s {
-		b, err := int8V{V: v}.MarshalJSON()
+		b, err := Int8V{V: v}.MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

@@ -5,19 +5,19 @@
 package pfmt
 
 // Func returns stringer/JSON/text marshaler for the custom function type.
-func Func(v func() KV) funcV { return funcV{V: v} }
+func Func(v func() KV) FuncV { return FuncV{V: v} }
 
-type funcV struct{ V func() KV }
+type FuncV struct{ V func() KV }
 
-func (v funcV) String() string {
+func (v FuncV) String() string {
 	b, _ := v.V().MarshalText()
 	return string(b)
 }
 
-func (v funcV) MarshalText() ([]byte, error) {
+func (v FuncV) MarshalText() ([]byte, error) {
 	return v.V().MarshalText()
 }
 
-func (v funcV) MarshalJSON() ([]byte, error) {
+func (v FuncV) MarshalJSON() ([]byte, error) {
 	return v.V().MarshalJSON()
 }

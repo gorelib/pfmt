@@ -4,9 +4,7 @@
 
 package pfmt
 
-import (
-	"bytes"
-)
+import "bytes"
 
 // Boolps returns stringer/JSON/text marshaler for slice of bool pointers type.
 func Boolps(s []*bool) BoolPS { return BoolPS{s: s} }
