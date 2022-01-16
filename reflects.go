@@ -4,9 +4,7 @@
 
 package pfmt
 
-import (
-	"bytes"
-)
+import "bytes"
 
 // Reflects returns stringer/JSON/text marshaler uses reflection for the slice of some type.
 
@@ -22,7 +20,7 @@ func (s ReflectS) String() string {
 func (s ReflectS) MarshalText() ([]byte, error) {
 	var buf bytes.Buffer
 	for i, v := range s.s {
-		b, err := reflectV{V: v}.MarshalText()
+		b, err := ReflectV{v: v}.MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -41,7 +39,7 @@ func (s ReflectS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, v := range s.s {
-		b, err := reflectV{V: v}.MarshalJSON()
+		b, err := ReflectV{v: v}.MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

@@ -13,16 +13,16 @@ import (
 )
 
 // Reflect returns stringer/JSON/text marshaler uses reflection.
-func Reflect(v interface{}) reflectV { return reflectV{V: v} }
+func Reflect(v interface{}) ReflectV { return ReflectV{v: v} }
 
-type reflectV struct{ V interface{} }
+type ReflectV struct{ v interface{} }
 
-func (v reflectV) String() string {
-	if v.V == nil {
+func (v ReflectV) String() string {
+	if v.v == nil {
 		return "null"
 	}
 
-	val := reflect.ValueOf(v.V)
+	val := reflect.ValueOf(v.v)
 
 	switch val.Kind() {
 	case reflect.Chan, reflect.Func, reflect.Interface, reflect.Map, reflect.Ptr, reflect.Slice:
@@ -30,7 +30,7 @@ func (v reflectV) String() string {
 			return "null"
 
 		} else if val.Kind() == reflect.Ptr {
-			return reflectV{V: val.Elem().Interface()}.String()
+			return ReflectV{v: val.Elem().Interface()}.String()
 
 		} else if val.Kind() == reflect.Slice && val.Type().Elem().Kind() == reflect.Uint8 { // Byte slice.
 			buf := bufPool.Get().(*bytes.Buffer)
@@ -46,13 +46,13 @@ func (v reflectV) String() string {
 		}
 	}
 
-	return fmt.Sprint(v.V)
+	return fmt.Sprint(v.v)
 }
 
-func (v reflectV) MarshalText() ([]byte, error) {
+func (v ReflectV) MarshalText() ([]byte, error) {
 	return []byte(v.String()), nil
 }
 
-func (v reflectV) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.V)
+func (v ReflectV) MarshalJSON() ([]byte, error) {
+	return json.Marshal(v.v)
 }

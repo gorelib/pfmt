@@ -4,9 +4,7 @@
 
 package pfmt
 
-import (
-	"bytes"
-)
+import "bytes"
 
 // Anys returns stringer/JSON/text marshaler for the slice of any type.
 func Anys(s []interface{}) AnyS { return AnyS{s: s} }
