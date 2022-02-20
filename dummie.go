@@ -4,7 +4,10 @@
 
 package pfmt
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 // Dummie returns stringer/JSON/text marshaler for the dummie type.
 func Dummie(v interface{}) DummieV { return New().Dummie(v) }
@@ -34,5 +37,8 @@ func (v DummieV) MarshalText() ([]byte, error) {
 }
 
 func (v DummieV) MarshalJSON() ([]byte, error) {
-	return v.MarshalText()
+	if v.v == nil {
+		return []byte("null"), nil
+	}
+	return json.Marshal(v.v)
 }

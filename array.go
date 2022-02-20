@@ -6,6 +6,7 @@ package pfmt
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
 	"reflect"
 )
@@ -46,9 +47,9 @@ func (v ArrayV) MarshalText() ([]byte, error) {
 	values := make([]interface{}, 0, num)
 
 	for i := 0; i < val.Len(); i++ {
-		field := val.Index(i)
-		if field.CanInterface() {
-			values = append(values, field.Interface())
+		elem := val.Index(i)
+		if elem.CanInterface() {
+			values = append(values, elem.Interface())
 		} else {
 			num--
 		}
@@ -88,5 +89,70 @@ func (v ArrayV) MarshalText() ([]byte, error) {
 }
 
 func (v ArrayV) MarshalJSON() ([]byte, error) {
-	return v.MarshalText()
+	if v.v == nil {
+		return []byte("null"), nil
+	}
+
+	val := reflect.ValueOf(v.v)
+
+	if val.Kind() != reflect.Array {
+		return nil, errors.New("not array")
+	}
+
+	buf := pool.Get().(*bytes.Buffer)
+	buf.Reset()
+	defer pool.Put(buf)
+
+	_, err := buf.WriteString("[")
+	if err != nil {
+		return nil, err
+	}
+
+	num := 0
+
+	for i := 0; i < val.Len(); i++ {
+		elem := val.Index(i)
+
+		if !elem.CanInterface() {
+			continue
+		}
+
+		if num != 0 {
+			_, err = buf.WriteString(",")
+			if err != nil {
+				return nil, err
+			}
+		}
+
+		num++
+		it := elem.Interface()
+		var j []byte
+
+		if marsh, ok := it.(json.Marshaler); ok {
+			j, err = marsh.MarshalJSON()
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			j, err = json.Marshal(it)
+			if err != nil {
+				return nil, err
+			}
+		}
+
+		_, err = buf.Write(j)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	_, err = buf.WriteString("]")
+	if err != nil {
+		return nil, err
+	}
+
+	p := make([]byte, len(buf.Bytes()))
+	copy(p, buf.Bytes())
+
+	return p, nil
 }

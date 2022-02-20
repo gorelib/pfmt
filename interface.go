@@ -5,6 +5,7 @@
 package pfmt
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"reflect"
@@ -49,5 +50,22 @@ func (v InterfaceV) MarshalText() ([]byte, error) {
 }
 
 func (v InterfaceV) MarshalJSON() ([]byte, error) {
-	return v.MarshalText()
+	if v.v == nil {
+		return []byte("null"), nil
+	}
+
+	val := reflect.ValueOf(v.v)
+
+	if val.Kind() != reflect.Interface {
+		return nil, errors.New("not interface")
+	}
+	if val.IsNil() {
+		return []byte("null"), nil
+	}
+
+	if marsh, ok := v.v.(json.Marshaler); ok {
+		return marsh.MarshalJSON()
+	}
+
+	return json.Marshal(v.v)
 }

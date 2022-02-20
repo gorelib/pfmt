@@ -5,6 +5,7 @@
 package pfmt
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"reflect"
@@ -49,5 +50,18 @@ func (v ChanV) MarshalText() ([]byte, error) {
 }
 
 func (v ChanV) MarshalJSON() ([]byte, error) {
-	return v.MarshalText()
+	if v.v == nil {
+		return []byte("null"), nil
+	}
+
+	val := reflect.ValueOf(v.v)
+
+	if val.Kind() != reflect.Chan {
+		return nil, errors.New("not channel")
+	}
+	if val.IsNil() {
+		return []byte("null"), nil
+	}
+
+	return json.Marshal(v.v)
 }

@@ -6,6 +6,7 @@ package pfmt
 
 import (
 	"bytes"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"reflect"
@@ -101,5 +102,19 @@ func (v StructV) MarshalText() ([]byte, error) {
 }
 
 func (v StructV) MarshalJSON() ([]byte, error) {
-	return v.MarshalText()
+	if v.v == nil {
+		return []byte("null"), nil
+	}
+
+	val := reflect.ValueOf(v.v)
+
+	if val.Kind() != reflect.Struct {
+		return nil, errors.New("not struct")
+	}
+
+	if marsh, ok := v.v.(json.Marshaler); ok {
+		return marsh.MarshalJSON()
+	}
+
+	return json.Marshal(v.v)
 }

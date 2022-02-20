@@ -33,5 +33,8 @@ func (v BoolV) MarshalText() ([]byte, error) {
 }
 
 func (v BoolV) MarshalJSON() ([]byte, error) {
-	return v.MarshalText()
+	if v.v {
+		return []byte("true"), nil
+	}
+	return []byte("false"), nil
 }

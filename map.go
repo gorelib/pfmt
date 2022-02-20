@@ -5,6 +5,7 @@
 package pfmt
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"reflect"
@@ -49,5 +50,18 @@ func (v MapV) MarshalText() ([]byte, error) {
 }
 
 func (v MapV) MarshalJSON() ([]byte, error) {
-	return v.MarshalText()
+	if v.v == nil {
+		return []byte("null"), nil
+	}
+
+	val := reflect.ValueOf(v.v)
+
+	if val.Kind() != reflect.Map {
+		return nil, errors.New("not map")
+	}
+	if val.IsNil() {
+		return []byte("null"), nil
+	}
+
+	return json.Marshal(v.v)
 }
