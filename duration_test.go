@@ -35,8 +35,8 @@ func TestMarshalDuration(t *testing.T) {
 		{
 			line:     line(),
 			input:    map[string]json.Marshaler{"reflect duration": pfmt.Reflect(42 * time.Nanosecond)},
-			want:     "42ns",
-			wantText: "42ns",
+			want:     "42",
+			wantText: "42",
 			wantJSON: `{
 			"reflect duration":42
 		}`,

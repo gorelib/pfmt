@@ -88,8 +88,8 @@ func TestMarshalString(t *testing.T) {
 		{
 			line:     line(),
 			input:    map[string]json.Marshaler{"reflect string with zero byte": pfmt.Reflect(string(byte(0)))},
-			want:     "\u0000",
-			wantText: "\u0000",
+			want:     "\\u0000",
+			wantText: "\\u0000",
 			wantJSON: `{
 			"reflect string with zero byte":"\u0000"
 		}`,

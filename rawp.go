@@ -5,9 +5,20 @@
 package pfmt
 
 // Rawp returns stringer/JSON/text marshaler for the raw byte slice pointer.
-func Rawp(p *[]byte) RawP { return RawP{p: p} }
+func Rawp(p *[]byte) RawP { return New().Rawp(p) }
 
-type RawP struct{ p *[]byte }
+// Rawp returns stringer/JSON/text marshaler for the raw byte slice pointer.
+func (pretty Pretty) Rawp(p *[]byte) RawP {
+	return RawP{
+		p:        p,
+		prettier: pretty,
+	}
+}
+
+type RawP struct {
+	p        *[]byte
+	prettier Pretty
+}
 
 func (p RawP) String() string {
 	t, _ := p.MarshalText()
@@ -16,14 +27,14 @@ func (p RawP) String() string {
 
 func (p RawP) MarshalText() ([]byte, error) {
 	if p.p == nil {
-		return []byte("null"), nil
+		return []byte(p.prettier.nil), nil
 	}
-	return RawV{V: *p.p}.MarshalText()
+	return p.prettier.Raw(*p.p).MarshalText()
 }
 
 func (p RawP) MarshalJSON() ([]byte, error) {
 	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return RawV{V: *p.p}.MarshalJSON()
+	return p.prettier.Raw(*p.p).MarshalJSON()
 }

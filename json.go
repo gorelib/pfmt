@@ -9,7 +9,9 @@ import "bytes"
 // JSON returns stringer/JSON/text marshaler for the KV slice type.
 func JSON(s ...KV) JSONV { return JSONV{s: s} }
 
-type JSONV struct{ s []KV }
+type JSONV struct {
+	s []KV
+}
 
 func (s JSONV) String() string {
 	b, _ := s.MarshalText()

@@ -7,9 +7,16 @@ package pfmt
 import "strconv"
 
 // Uint returns stringer/JSON/text marshaler for the uint type.
-func Uint(v uint) UintV { return UintV{V: v} }
+func Uint(v uint) UintV { return New().Uint(v) }
 
-type UintV struct{ V uint }
+// Uint returns stringer/JSON/text marshaler for the uint type.
+func (pretty Pretty) Uint(v uint) UintV {
+	return UintV{V: v}
+}
+
+type UintV struct {
+	V uint
+}
 
 func (v UintV) String() string {
 	return strconv.FormatUint(uint64(v.V), 10)

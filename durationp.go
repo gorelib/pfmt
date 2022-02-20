@@ -9,27 +9,38 @@ import (
 )
 
 // Durationp returns stringer/JSON/text marshaler for the  time duration pointer type.
-func Durationp(p *time.Duration) DurationP { return DurationP{p: p} }
+func Durationp(p *time.Duration) DurationP { return New().Durationp(p) }
 
-type DurationP struct{ p *time.Duration }
+// Durationp returns stringer/JSON/text marshaler for the  time duration pointer type.
+func (pretty Pretty) Durationp(p *time.Duration) DurationP {
+	return DurationP{
+		p:        p,
+		prettier: pretty,
+	}
+}
+
+type DurationP struct {
+	p        *time.Duration
+	prettier Pretty
+}
 
 func (p DurationP) String() string {
 	if p.p == nil {
-		return "null"
+		return p.prettier.nil
 	}
-	return Duration(*p.p).String()
+	return p.prettier.Duration(*p.p).String()
 }
 
 func (p DurationP) MarshalText() ([]byte, error) {
 	if p.p == nil {
-		return []byte("null"), nil
+		return []byte(p.prettier.nil), nil
 	}
-	return Duration(*p.p).MarshalText()
+	return p.prettier.Duration(*p.p).MarshalText()
 }
 
 func (p DurationP) MarshalJSON() ([]byte, error) {
 	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return Duration(*p.p).MarshalJSON()
+	return p.prettier.Duration(*p.p).MarshalJSON()
 }

@@ -5,15 +5,26 @@
 package pfmt
 
 // Uintp returns stringer/JSON/text marshaler for the uint pointer type.
-func Uintp(p *uint) UintP { return UintP{p: p} }
+func Uintp(p *uint) UintP { return New().Uintp(p) }
 
-type UintP struct{ p *uint }
+// Uintp returns stringer/JSON/text marshaler for the uint pointer type.
+func (pretty Pretty) Uintp(p *uint) UintP {
+	return UintP{
+		p:        p,
+		prettier: pretty,
+	}
+}
+
+type UintP struct {
+	p        *uint
+	prettier Pretty
+}
 
 func (p UintP) String() string {
 	if p.p == nil {
-		return "null"
+		return p.prettier.nil
 	}
-	return UintV{V: *p.p}.String()
+	return p.prettier.Uint(*p.p).String()
 }
 
 func (p UintP) MarshalText() ([]byte, error) {

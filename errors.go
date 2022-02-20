@@ -10,10 +10,21 @@ import (
 	"github.com/pprint/pfmt/pencode"
 )
 
-// Errors returns stringer/JSON/text marshaler for the error slice type.
-func Errors(s []error) ErrorS { return ErrorS{s: s} }
+// Errs returns stringer/JSON/text marshaler for the error slice type.
+func Errs(s []error) ErrorS { return New().Errs(s) }
 
-type ErrorS struct{ s []error }
+// Errors returns stringer/JSON/text marshaler for the error slice type.
+func (pretty Pretty) Errs(s []error) ErrorS {
+	return ErrorS{
+		s:        s,
+		prettier: pretty,
+	}
+}
+
+type ErrorS struct {
+	s        []error
+	prettier Pretty
+}
 
 func (s ErrorS) String() string {
 	b, _ := s.MarshalText()
@@ -22,7 +33,7 @@ func (s ErrorS) String() string {
 
 func (s ErrorS) MarshalText() ([]byte, error) {
 	if s.s == nil {
-		return []byte("null"), nil
+		return []byte(s.prettier.nil), nil
 	}
 	var buf bytes.Buffer
 	var tail bool
@@ -32,7 +43,7 @@ func (s ErrorS) MarshalText() ([]byte, error) {
 			continue
 		}
 		if tail {
-			buf.WriteString(" ")
+			buf.WriteString(s.prettier.separator)
 		}
 		err := pencode.String(&buf, v.Error())
 		if err != nil {
@@ -50,7 +61,7 @@ func (s ErrorS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, v := range s.s {
-		b, err := Error(v).MarshalJSON()
+		b, err := s.prettier.Err(v).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

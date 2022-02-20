@@ -4,28 +4,39 @@
 
 package pfmt
 
-// Errorp returns stringer/JSON/text marshaler for the error pointer type.
-func Errorp(p *error) ErrorP { return ErrorP{p: p} }
+// Errp returns stringer/JSON/text marshaler for the error pointer type.
+func Errp(p *error) ErrorP { return New().Errp(p) }
 
-type ErrorP struct{ p *error }
+// Errp returns stringer/JSON/text marshaler for the error pointer type.
+func (pretty Pretty) Errp(p *error) ErrorP {
+	return ErrorP{
+		p:        p,
+		prettier: pretty,
+	}
+}
+
+type ErrorP struct {
+	p        *error
+	prettier Pretty
+}
 
 func (p ErrorP) String() string {
 	if p.p == nil {
-		return "null"
+		return p.prettier.nil
 	}
-	return Error(*p.p).String()
+	return Err(*p.p).String()
 }
 
 func (p ErrorP) MarshalText() ([]byte, error) {
 	if p.p == nil {
-		return []byte("null"), nil
+		return []byte(p.prettier.nil), nil
 	}
-	return Error(*p.p).MarshalText()
+	return p.prettier.Err(*p.p).MarshalText()
 }
 
 func (p ErrorP) MarshalJSON() ([]byte, error) {
 	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return Error(*p.p).MarshalJSON()
+	return p.prettier.Err(*p.p).MarshalJSON()
 }

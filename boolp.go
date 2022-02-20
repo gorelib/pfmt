@@ -5,9 +5,20 @@
 package pfmt
 
 // Boolp returns stringer/JSON/text marshaler for the bool pointer type.
-func Boolp(p *bool) BoolP { return BoolP{p: p} }
+func Boolp(p *bool) BoolP { return New().Boolp(p) }
 
-type BoolP struct{ p *bool }
+// Boolp returns stringer/JSON/text marshaler for the bool pointer type.
+func (pretty Pretty) Boolp(p *bool) BoolP {
+	return BoolP{
+		p:        p,
+		prettier: pretty,
+	}
+}
+
+type BoolP struct {
+	p        *bool
+	prettier Pretty
+}
 
 func (p BoolP) String() string {
 	t, _ := p.MarshalText()
@@ -16,11 +27,14 @@ func (p BoolP) String() string {
 
 func (p BoolP) MarshalText() ([]byte, error) {
 	if p.p == nil {
-		return []byte("null"), nil
+		return []byte(p.prettier.nil), nil
 	}
-	return Bool(*p.p).MarshalText()
+	return p.prettier.Bool(*p.p).MarshalText()
 }
 
 func (p BoolP) MarshalJSON() ([]byte, error) {
+	if p.p == nil {
+		return []byte("null"), nil
+	}
 	return p.MarshalText()
 }

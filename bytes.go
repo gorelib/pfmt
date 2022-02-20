@@ -6,17 +6,25 @@ package pfmt
 
 import (
 	"bytes"
-	"sync"
 
 	"github.com/pprint/pfmt/pencode"
 )
 
-var bufPool = sync.Pool{New: func() interface{} { return new(bytes.Buffer) }}
+// Bytes returns stringer/JSON/text marshaler for slice of bytes type.
+func Bytes(s []byte) ByteS { return New().Bytes(s) }
 
 // Bytes returns stringer/JSON/text marshaler for slice of bytes type.
-func Bytes(s []byte) ByteS { return ByteS{s: s} }
+func (pretty Pretty) Bytes(s []byte) ByteS {
+	return ByteS{
+		s:        s,
+		prettier: pretty,
+	}
+}
 
-type ByteS struct{ s []byte }
+type ByteS struct {
+	s        []byte
+	prettier Pretty
+}
 
 func (s ByteS) String() string {
 	b, _ := s.MarshalText()
@@ -25,7 +33,7 @@ func (s ByteS) String() string {
 
 func (s ByteS) MarshalText() ([]byte, error) {
 	if s.s == nil {
-		return []byte("null"), nil
+		return []byte(s.prettier.nil), nil
 	}
 	var buf bytes.Buffer
 

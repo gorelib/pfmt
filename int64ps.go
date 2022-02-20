@@ -7,9 +7,20 @@ package pfmt
 import "bytes"
 
 // Int64ps returns stringer/JSON/text marshaler for the int64 pointer slice type.
-func Int64ps(a []*int64) Int64PS { return Int64PS{a: a} }
+func Int64ps(a []*int64) Int64PS { return New().Int64ps(a) }
 
-type Int64PS struct{ a []*int64 }
+// Int64ps returns stringer/JSON/text marshaler for the int64 pointer slice type.
+func (pretty Pretty) Int64ps(a []*int64) Int64PS {
+	return Int64PS{
+		a:        a,
+		prettier: pretty,
+	}
+}
+
+type Int64PS struct {
+	a        []*int64
+	prettier Pretty
+}
 
 func (a Int64PS) String() string {
 	b, _ := a.MarshalText()
@@ -18,7 +29,7 @@ func (a Int64PS) String() string {
 
 func (a Int64PS) MarshalText() ([]byte, error) {
 	if a.a == nil {
-		return []byte("null"), nil
+		return []byte(a.prettier.nil), nil
 	}
 	var buf bytes.Buffer
 	for i, p := range a.a {
@@ -27,7 +38,7 @@ func (a Int64PS) MarshalText() ([]byte, error) {
 			return nil, err
 		}
 		if i != 0 {
-			buf.WriteString(" ")
+			buf.WriteString(a.prettier.separator)
 		}
 		_, err = buf.Write(b)
 		if err != nil {
@@ -44,7 +55,7 @@ func (a Int64PS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, p := range a.a {
-		b, err := Int64p(p).MarshalJSON()
+		b, err := a.prettier.Int64p(p).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

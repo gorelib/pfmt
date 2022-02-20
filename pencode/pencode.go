@@ -5,12 +5,13 @@
 package pencode
 
 import (
+	"bytes"
 	"io"
 	"sync"
 	"unicode/utf8"
 )
 
-var pool = sync.Pool{New: func() interface{} { p := make([]byte, utf8.UTFMax); return &p }}
+var pool = sync.Pool{New: func() interface{} { return bytes.NewBuffer(make([]byte, utf8.UTFMax)) }}
 
 var codec = map[rune][]byte{
 	'\x00': []byte("\\u0000"),
@@ -142,12 +143,12 @@ func enc(dst io.Writer, idx int, r, oldr rune) (int, error) {
 
 		idx += 2
 	} else {
-		p := *pool.Get().(*[]byte)
-		defer pool.Put(&p)
+		buf := pool.Get().(*bytes.Buffer)
+		defer pool.Put(buf)
 
-		n := utf8.EncodeRune(p, r)
+		n := utf8.EncodeRune(buf.Bytes(), r)
 
-		_, err := dst.Write(p[:n])
+		_, err := dst.Write(buf.Bytes()[:n])
 		if err != nil {
 			return 0, err
 		}

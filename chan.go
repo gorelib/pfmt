@@ -10,36 +10,36 @@ import (
 	"reflect"
 )
 
-// Func returns stringer/JSON/text marshaler for the function.
-func Func(v interface{}) FuncV { return New().Func(v) }
+// Chan returns stringer/JSON/text marshaler for the channel.
+func Chan(v interface{}) ChanV { return New().Chan(v) }
 
-// Func returns stringer/JSON/text marshaler for the function.
-func (pretty Pretty) Func(v interface{}) FuncV {
-	return FuncV{
+// Chan returns stringer/JSON/text marshaler for the channel.
+func (pretty Pretty) Chan(v interface{}) ChanV {
+	return ChanV{
 		v:        v,
 		prettier: pretty,
 	}
 }
 
-type FuncV struct {
+type ChanV struct {
 	v        interface{}
 	prettier Pretty
 }
 
-func (v FuncV) String() string {
+func (v ChanV) String() string {
 	b, _ := v.MarshalText()
 	return string(b)
 }
 
-func (v FuncV) MarshalText() ([]byte, error) {
+func (v ChanV) MarshalText() ([]byte, error) {
 	if v.v == nil {
 		return []byte(v.prettier.nil), nil
 	}
 
 	val := reflect.ValueOf(v.v)
 
-	if val.Kind() != reflect.Func {
-		return nil, errors.New("not function")
+	if val.Kind() != reflect.Chan {
+		return nil, errors.New("not channel")
 	}
 	if val.IsNil() {
 		return []byte(v.prettier.nil), nil
@@ -48,6 +48,6 @@ func (v FuncV) MarshalText() ([]byte, error) {
 	return []byte(fmt.Sprint(v.v)), nil
 }
 
-func (v FuncV) MarshalJSON() ([]byte, error) {
+func (v ChanV) MarshalJSON() ([]byte, error) {
 	return v.MarshalText()
 }

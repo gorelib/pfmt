@@ -7,9 +7,20 @@ package pfmt
 import "bytes"
 
 // Runesps returns stringer/JSON/text marshaler for slice of pointers to rune slice type.
-func Runesps(a []*[]rune) RuneSPS { return RuneSPS{a: a} }
+func Runesps(a []*[]rune) RuneSPS { return New().Runesps(a) }
 
-type RuneSPS struct{ a []*[]rune }
+// Runesps returns stringer/JSON/text marshaler for slice of pointers to rune slice type.
+func (pretty Pretty) Runesps(a []*[]rune) RuneSPS {
+	return RuneSPS{
+		a:        a,
+		prettier: pretty,
+	}
+}
+
+type RuneSPS struct {
+	a        []*[]rune
+	prettier Pretty
+}
 
 func (a RuneSPS) String() string {
 	t, _ := a.MarshalText()
@@ -18,16 +29,16 @@ func (a RuneSPS) String() string {
 
 func (a RuneSPS) MarshalText() ([]byte, error) {
 	if a.a == nil {
-		return []byte("null"), nil
+		return []byte(a.prettier.nil), nil
 	}
 	var buf bytes.Buffer
 	for i, p := range a.a {
-		b, err := Runesp(p).MarshalText()
+		b, err := a.prettier.Runesp(p).MarshalText()
 		if err != nil {
 			return nil, err
 		}
 		if i != 0 {
-			buf.WriteString(" ")
+			buf.WriteString(a.prettier.separator)
 		}
 		_, err = buf.Write(b)
 		if err != nil {
@@ -44,7 +55,7 @@ func (a RuneSPS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, p := range a.a {
-		b, err := Runesp(p).MarshalJSON()
+		b, err := a.prettier.Runesp(p).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

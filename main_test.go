@@ -52,7 +52,7 @@ func testMarshal(t *testing.T, tests []marshalTest) {
 				} else {
 					s := str.String()
 					if s != tt.want {
-						t.Errorf("%q unwant string, want: %q, recieved: %q %s", k, tt.want, s, tt.line)
+						t.Errorf("%q unwanted string, want: %q, got: %q %s", k, tt.want, s, tt.line)
 					}
 				}
 
@@ -67,7 +67,7 @@ func testMarshal(t *testing.T, tests []marshalTest) {
 					}
 
 					if string(p) != tt.wantText {
-						t.Errorf("%q unwant text, want: %q, recieved: %q %s", k, tt.wantText, string(p), tt.line)
+						t.Errorf("%q unwanted text, want: %q, got: %q %s", k, tt.wantText, string(p), tt.line)
 					}
 				}
 			}
@@ -75,7 +75,7 @@ func testMarshal(t *testing.T, tests []marshalTest) {
 			p, err := json.Marshal(tt.input)
 
 			if fmt.Sprint(err) != fmt.Sprint(tt.wantError) {
-				t.Fatalf("marshal error want: %s, recieved: %s %s", tt.wantError, err, tt.line)
+				t.Fatalf("marshal error want: %s, got: %s %s", tt.wantError, err, tt.line)
 			}
 
 			if err == nil {

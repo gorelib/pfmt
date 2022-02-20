@@ -9,27 +9,38 @@ import (
 )
 
 // Timep returns stringer/JSON/text marshaler for the time pointer type.
-func Timep(p *time.Time) TimeP { return TimeP{p: p} }
+func Timep(p *time.Time) TimeP { return New().Timep(p) }
 
-type TimeP struct{ p *time.Time }
+// Timep returns stringer/JSON/text marshaler for the time pointer type.
+func (pretty Pretty) Timep(p *time.Time) TimeP {
+	return TimeP{
+		p:        p,
+		prettier: pretty,
+	}
+}
+
+type TimeP struct {
+	p        *time.Time
+	prettier Pretty
+}
 
 func (p TimeP) String() string {
 	if p.p == nil {
-		return "null"
+		return p.prettier.nil
 	}
-	return TimeV{V: *p.p}.String()
+	return p.prettier.Time(*p.p).String()
 }
 
 func (p TimeP) MarshalText() ([]byte, error) {
 	if p.p == nil {
-		return []byte("null"), nil
+		return []byte(p.prettier.nil), nil
 	}
-	return TimeV{V: *p.p}.MarshalText()
+	return p.prettier.Time(*p.p).MarshalText()
 }
 
 func (p TimeP) MarshalJSON() ([]byte, error) {
 	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return TimeV{V: *p.p}.MarshalJSON()
+	return p.prettier.Time(*p.p).MarshalJSON()
 }

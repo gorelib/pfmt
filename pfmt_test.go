@@ -5,6 +5,7 @@
 package pfmt_test
 
 import (
+	"net/http"
 	"testing"
 	"time"
 
@@ -76,6 +77,24 @@ func TestSprint(t *testing.T) {
 			line: line(),
 			args: []interface{}{nilTimePtr},
 			want: "null",
+		},
+		{
+			name: "array",
+			line: line(),
+			args: []interface{}{[3]int{1, 2, 3}},
+			want: "[1 2 3]",
+		},
+		{
+			name: "slice",
+			line: line(),
+			args: []interface{}{[]int{1, 2, 3}},
+			want: "1 2 3",
+		},
+		{
+			name: "struct",
+			line: line(),
+			args: []interface{}{http.Request{}},
+			want: "http.Request{Method: URL:null Proto: ProtoMajor:0 ProtoMinor:0 Header:null Body:null GetBody:null ContentLength:0 TransferEncoding:null Close:false Host: Form:null PostForm:null MultipartForm:null Trailer:null RemoteAddr: RequestURI: TLS:null Cancel:null Response:null}",
 		},
 	}
 

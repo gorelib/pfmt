@@ -5,15 +5,26 @@
 package pfmt
 
 // Int16p returns stringer/JSON/text marshaler for the int16 pointer type.
-func Int16p(p *int16) Int16P { return Int16P{p: p} }
+func Int16p(p *int16) Int16P { return New().Int16p(p) }
 
-type Int16P struct{ p *int16 }
+// Int16p returns stringer/JSON/text marshaler for the int16 pointer type.
+func (pretty Pretty) Int16p(p *int16) Int16P {
+	return Int16P{
+		p:        p,
+		prettier: pretty,
+	}
+}
+
+type Int16P struct {
+	p        *int16
+	prettier Pretty
+}
 
 func (p Int16P) String() string {
 	if p.p == nil {
-		return "null"
+		return p.prettier.nil
 	}
-	return Int16V{V: *p.p}.String()
+	return p.prettier.Int16(*p.p).String()
 }
 
 func (p Int16P) MarshalText() ([]byte, error) {

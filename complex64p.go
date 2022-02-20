@@ -5,27 +5,38 @@
 package pfmt
 
 // Complex64p returns stringer/JSON/text marshaler for the complex64 pointer type.
-func Complex64p(p *complex64) Complex64P { return Complex64P{p: p} }
+func Complex64p(p *complex64) Complex64P { return New().Complex64p(p) }
 
-type Complex64P struct{ p *complex64 }
+// Complex64p returns stringer/JSON/text marshaler for the complex64 pointer type.
+func (pretty Pretty) Complex64p(p *complex64) Complex64P {
+	return Complex64P{
+		p:        p,
+		prettier: pretty,
+	}
+}
+
+type Complex64P struct {
+	p        *complex64
+	prettier Pretty
+}
 
 func (p Complex64P) String() string {
 	if p.p == nil {
-		return "null"
+		return p.prettier.nil
 	}
-	return Complex64(*p.p).String()
+	return p.prettier.Complex64(*p.p).String()
 }
 
 func (p Complex64P) MarshalText() ([]byte, error) {
 	if p.p == nil {
-		return []byte("null"), nil
+		return []byte(p.prettier.nil), nil
 	}
-	return Complex64(*p.p).MarshalText()
+	return p.prettier.Complex64(*p.p).MarshalText()
 }
 
 func (p Complex64P) MarshalJSON() ([]byte, error) {
 	if p.p == nil {
 		return []byte("null"), nil
 	}
-	return Complex64(*p.p).MarshalJSON()
+	return p.prettier.Complex64(*p.p).MarshalJSON()
 }

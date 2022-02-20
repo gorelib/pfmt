@@ -7,9 +7,20 @@ package pfmt
 import "bytes"
 
 // Bytesps returns stringer/JSON/text marshaler for slice of pointers to byte slice type.
-func Bytesps(a []*[]byte) ByteSPS { return ByteSPS{a: a} }
+func Bytesps(a []*[]byte) ByteSPS { return New().Bytesps(a) }
 
-type ByteSPS struct{ a []*[]byte }
+// Bytesps returns stringer/JSON/text marshaler for slice of pointers to byte slice type.
+func (pretty Pretty) Bytesps(a []*[]byte) ByteSPS {
+	return ByteSPS{
+		a:        a,
+		prettier: pretty,
+	}
+}
+
+type ByteSPS struct {
+	a        []*[]byte
+	prettier Pretty
+}
 
 func (a ByteSPS) String() string {
 	t, _ := a.MarshalText()
@@ -18,16 +29,16 @@ func (a ByteSPS) String() string {
 
 func (a ByteSPS) MarshalText() ([]byte, error) {
 	if a.a == nil {
-		return []byte("null"), nil
+		return []byte(a.prettier.nil), nil
 	}
 	var buf bytes.Buffer
 	for i, p := range a.a {
-		b, err := Bytesp(p).MarshalText()
+		b, err := a.prettier.Bytesp(p).MarshalText()
 		if err != nil {
 			return nil, err
 		}
 		if i != 0 {
-			buf.WriteString(" ")
+			buf.WriteString(a.prettier.separator)
 		}
 		_, err = buf.Write(b)
 		if err != nil {
@@ -44,7 +55,7 @@ func (a ByteSPS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, p := range a.a {
-		b, err := Bytesp(p).MarshalJSON()
+		b, err := a.prettier.Bytesp(p).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

@@ -53,8 +53,8 @@ func TestDurationpMarshal(t *testing.T) {
 				d := 42 * time.Nanosecond
 				return map[string]json.Marshaler{"reflect duration pointer": pfmt.Reflect(&d)}
 			}(),
-			want:     "42ns",
-			wantText: "42ns",
+			want:     "42",
+			wantText: "42",
 			wantJSON: `{
 			"reflect duration pointer":42
 		}`,

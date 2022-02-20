@@ -7,9 +7,16 @@ package pfmt
 import "strconv"
 
 // Int8 returns stringer/JSON/text marshaler for the int8 type.
-func Int8(v int8) Int8V { return Int8V{V: v} }
+func Int8(v int8) Int8V { return New().Int8(v) }
 
-type Int8V struct{ V int8 }
+// Int8 returns stringer/JSON/text marshaler for the int8 type.
+func (Pretty) Int8(v int8) Int8V {
+	return Int8V{V: v}
+}
+
+type Int8V struct {
+	V int8
+}
 
 func (v Int8V) String() string {
 	return strconv.Itoa(int(v.V))

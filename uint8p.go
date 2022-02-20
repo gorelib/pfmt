@@ -5,15 +5,26 @@
 package pfmt
 
 // Uint8p returns stringer/JSON/text marshaler for the uint8 pointer type.
-func Uint8p(p *uint8) Uint8P { return Uint8P{p: p} }
+func Uint8p(p *uint8) Uint8P { return New().Uint8p(p) }
 
-type Uint8P struct{ p *uint8 }
+// Uint8p returns stringer/JSON/text marshaler for the uint8 pointer type.
+func (pretty Pretty) Uint8p(p *uint8) Uint8P {
+	return Uint8P{
+		p:        p,
+		prettier: pretty,
+	}
+}
+
+type Uint8P struct {
+	p        *uint8
+	prettier Pretty
+}
 
 func (p Uint8P) String() string {
 	if p.p == nil {
-		return "null"
+		return p.prettier.nil
 	}
-	return Uint8V{V: *p.p}.String()
+	return p.prettier.Uint8(*p.p).String()
 }
 
 func (p Uint8P) MarshalText() ([]byte, error) {

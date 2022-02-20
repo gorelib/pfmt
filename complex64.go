@@ -9,9 +9,16 @@ import (
 )
 
 // Complex64 returns stringer/JSON/text marshaler for the complex64 type.
-func Complex64(v complex64) Complex64V { return Complex64V{v: v} }
+func Complex64(v complex64) Complex64V { return New().Complex64(v) }
 
-type Complex64V struct{ v complex64 }
+// Complex64 returns stringer/JSON/text marshaler for the complex64 type.
+func (pretty Pretty) Complex64(v complex64) Complex64V {
+	return Complex64V{v: v}
+}
+
+type Complex64V struct {
+	v complex64
+}
 
 func (v Complex64V) String() string {
 	s := fmt.Sprintf("%g", v.v)

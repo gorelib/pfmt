@@ -7,9 +7,20 @@ package pfmt
 import "bytes"
 
 // Raws returns stringer/JSON/text marshaler for the slice of byte slice type.
-func Raws(s [][]byte) RawS { return RawS{s: s} }
+func Raws(s [][]byte) RawS { return New().Raws(s) }
 
-type RawS struct{ s [][]byte }
+// Raws returns stringer/JSON/text marshaler for the slice of byte slice type.
+func (pretty Pretty) Raws(s [][]byte) RawS {
+	return RawS{
+		s:        s,
+		prettier: pretty,
+	}
+}
+
+type RawS struct {
+	s        [][]byte
+	prettier Pretty
+}
 
 func (s RawS) String() string {
 	b, _ := s.MarshalText()
@@ -18,16 +29,16 @@ func (s RawS) String() string {
 
 func (s RawS) MarshalText() ([]byte, error) {
 	if s.s == nil {
-		return []byte("null"), nil
+		return []byte(s.prettier.nil), nil
 	}
 	var buf bytes.Buffer
 	for i, v := range s.s {
-		b, err := RawV{V: v}.MarshalText()
+		b, err := s.prettier.Raw(v).MarshalText()
 		if err != nil {
 			return nil, err
 		}
 		if i != 0 {
-			buf.WriteString(" ")
+			buf.WriteString(s.prettier.separator)
 		}
 		_, err = buf.Write(b)
 		if err != nil {
@@ -44,7 +55,7 @@ func (s RawS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, v := range s.s {
-		b, err := RawV{V: v}.MarshalJSON()
+		b, err := s.prettier.Raw(v).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

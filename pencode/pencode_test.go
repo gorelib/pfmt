@@ -24,7 +24,7 @@ func TestBytes(t *testing.T) {
 			}
 
 			if !bytes.Equal(buf.Bytes(), want) {
-				t.Errorf("want: %s, get: %s", want, buf.String())
+				t.Errorf("want: %s, got: %s", want, buf.String())
 			}
 		})
 	}
@@ -45,7 +45,7 @@ func TestRunes(t *testing.T) {
 			}
 
 			if !bytes.Equal(buf.Bytes(), want) {
-				t.Errorf("want: %s, get: %s", want, buf.String())
+				t.Errorf("want: %s, got: %s", want, buf.String())
 			}
 		})
 	}
@@ -66,7 +66,7 @@ func TestString(t *testing.T) {
 			}
 
 			if !bytes.Equal(buf.Bytes(), want) {
-				t.Errorf("want: %s, get: %s", want, buf.String())
+				t.Errorf("want: %s, got: %s", want, buf.String())
 			}
 		})
 	}

@@ -7,9 +7,20 @@ package pfmt
 import "bytes"
 
 // Ints returns stringer/JSON/text marshaler for the int slice type.
-func Ints(s []int) IntS { return IntS{s: s} }
+func Ints(s []int) IntS { return New().Ints(s) }
 
-type IntS struct{ s []int }
+// Ints returns stringer/JSON/text marshaler for the int slice type.
+func (pretty Pretty) Ints(s []int) IntS {
+	return IntS{
+		s:        s,
+		prettier: pretty,
+	}
+}
+
+type IntS struct {
+	s        []int
+	prettier Pretty
+}
 
 func (s IntS) String() string {
 	b, _ := s.MarshalText()
@@ -19,12 +30,12 @@ func (s IntS) String() string {
 func (s IntS) MarshalText() ([]byte, error) {
 	var buf bytes.Buffer
 	for i, v := range s.s {
-		b, err := IntV{V: v}.MarshalText()
+		b, err := s.prettier.Int(v).MarshalText()
 		if err != nil {
 			return nil, err
 		}
 		if i != 0 {
-			buf.WriteString(" ")
+			buf.WriteString(s.prettier.separator)
 		}
 		_, err = buf.Write(b)
 		if err != nil {
@@ -38,7 +49,7 @@ func (s IntS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, v := range s.s {
-		b, err := IntV{V: v}.MarshalJSON()
+		b, err := s.prettier.Int(v).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

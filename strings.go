@@ -12,18 +12,29 @@ import (
 )
 
 // Strings returns stringer/JSON/text marshaler for the string slice type.
-func Strings(s []string) StringS { return StringS{s: s} }
+func Strings(s []string) StringS { return New().Strings(s) }
 
-type StringS struct{ s []string }
+// Strings returns stringer/JSON/text marshaler for the string slice type.
+func (pretty Pretty) Strings(s []string) StringS {
+	return StringS{
+		s:        s,
+		prettier: pretty,
+	}
+}
+
+type StringS struct {
+	s        []string
+	prettier Pretty
+}
 
 func (s StringS) String() string {
-	buf := bufPool.Get().(*bytes.Buffer)
+	buf := pool.Get().(*bytes.Buffer)
 	buf.Reset()
-	defer bufPool.Put(buf)
+	defer pool.Put(buf)
 
 	err := pencode.String(buf, strings.Join(s.s, " "))
 	if err != nil {
-		return ""
+		return s.prettier.empty
 	}
 	return buf.String()
 }
@@ -44,7 +55,7 @@ func (s StringS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, v := range s.s {
-		b, err := StringV{V: v}.MarshalJSON()
+		b, err := s.prettier.String(v).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

@@ -4,13 +4,25 @@
 
 package pfmt
 
-import "bytes"
+import (
+	"bytes"
+)
 
 // Reflects returns stringer/JSON/text marshaler uses reflection for the slice of some type.
+func Reflects(s []interface{}) ReflectS { return New().Reflects(s) }
 
-func Reflects(s []interface{}) ReflectS { return ReflectS{s: s} }
+// Reflects returns stringer/JSON/text marshaler uses reflection for the slice of some type.
+func (pretty Pretty) Reflects(s []interface{}) ReflectS {
+	return ReflectS{
+		s:        s,
+		prettier: pretty,
+	}
+}
 
-type ReflectS struct{ s []interface{} }
+type ReflectS struct {
+	s        []interface{}
+	prettier Pretty
+}
 
 func (s ReflectS) String() string {
 	b, _ := s.MarshalText()
@@ -20,12 +32,12 @@ func (s ReflectS) String() string {
 func (s ReflectS) MarshalText() ([]byte, error) {
 	var buf bytes.Buffer
 	for i, v := range s.s {
-		b, err := ReflectV{v: v}.MarshalText()
+		b, err := s.prettier.Reflect(v).MarshalText()
 		if err != nil {
 			return nil, err
 		}
 		if i != 0 {
-			buf.WriteString(" ")
+			buf.WriteString(s.prettier.separator)
 		}
 		_, err = buf.Write(b)
 		if err != nil {
@@ -39,7 +51,7 @@ func (s ReflectS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, v := range s.s {
-		b, err := ReflectV{v: v}.MarshalJSON()
+		b, err := s.prettier.Reflect(v).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

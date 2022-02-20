@@ -7,9 +7,20 @@ package pfmt
 import "bytes"
 
 // Uint8s returns stringer/JSON/text marshaler for the uint8 slice type.
-func Uint8s(s []uint8) Uint8S { return Uint8S{s: s} }
+func Uint8s(s []uint8) Uint8S { return New().Uint8s(s) }
 
-type Uint8S struct{ s []uint8 }
+// Uint8s returns stringer/JSON/text marshaler for the uint8 slice type.
+func (pretty Pretty) Uint8s(s []uint8) Uint8S {
+	return Uint8S{
+		s:        s,
+		prettier: pretty,
+	}
+}
+
+type Uint8S struct {
+	s        []uint8
+	prettier Pretty
+}
 
 func (s Uint8S) String() string {
 	b, _ := s.MarshalText()
@@ -19,12 +30,12 @@ func (s Uint8S) String() string {
 func (s Uint8S) MarshalText() ([]byte, error) {
 	var buf bytes.Buffer
 	for i, v := range s.s {
-		b, err := Uint8V{V: v}.MarshalText()
+		b, err := s.prettier.Uint8(v).MarshalText()
 		if err != nil {
 			return nil, err
 		}
 		if i != 0 {
-			buf.WriteString(" ")
+			buf.WriteString(s.prettier.separator)
 		}
 		_, err = buf.Write(b)
 		if err != nil {
@@ -38,7 +49,7 @@ func (s Uint8S) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, v := range s.s {
-		b, err := Uint8V{V: v}.MarshalJSON()
+		b, err := s.prettier.Uint8(v).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

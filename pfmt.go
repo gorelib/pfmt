@@ -5,9 +5,9 @@
 package pfmt
 
 import (
-	"encoding"
-	"encoding/json"
+	"bytes"
 	"fmt"
+	"sync"
 )
 
 // Println formats using the default formats for its operands and writes to standard output.
@@ -21,6 +21,37 @@ func Println(a ...interface{}) (n int, errno error) {
 // Spaces are added between operands when neither is a string.
 func Sprint(a ...interface{}) string {
 	return Anys(a).String()
+}
+
+// Prettier.
+type Prettier interface {
+	fmt.Stringer
+	KV
+}
+
+func New(opts ...Option) Pretty {
+	pretty := Pretty{
+		separator: " ",
+		nil:       "null",
+		true:      "true",
+		false:     "false",
+		empty:     "",
+		stack:     3,
+	}
+	for _, opt := range opts {
+		opt(&pretty)
+	}
+	return pretty
+}
+
+// Pretty.
+type Pretty struct {
+	separator string
+	nil       string
+	true      string
+	false     string
+	empty     string
+	stack     int
 }
 
 // Formatter returns formatter.
@@ -42,8 +73,37 @@ type Fmt struct {
 	v interface{}
 }
 
-// KV is a key-value pair.
-type KV interface {
-	encoding.TextMarshaler
-	json.Marshaler
+var pool = sync.Pool{New: func() interface{} { return new(bytes.Buffer) }}
+
+// Option changes prettier configuration.
+type Option func(*Pretty)
+
+// WithSeparator sets separator.
+func WithSeparator(separator string) Option {
+	return func(pretty *Pretty) { pretty.separator = separator }
+}
+
+// WithNil sets nil.
+func WithNil(null string) Option {
+	return func(pretty *Pretty) { pretty.nil = null }
+}
+
+// WithTrue sets true.
+func WithTrue(t string) Option {
+	return func(pretty *Pretty) { pretty.true = t }
+}
+
+// WithFalse sets false.
+func WithFalse(f string) Option {
+	return func(pretty *Pretty) { pretty.false = f }
+}
+
+// WithEmpty sets empty.
+func WithEmpty(empty string) Option {
+	return func(pretty *Pretty) { pretty.empty = empty }
+}
+
+// WithStackDepth sets stack depth.
+func WithStackDepth(depth int) Option {
+	return func(pretty *Pretty) { pretty.stack = depth }
 }

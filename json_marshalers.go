@@ -10,9 +10,20 @@ import (
 )
 
 // JSONMarshalers returns stringer/JSON/text marshaler for the JSON marshaler slice type.
-func JSONMarshalers(s []json.Marshaler) JSONMarshalerS { return JSONMarshalerS{s: s} }
+func JSONMarshalers(s []json.Marshaler) JSONMarshalerS { return New().JSONMarshalers(s) }
 
-type JSONMarshalerS struct{ s []json.Marshaler }
+// JSONMarshalers returns stringer/JSON/text marshaler for the JSON marshaler slice type.
+func (pretty Pretty) JSONMarshalers(s []json.Marshaler) JSONMarshalerS {
+	return JSONMarshalerS{
+		s:        s,
+		prettier: pretty,
+	}
+}
+
+type JSONMarshalerS struct {
+	s        []json.Marshaler
+	prettier Pretty
+}
 
 func (s JSONMarshalerS) String() string {
 	b, _ := s.MarshalText()
@@ -21,7 +32,7 @@ func (s JSONMarshalerS) String() string {
 
 func (s JSONMarshalerS) MarshalText() ([]byte, error) {
 	if s.s == nil {
-		return []byte("null"), nil
+		return []byte(s.prettier.nil), nil
 	}
 	return s.MarshalJSON()
 }

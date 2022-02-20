@@ -7,9 +7,20 @@ package pfmt
 import "bytes"
 
 // Anys returns stringer/JSON/text marshaler for the slice of any type.
-func Anys(s []interface{}) AnyS { return AnyS{s: s} }
+func Anys(s []interface{}) AnyS { return New().Anys(s) }
 
-type AnyS struct{ s []interface{} }
+// Anys returns stringer/JSON/text marshaler for the slice of any type.
+func (pretty Pretty) Anys(s []interface{}) AnyS {
+	return AnyS{
+		s:        s,
+		prettier: pretty,
+	}
+}
+
+type AnyS struct {
+	s        []interface{}
+	prettier Pretty
+}
 
 func (s AnyS) String() string {
 	b, _ := s.MarshalText()
@@ -19,7 +30,7 @@ func (s AnyS) String() string {
 func (s AnyS) MarshalText() ([]byte, error) {
 	var buf bytes.Buffer
 	for i, v := range s.s {
-		b, err := Any(v).MarshalText()
+		b, err := s.prettier.Any(v).MarshalText()
 		if err != nil {
 			return nil, err
 		}
@@ -38,7 +49,7 @@ func (s AnyS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, v := range s.s {
-		b, err := Any(v).MarshalJSON()
+		b, err := s.prettier.Any(v).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

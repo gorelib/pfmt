@@ -10,9 +10,20 @@ import (
 )
 
 // Texts returns stringer/JSON/text marshaler for the text marshaler slice type.
-func Texts(s []encoding.TextMarshaler) TextS { return TextS{s: s} }
+func Texts(s []encoding.TextMarshaler) TextS { return New().Texts(s) }
 
-type TextS struct{ s []encoding.TextMarshaler }
+// Texts returns stringer/JSON/text marshaler for the text marshaler slice type.
+func (pretty Pretty) Texts(s []encoding.TextMarshaler) TextS {
+	return TextS{
+		s:        s,
+		prettier: pretty,
+	}
+}
+
+type TextS struct {
+	s        []encoding.TextMarshaler
+	prettier Pretty
+}
 
 func (s TextS) String() string {
 	b, _ := s.MarshalText()
@@ -21,16 +32,16 @@ func (s TextS) String() string {
 
 func (s TextS) MarshalText() ([]byte, error) {
 	if s.s == nil {
-		return []byte("null"), nil
+		return []byte(s.prettier.nil), nil
 	}
 	var buf bytes.Buffer
 	for i, v := range s.s {
-		b, err := TextV{V: v}.MarshalText()
+		b, err := s.prettier.Text(v).MarshalText()
 		if err != nil {
 			return nil, err
 		}
 		if i != 0 {
-			buf.WriteString(" ")
+			buf.WriteString(s.prettier.separator)
 		}
 		_, err = buf.Write(b)
 		if err != nil {
@@ -47,7 +58,7 @@ func (s TextS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, v := range s.s {
-		b, err := TextV{V: v}.MarshalJSON()
+		b, err := s.prettier.Text(v).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

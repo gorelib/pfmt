@@ -9,18 +9,25 @@ import (
 )
 
 // Time returns stringer/JSON/text marshaler for the time type.
-func Time(v time.Time) TimeV { return TimeV{V: v} }
+func Time(v time.Time) TimeV { return New().Time(v) }
 
-type TimeV struct{ V time.Time }
+// Time returns stringer/JSON/text marshaler for the time type.
+func (pretty Pretty) Time(v time.Time) TimeV {
+	return TimeV{v: v}
+}
+
+type TimeV struct {
+	v time.Time
+}
 
 func (v TimeV) String() string {
-	return v.V.String()
+	return v.v.String()
 }
 
 func (v TimeV) MarshalText() ([]byte, error) {
-	return v.V.MarshalText()
+	return v.v.MarshalText()
 }
 
 func (v TimeV) MarshalJSON() ([]byte, error) {
-	return v.V.MarshalJSON()
+	return v.v.MarshalJSON()
 }

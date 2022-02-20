@@ -9,7 +9,9 @@ import "bytes"
 // Bools returns stringer/JSON/text marshaler for the bool slice type.
 func Bools(s []bool) BoolS { return BoolS{s: s} }
 
-type BoolS struct{ s []bool }
+type BoolS struct {
+	s []bool
+}
 
 func (s BoolS) String() string {
 	b, _ := s.MarshalText()

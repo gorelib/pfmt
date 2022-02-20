@@ -35,8 +35,8 @@ func TestMarshalComplex128(t *testing.T) {
 		{
 			line:      line(),
 			input:     map[string]json.Marshaler{"reflect complex128": pfmt.Reflect(complex(1, 23))},
-			want:      "(1+23i)",
-			wantText:  "(1+23i)",
+			want:      "1+23i",
+			wantText:  "1+23i",
 			wantError: errors.New("json: error calling MarshalJSON for type json.Marshaler: json: unsupported type: complex128"),
 		},
 	}

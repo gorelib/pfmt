@@ -10,9 +10,20 @@ import (
 )
 
 // Timeps returns stringer/JSON/text marshaler for the time pointer slice type.
-func Timeps(a []*time.Time) TimePS { return TimePS{a: a} }
+func Timeps(a []*time.Time) TimePS { return New().Timeps(a) }
 
-type TimePS struct{ a []*time.Time }
+// Timeps returns stringer/JSON/text marshaler for the time pointer slice type.
+func (pretty Pretty) Timeps(a []*time.Time) TimePS {
+	return TimePS{
+		a:        a,
+		prettier: pretty,
+	}
+}
+
+type TimePS struct {
+	a        []*time.Time
+	prettier Pretty
+}
 
 func (a TimePS) String() string {
 	b, _ := a.MarshalText()
@@ -21,16 +32,16 @@ func (a TimePS) String() string {
 
 func (a TimePS) MarshalText() ([]byte, error) {
 	if a.a == nil {
-		return []byte("null"), nil
+		return []byte(a.prettier.nil), nil
 	}
 	var buf bytes.Buffer
 	for i, p := range a.a {
-		b, err := Timep(p).MarshalText()
+		b, err := a.prettier.Timep(p).MarshalText()
 		if err != nil {
 			return nil, err
 		}
 		if i != 0 {
-			buf.WriteString(" ")
+			buf.WriteString(a.prettier.separator)
 		}
 		_, err = buf.Write(b)
 		if err != nil {
@@ -47,7 +58,7 @@ func (a TimePS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, p := range a.a {
-		b, err := Timep(p).MarshalJSON()
+		b, err := a.prettier.Timep(p).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

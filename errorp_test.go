@@ -18,7 +18,7 @@ func TestErrorpMarshal(t *testing.T) {
 			line: line(),
 			input: func() map[string]json.Marshaler {
 				err := errors.New("something went wrong")
-				return map[string]json.Marshaler{"error pointer": pfmt.Errorp(&err)}
+				return map[string]json.Marshaler{"error pointer": pfmt.Errp(&err)}
 			}(),
 			want:     "something went wrong",
 			wantText: "something went wrong",
@@ -28,7 +28,7 @@ func TestErrorpMarshal(t *testing.T) {
 		},
 		{
 			line:     line(),
-			input:    map[string]json.Marshaler{"nil error pointer": pfmt.Errorp(nil)},
+			input:    map[string]json.Marshaler{"nil error pointer": pfmt.Errp(nil)},
 			want:     "null",
 			wantText: "null",
 			wantJSON: `{
@@ -54,8 +54,8 @@ func TestErrorpMarshal(t *testing.T) {
 				err2 := &err
 				return map[string]json.Marshaler{"any twice/nested pointer to error": pfmt.Any(&err2)}
 			}(),
-			want:     "{something went wrong}",
-			wantText: "{something went wrong}",
+			want:     "something went wrong",
+			wantText: "something went wrong",
 			wantJSON: `{
 			"any twice/nested pointer to error":{}
 		}`,
@@ -79,8 +79,8 @@ func TestErrorpMarshal(t *testing.T) {
 				err2 := &err
 				return map[string]json.Marshaler{"reflect twice/nested pointer to error": pfmt.Reflect(&err2)}
 			}(),
-			want:     "{something went wrong}",
-			wantText: "{something went wrong}",
+			want:     "something went wrong",
+			wantText: "something went wrong",
 			wantJSON: `{
 			"reflect twice/nested pointer to error":{}
 		}`,

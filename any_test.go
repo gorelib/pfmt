@@ -16,8 +16,8 @@ func TestMarshalAny(t *testing.T) {
 		{
 			line:     line(),
 			input:    map[string]json.Marshaler{"any struct": pfmt.Any(Struct{Name: "John Doe", Age: 42})},
-			want:     "{John Doe 42}",
-			wantText: "{John Doe 42}",
+			want:     "pfmt_test.Struct{Name:John Doe Age:42}",
+			wantText: "pfmt_test.Struct{Name:John Doe Age:42}",
 			wantJSON: `{
 			"any struct": {
 				"Name":"John Doe",
@@ -31,8 +31,8 @@ func TestMarshalAny(t *testing.T) {
 				s := Struct{Name: "John Doe", Age: 42}
 				return map[string]json.Marshaler{"any struct pointer": pfmt.Any(&s)}
 			}(),
-			want:     "{John Doe 42}",
-			wantText: "{John Doe 42}",
+			want:     "pfmt_test.Struct{Name:John Doe Age:42}",
+			wantText: "pfmt_test.Struct{Name:John Doe Age:42}",
 			wantJSON: `{
 			"any struct pointer": {
 				"Name":"John Doe",

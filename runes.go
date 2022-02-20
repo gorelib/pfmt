@@ -11,17 +11,28 @@ import (
 )
 
 // Runes returns stringer/JSON/text marshaler for the rune slice type.
-func Runes(s []rune) RuneS { return RuneS{s: s} }
+func Runes(s []rune) RuneS { return New().Runes(s) }
 
-type RuneS struct{ s []rune }
+// Runes returns stringer/JSON/text marshaler for the rune slice type.
+func (pretty Pretty) Runes(s []rune) RuneS {
+	return RuneS{
+		s:        s,
+		prettier: pretty,
+	}
+}
+
+type RuneS struct {
+	s        []rune
+	prettier Pretty
+}
 
 func (s RuneS) String() string {
 	if s.s == nil {
-		return "null"
+		return s.prettier.nil
 	}
-	buf := bufPool.Get().(*bytes.Buffer)
+	buf := pool.Get().(*bytes.Buffer)
 	buf.Reset()
-	defer bufPool.Put(buf)
+	defer pool.Put(buf)
 
 	err := pencode.Runes(buf, s.s)
 	if err != nil {
@@ -32,7 +43,7 @@ func (s RuneS) String() string {
 
 func (s RuneS) MarshalText() ([]byte, error) {
 	if s.s == nil {
-		return []byte("null"), nil
+		return []byte(s.prettier.nil), nil
 	}
 	var buf bytes.Buffer
 

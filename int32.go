@@ -7,12 +7,19 @@ package pfmt
 import "strconv"
 
 // Int32 returns stringer/JSON/text marshaler for the int32 type.
-func Int32(v int32) Int32V { return Int32V{V: v} }
+func Int32(v int32) Int32V { return New().Int32(v) }
 
-type Int32V struct{ V int32 }
+// Int32 returns stringer/JSON/text marshaler for the int32 type.
+func (Pretty) Int32(v int32) Int32V {
+	return Int32V{v: v}
+}
+
+type Int32V struct {
+	v int32
+}
 
 func (v Int32V) String() string {
-	return strconv.Itoa(int(v.V))
+	return strconv.Itoa(int(v.v))
 }
 
 func (v Int32V) MarshalText() ([]byte, error) {

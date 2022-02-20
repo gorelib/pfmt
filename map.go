@@ -10,36 +10,36 @@ import (
 	"reflect"
 )
 
-// Func returns stringer/JSON/text marshaler for the function.
-func Func(v interface{}) FuncV { return New().Func(v) }
+// Map returns stringer/JSON/text marshaler for the map.
+func Map(v interface{}) MapV { return New().Map(v) }
 
-// Func returns stringer/JSON/text marshaler for the function.
-func (pretty Pretty) Func(v interface{}) FuncV {
-	return FuncV{
+// Map returns stringer/JSON/text marshaler for the map.
+func (pretty Pretty) Map(v interface{}) MapV {
+	return MapV{
 		v:        v,
 		prettier: pretty,
 	}
 }
 
-type FuncV struct {
+type MapV struct {
 	v        interface{}
 	prettier Pretty
 }
 
-func (v FuncV) String() string {
+func (v MapV) String() string {
 	b, _ := v.MarshalText()
 	return string(b)
 }
 
-func (v FuncV) MarshalText() ([]byte, error) {
+func (v MapV) MarshalText() ([]byte, error) {
 	if v.v == nil {
 		return []byte(v.prettier.nil), nil
 	}
 
 	val := reflect.ValueOf(v.v)
 
-	if val.Kind() != reflect.Func {
-		return nil, errors.New("not function")
+	if val.Kind() != reflect.Map {
+		return nil, errors.New("not map")
 	}
 	if val.IsNil() {
 		return []byte(v.prettier.nil), nil
@@ -48,6 +48,6 @@ func (v FuncV) MarshalText() ([]byte, error) {
 	return []byte(fmt.Sprint(v.v)), nil
 }
 
-func (v FuncV) MarshalJSON() ([]byte, error) {
+func (v MapV) MarshalJSON() ([]byte, error) {
 	return v.MarshalText()
 }

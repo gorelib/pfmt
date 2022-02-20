@@ -10,9 +10,20 @@ import (
 )
 
 // Durationps returns stringer/JSON/text marshaler for the time duration pointer slice type.
-func Durationps(s []*time.Duration) DurationPS { return DurationPS{s: s} }
+func Durationps(s []*time.Duration) DurationPS { return New().Durationps(s) }
 
-type DurationPS struct{ s []*time.Duration }
+// Durationps returns stringer/JSON/text marshaler for the time duration pointer slice type.
+func (pretty Pretty) Durationps(s []*time.Duration) DurationPS {
+	return DurationPS{
+		s:        s,
+		prettier: pretty,
+	}
+}
+
+type DurationPS struct {
+	s        []*time.Duration
+	prettier Pretty
+}
 
 func (s DurationPS) String() string {
 	b, _ := s.MarshalText()
@@ -21,16 +32,16 @@ func (s DurationPS) String() string {
 
 func (s DurationPS) MarshalText() ([]byte, error) {
 	if s.s == nil {
-		return []byte("null"), nil
+		return []byte(s.prettier.nil), nil
 	}
 	var buf bytes.Buffer
 	for i, p := range s.s {
-		b, err := Durationp(p).MarshalText()
+		b, err := s.prettier.Durationp(p).MarshalText()
 		if err != nil {
 			return nil, err
 		}
 		if i != 0 {
-			buf.WriteString(" ")
+			buf.WriteString(s.prettier.separator)
 		}
 		_, err = buf.Write(b)
 		if err != nil {
@@ -47,7 +58,7 @@ func (s DurationPS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, p := range s.s {
-		b, err := Durationp(p).MarshalJSON()
+		b, err := s.prettier.Durationp(p).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

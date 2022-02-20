@@ -10,10 +10,21 @@ import (
 	"github.com/pprint/pfmt/pencode"
 )
 
-// Error returns stringer/JSON/text marshaler for the error type.
-func Error(v error) ErrorV { return ErrorV{v: v} }
+// Err returns stringer/JSON/text marshaler for the error type.
+func Err(v error) ErrorV { return New().Err(v) }
 
-type ErrorV struct{ v error }
+// Error returns stringer/JSON/text marshaler for the error type.
+func (pretty Pretty) Err(v error) ErrorV {
+	return ErrorV{
+		v:        v,
+		prettier: pretty,
+	}
+}
+
+type ErrorV struct {
+	v        error
+	prettier Pretty
+}
 
 func (v ErrorV) String() string {
 	b, _ := v.MarshalText()
@@ -22,7 +33,7 @@ func (v ErrorV) String() string {
 
 func (v ErrorV) MarshalText() ([]byte, error) {
 	if v.v == nil {
-		return []byte("null"), nil
+		return []byte(v.prettier.nil), nil
 	}
 
 	var buf bytes.Buffer

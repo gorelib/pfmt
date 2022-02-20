@@ -4,9 +4,7 @@
 
 package pfmt_test
 
-import (
-	"testing"
-)
+import "testing"
 
 func TestMarshalFunc(t *testing.T) {
 	// FIXME: test missing!!!

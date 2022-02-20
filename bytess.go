@@ -7,9 +7,20 @@ package pfmt
 import "bytes"
 
 // Bytess returns stringer/JSON/text marshaler for the slice of byte slice type.
-func Bytess(s [][]byte) ByteSS { return ByteSS{s: s} }
+func Bytess(s [][]byte) ByteSS { return New().Bytess(s) }
 
-type ByteSS struct{ s [][]byte }
+// Bytess returns stringer/JSON/text marshaler for the slice of byte slice type.
+func (pretty Pretty) Bytess(s [][]byte) ByteSS {
+	return ByteSS{
+		s:        s,
+		prettier: pretty,
+	}
+}
+
+type ByteSS struct {
+	s        [][]byte
+	prettier Pretty
+}
 
 func (s ByteSS) String() string {
 	b, _ := s.MarshalText()
@@ -18,16 +29,16 @@ func (s ByteSS) String() string {
 
 func (s ByteSS) MarshalText() ([]byte, error) {
 	if s.s == nil {
-		return []byte("null"), nil
+		return []byte(s.prettier.nil), nil
 	}
 	var buf bytes.Buffer
-	for i, s := range s.s {
-		b, err := Bytes(s).MarshalText()
+	for i, a := range s.s {
+		b, err := s.prettier.Bytes(a).MarshalText()
 		if err != nil {
 			return nil, err
 		}
 		if i != 0 {
-			buf.WriteString(" ")
+			buf.WriteString(s.prettier.separator)
 		}
 		_, err = buf.Write(b)
 		if err != nil {
@@ -43,8 +54,8 @@ func (s ByteSS) MarshalJSON() ([]byte, error) {
 	}
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	for i, s := range s.s {
-		b, err := Bytes(s).MarshalJSON()
+	for i, a := range s.s {
+		b, err := s.prettier.Bytes(a).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

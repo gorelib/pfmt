@@ -11,25 +11,36 @@ import (
 )
 
 // String returns stringer/JSON/text marshaler for the string type.
-func String(v string) StringV { return StringV{V: v} }
+func String(v string) StringV { return New().String(v) }
 
-type StringV struct{ V string }
+// String returns stringer/JSON/text marshaler for the string type.
+func (pretty Pretty) String(v string) StringV {
+	return StringV{
+		v:        v,
+		prettier: pretty,
+	}
+}
+
+type StringV struct {
+	v        string
+	prettier Pretty
+}
 
 func (v StringV) String() string {
-	buf := bufPool.Get().(*bytes.Buffer)
+	buf := pool.Get().(*bytes.Buffer)
 	buf.Reset()
-	defer bufPool.Put(buf)
+	defer pool.Put(buf)
 
-	err := pencode.String(buf, v.V)
+	err := pencode.String(buf, v.v)
 	if err != nil {
-		return ""
+		return v.prettier.empty
 	}
 	return buf.String()
 }
 
 func (v StringV) MarshalText() ([]byte, error) {
 	var buf bytes.Buffer
-	err := pencode.String(&buf, v.V)
+	err := pencode.String(&buf, v.v)
 	if err != nil {
 		return nil, err
 	}

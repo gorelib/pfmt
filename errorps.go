@@ -6,10 +6,21 @@ package pfmt
 
 import "bytes"
 
-// Errorps returns stringer/JSON/text marshaler for the slice of error pointers type.
-func Errorps(s []*error) ErrorPS { return ErrorPS{s: s} }
+// Errps returns stringer/JSON/text marshaler for the slice of error pointers type.
+func Errps(s []*error) ErrorPS { return New().Errps(s) }
 
-type ErrorPS struct{ s []*error }
+// Errorps returns stringer/JSON/text marshaler for the slice of error pointers type.
+func (pretty Pretty) Errps(s []*error) ErrorPS {
+	return ErrorPS{
+		s:        s,
+		prettier: pretty,
+	}
+}
+
+type ErrorPS struct {
+	s        []*error
+	prettier Pretty
+}
 
 func (s ErrorPS) String() string {
 	b, _ := s.MarshalText()
@@ -18,7 +29,7 @@ func (s ErrorPS) String() string {
 
 func (s ErrorPS) MarshalText() ([]byte, error) {
 	if s.s == nil {
-		return []byte("null"), nil
+		return []byte(s.prettier.nil), nil
 	}
 	var buf bytes.Buffer
 	var tail bool
@@ -27,12 +38,12 @@ func (s ErrorPS) MarshalText() ([]byte, error) {
 		if p == nil {
 			continue
 		}
-		b, err := Errorp(p).MarshalText()
+		b, err := s.prettier.Errp(p).MarshalText()
 		if err != nil {
 			return nil, err
 		}
 		if tail {
-			buf.WriteString(" ")
+			buf.WriteString(s.prettier.separator)
 		}
 		_, err = buf.Write(b)
 		if err != nil {
@@ -50,7 +61,7 @@ func (s ErrorPS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, p := range s.s {
-		b, err := Errorp(p).MarshalJSON()
+		b, err := s.prettier.Errp(p).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

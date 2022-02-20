@@ -53,8 +53,8 @@ func TestMarshalComplex128p(t *testing.T) {
 				var c complex128 = complex(1, 23)
 				return map[string]json.Marshaler{"reflect complex128 pointer": pfmt.Reflect(&c)}
 			}(),
-			want:      "(1+23i)",
-			wantText:  "(1+23i)",
+			want:      "1+23i",
+			wantText:  "1+23i",
 			wantError: errors.New("json: error calling MarshalJSON for type json.Marshaler: json: unsupported type: complex128"),
 		},
 		{
@@ -78,8 +78,8 @@ func TestMarshalComplex128p(t *testing.T) {
 		{
 			line:      line(),
 			input:     map[string]json.Marshaler{"reflect complex64": pfmt.Reflect(complex(3, 21))},
-			want:      "(3+21i)",
-			wantText:  "(3+21i)",
+			want:      "3+21i",
+			wantText:  "3+21i",
 			wantError: errors.New("json: error calling MarshalJSON for type json.Marshaler: json: unsupported type: complex128"),
 		},
 	}

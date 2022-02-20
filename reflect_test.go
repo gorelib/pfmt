@@ -16,8 +16,8 @@ func TestMarshalReflect(t *testing.T) {
 		{
 			line:     line(),
 			input:    map[string]json.Marshaler{"struct reflect": pfmt.Reflect(Struct{Name: "John Doe", Age: 42})},
-			want:     "{John Doe 42}",
-			wantText: "{John Doe 42}",
+			want:     "pfmt_test.Struct{Name:John Doe Age:42}",
+			wantText: "pfmt_test.Struct{Name:John Doe Age:42}",
 			wantJSON: `{
 			"struct reflect": {
 				"Name":"John Doe",
@@ -31,8 +31,8 @@ func TestMarshalReflect(t *testing.T) {
 				s := Struct{Name: "John Doe", Age: 42}
 				return map[string]json.Marshaler{"struct reflect pointer": pfmt.Reflect(&s)}
 			}(),
-			want:     "{John Doe 42}",
-			wantText: "{John Doe 42}",
+			want:     "pfmt_test.Struct{Name:John Doe Age:42}",
+			wantText: "pfmt_test.Struct{Name:John Doe Age:42}",
 			wantJSON: `{
 			"struct reflect pointer": {
 				"Name":"John Doe",

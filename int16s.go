@@ -7,9 +7,20 @@ package pfmt
 import "bytes"
 
 // Int16s returns stringer/JSON/text marshaler for the int16 slice type.
-func Int16s(s []int16) Int16S { return Int16S{s: s} }
+func Int16s(s []int16) Int16S { return New().Int16s(s) }
 
-type Int16S struct{ s []int16 }
+// Int16s returns stringer/JSON/text marshaler for the int16 slice type.
+func (pretty Pretty) Int16s(s []int16) Int16S {
+	return Int16S{
+		s:        s,
+		prettier: pretty,
+	}
+}
+
+type Int16S struct {
+	s        []int16
+	prettier Pretty
+}
 
 func (s Int16S) String() string {
 	b, _ := s.MarshalText()
@@ -19,12 +30,12 @@ func (s Int16S) String() string {
 func (s Int16S) MarshalText() ([]byte, error) {
 	var buf bytes.Buffer
 	for i, v := range s.s {
-		b, err := Int16V{V: v}.MarshalText()
+		b, err := s.prettier.Int16(v).MarshalText()
 		if err != nil {
 			return nil, err
 		}
 		if i != 0 {
-			buf.WriteString(" ")
+			buf.WriteString(s.prettier.separator)
 		}
 		_, err = buf.Write(b)
 		if err != nil {
@@ -38,7 +49,7 @@ func (s Int16S) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, v := range s.s {
-		b, err := Int16V{V: v}.MarshalJSON()
+		b, err := s.prettier.Int16(v).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

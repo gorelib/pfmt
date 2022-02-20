@@ -5,9 +5,20 @@
 package pfmt
 
 // Bool returns stringer/JSON/text marshaler for the bool type.
-func Bool(v bool) BoolV { return BoolV{v: v} }
+func Bool(v bool) BoolV { return New().Bool(v) }
 
-type BoolV struct{ v bool }
+// Bool returns stringer/JSON/text marshaler for the bool type.
+func (pretty Pretty) Bool(v bool) BoolV {
+	return BoolV{
+		v:        v,
+		prettier: pretty,
+	}
+}
+
+type BoolV struct {
+	v        bool
+	prettier Pretty
+}
 
 func (v BoolV) String() string {
 	b, _ := v.MarshalText()
@@ -16,9 +27,9 @@ func (v BoolV) String() string {
 
 func (v BoolV) MarshalText() ([]byte, error) {
 	if v.v {
-		return []byte("true"), nil
+		return []byte(v.prettier.true), nil
 	}
-	return []byte("false"), nil
+	return []byte(v.prettier.false), nil
 }
 
 func (v BoolV) MarshalJSON() ([]byte, error) {

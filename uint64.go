@@ -7,12 +7,19 @@ package pfmt
 import "strconv"
 
 // Uint64 returns stringer/JSON/text marshaler for the uint64 type.
-func Uint64(v uint64) Uint64V { return Uint64V{V: v} }
+func Uint64(v uint64) Uint64V { return New().Uint64(v) }
 
-type Uint64V struct{ V uint64 }
+// Uint64 returns stringer/JSON/text marshaler for the uint64 type.
+func (Pretty) Uint64(v uint64) Uint64V {
+	return Uint64V{v: v}
+}
+
+type Uint64V struct {
+	v uint64
+}
 
 func (v Uint64V) String() string {
-	return strconv.FormatUint(v.V, 10)
+	return strconv.FormatUint(v.v, 10)
 }
 
 func (v Uint64V) MarshalText() ([]byte, error) {

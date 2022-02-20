@@ -9,12 +9,19 @@ import (
 )
 
 // Float32 returns stringer/JSON/text marshaler for the float32 type.
-func Float32(v float32) Float32V { return Float32V{V: v} }
+func Float32(v float32) Float32V { return New().Float32(v) }
 
-type Float32V struct{ V float32 }
+// Float32 returns stringer/JSON/text marshaler for the float32 type.
+func (Pretty) Float32(v float32) Float32V {
+	return Float32V{v: v}
+}
+
+type Float32V struct {
+	v float32
+}
 
 func (v Float32V) String() string {
-	return fmt.Sprint(v.V)
+	return fmt.Sprint(v.v)
 }
 
 func (v Float32V) MarshalText() ([]byte, error) {

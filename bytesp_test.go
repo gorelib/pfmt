@@ -116,8 +116,8 @@ func TestMarshalBytesp(t *testing.T) {
 		{
 			line:      line(),
 			input:     map[string]json.Marshaler{"reflect complex128": pfmt.Reflect(complex(1, 23))},
-			want:      "(1+23i)",
-			wantText:  "(1+23i)",
+			want:      "1+23i",
+			wantText:  "1+23i",
 			wantError: errors.New("json: error calling MarshalJSON for type json.Marshaler: json: unsupported type: complex128"),
 		},
 		{
@@ -159,8 +159,8 @@ func TestMarshalBytesp(t *testing.T) {
 				var c complex128 = complex(1, 23)
 				return map[string]json.Marshaler{"reflect complex128 pointer": pfmt.Reflect(&c)}
 			}(),
-			want:      "(1+23i)",
-			wantText:  "(1+23i)",
+			want:      "1+23i",
+			wantText:  "1+23i",
 			wantError: errors.New("json: error calling MarshalJSON for type json.Marshaler: json: unsupported type: complex128"),
 		},
 		{
@@ -184,13 +184,13 @@ func TestMarshalBytesp(t *testing.T) {
 		{
 			line:      line(),
 			input:     map[string]json.Marshaler{"reflect complex64": pfmt.Reflect(complex(3, 21))},
-			want:      "(3+21i)",
-			wantText:  "(3+21i)",
+			want:      "3+21i",
+			wantText:  "3+21i",
 			wantError: errors.New("json: error calling MarshalJSON for type json.Marshaler: json: unsupported type: complex128"),
 		},
 		{
 			line:     line(),
-			input:    map[string]json.Marshaler{"error": pfmt.Error(errors.New("something went wrong"))},
+			input:    map[string]json.Marshaler{"error": pfmt.Err(errors.New("something went wrong"))},
 			want:     "something went wrong",
 			wantText: "something went wrong",
 			wantJSON: `{
@@ -199,7 +199,7 @@ func TestMarshalBytesp(t *testing.T) {
 		},
 		{
 			line:     line(),
-			input:    map[string]json.Marshaler{"nil error": pfmt.Error(nil)},
+			input:    map[string]json.Marshaler{"nil error": pfmt.Err(nil)},
 			want:     "null",
 			wantText: "null",
 			wantJSON: `{
@@ -208,7 +208,7 @@ func TestMarshalBytesp(t *testing.T) {
 		},
 		{
 			line:     line(),
-			input:    map[string]json.Marshaler{"errors": pfmt.Errors([]error{errors.New("something went wrong"), errors.New("wrong")})},
+			input:    map[string]json.Marshaler{"errors": pfmt.Errs([]error{errors.New("something went wrong"), errors.New("wrong")})},
 			want:     "something went wrong wrong",
 			wantText: "something went wrong wrong",
 			wantJSON: `{
@@ -217,7 +217,7 @@ func TestMarshalBytesp(t *testing.T) {
 		},
 		{
 			line:     line(),
-			input:    map[string]json.Marshaler{"nil errors": pfmt.Errors([]error{nil, nil})},
+			input:    map[string]json.Marshaler{"nil errors": pfmt.Errs([]error{nil, nil})},
 			want:     "",
 			wantText: "",
 			wantJSON: `{
@@ -226,7 +226,7 @@ func TestMarshalBytesp(t *testing.T) {
 		},
 		{
 			line:     line(),
-			input:    map[string]json.Marshaler{"without errors": pfmt.Errors(nil)},
+			input:    map[string]json.Marshaler{"without errors": pfmt.Errs(nil)},
 			want:     "null",
 			wantText: "null",
 			wantJSON: `{
@@ -290,8 +290,8 @@ func TestMarshalBytesp(t *testing.T) {
 				var c complex64 = complex(1, 23)
 				return map[string]json.Marshaler{"reflect complex64 pointer": pfmt.Reflect(&c)}
 			}(),
-			want:      "(1+23i)",
-			wantText:  "(1+23i)",
+			want:      "1+23i",
+			wantText:  "1+23i",
 			wantError: errors.New("json: error calling MarshalJSON for type json.Marshaler: json: unsupported type: complex64"),
 		},
 		{
@@ -1158,8 +1158,8 @@ func TestMarshalBytesp(t *testing.T) {
 		{
 			line:     line(),
 			input:    map[string]json.Marshaler{"reflect string with zero byte": pfmt.Reflect(string(byte(0)))},
-			want:     "\u0000",
-			wantText: "\u0000",
+			want:     "\\u0000",
+			wantText: "\\u0000",
 			wantJSON: `{
 			"reflect string with zero byte":"\u0000"
 		}`,
@@ -1814,8 +1814,8 @@ func TestMarshalBytesp(t *testing.T) {
 		{
 			line:     line(),
 			input:    map[string]json.Marshaler{"reflect duration": pfmt.Reflect(42 * time.Nanosecond)},
-			want:     "42ns",
-			wantText: "42ns",
+			want:     "42",
+			wantText: "42",
 			wantJSON: `{
 			"reflect duration":42
 		}`,
@@ -1859,8 +1859,8 @@ func TestMarshalBytesp(t *testing.T) {
 				d := 42 * time.Nanosecond
 				return map[string]json.Marshaler{"reflect duration pointer": pfmt.Reflect(&d)}
 			}(),
-			want:     "42ns",
-			wantText: "42ns",
+			want:     "42",
+			wantText: "42",
 			wantJSON: `{
 			"reflect duration pointer":42
 		}`,
@@ -1868,8 +1868,8 @@ func TestMarshalBytesp(t *testing.T) {
 		{
 			line:     line(),
 			input:    map[string]json.Marshaler{"any struct": pfmt.Any(Struct{Name: "John Doe", Age: 42})},
-			want:     "{John Doe 42}",
-			wantText: "{John Doe 42}",
+			want:     "pfmt_test.Struct{Name:John Doe Age:42}",
+			wantText: "pfmt_test.Struct{Name:John Doe Age:42}",
 			wantJSON: `{
 			"any struct": {
 				"Name":"John Doe",
@@ -1883,8 +1883,8 @@ func TestMarshalBytesp(t *testing.T) {
 				s := Struct{Name: "John Doe", Age: 42}
 				return map[string]json.Marshaler{"any struct pointer": pfmt.Any(&s)}
 			}(),
-			want:     "{John Doe 42}",
-			wantText: "{John Doe 42}",
+			want:     "pfmt_test.Struct{Name:John Doe Age:42}",
+			wantText: "pfmt_test.Struct{Name:John Doe Age:42}",
 			wantJSON: `{
 			"any struct pointer": {
 				"Name":"John Doe",
@@ -1895,8 +1895,8 @@ func TestMarshalBytesp(t *testing.T) {
 		{
 			line:     line(),
 			input:    map[string]json.Marshaler{"struct reflect": pfmt.Reflect(Struct{Name: "John Doe", Age: 42})},
-			want:     "{John Doe 42}",
-			wantText: "{John Doe 42}",
+			want:     "pfmt_test.Struct{Name:John Doe Age:42}",
+			wantText: "pfmt_test.Struct{Name:John Doe Age:42}",
 			wantJSON: `{
 			"struct reflect": {
 				"Name":"John Doe",
@@ -1910,8 +1910,8 @@ func TestMarshalBytesp(t *testing.T) {
 				s := Struct{Name: "John Doe", Age: 42}
 				return map[string]json.Marshaler{"struct reflect pointer": pfmt.Reflect(&s)}
 			}(),
-			want:     "{John Doe 42}",
-			wantText: "{John Doe 42}",
+			want:     "pfmt_test.Struct{Name:John Doe Age:42}",
+			wantText: "pfmt_test.Struct{Name:John Doe Age:42}",
 			wantJSON: `{
 			"struct reflect pointer": {
 				"Name":"John Doe",

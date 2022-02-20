@@ -62,8 +62,8 @@ func TestMarshalDurationps(t *testing.T) {
 				var d, d2 = 42 * time.Nanosecond, 42 * time.Second
 				return map[string]json.Marshaler{"slice of reflect of duration pointers": pfmt.Reflects([]interface{}{&d, &d2})}
 			}(),
-			want:     "42ns 42s",
-			wantText: "42ns 42s",
+			want:     "42 42000000000",
+			wantText: "42 42000000000",
 			wantJSON: `{
 			"slice of reflect of duration pointers":[42,42000000000]
 		}`,

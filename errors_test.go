@@ -16,7 +16,7 @@ func TestMarshalErrors(t *testing.T) {
 	tests := []marshalTest{
 		{
 			line:     line(),
-			input:    map[string]json.Marshaler{"error slice": pfmt.Errors([]error{errors.New("something went wrong"), errors.New("we have a problem")})},
+			input:    map[string]json.Marshaler{"error slice": pfmt.Errs([]error{errors.New("something went wrong"), errors.New("we have a problem")})},
 			want:     "something went wrong we have a problem",
 			wantText: "something went wrong we have a problem",
 			wantJSON: `{
@@ -25,14 +25,14 @@ func TestMarshalErrors(t *testing.T) {
 		},
 		{
 			line:  line(),
-			input: map[string]json.Marshaler{"nil errors": pfmt.Errors([]error{nil, nil})},
+			input: map[string]json.Marshaler{"nil errors": pfmt.Errs([]error{nil, nil})},
 			wantJSON: `{
 			"nil errors":[null,null]
 		}`,
 		},
 		{
 			line:     line(),
-			input:    map[string]json.Marshaler{"without errors": pfmt.Errors(nil)},
+			input:    map[string]json.Marshaler{"without errors": pfmt.Errs(nil)},
 			want:     "null",
 			wantText: "null",
 			wantJSON: `{

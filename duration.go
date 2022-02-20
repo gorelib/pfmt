@@ -9,9 +9,16 @@ import (
 )
 
 // Duration returns stringer/JSON/text marshaler for the time duration type.
-func Duration(v time.Duration) DurationV { return DurationV{v: v} }
+func Duration(v time.Duration) DurationV { return New().Duration(v) }
 
-type DurationV struct{ v time.Duration }
+// Duration returns stringer/JSON/text marshaler for the time duration type.
+func (Pretty) Duration(v time.Duration) DurationV {
+	return DurationV{v: v}
+}
+
+type DurationV struct {
+	v time.Duration
+}
 
 func (v DurationV) String() string {
 	return v.v.String()

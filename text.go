@@ -12,34 +12,45 @@ import (
 )
 
 // Text returns stringer/JSON/text marshaler for the encoding.TextMarshaler type.
-func Text(v encoding.TextMarshaler) TextV { return TextV{V: v} }
+func Text(v encoding.TextMarshaler) TextV { return New().Text(v) }
 
-type TextV struct{ V encoding.TextMarshaler }
+// Text returns stringer/JSON/text marshaler for the encoding.TextMarshaler type.
+func (pretty Pretty) Text(v encoding.TextMarshaler) TextV {
+	return TextV{
+		v:        v,
+		prettier: pretty,
+	}
+}
+
+type TextV struct {
+	v        encoding.TextMarshaler
+	prettier Pretty
+}
 
 func (v TextV) String() string {
-	if v.V == nil {
-		return ""
+	if v.v == nil {
+		return v.prettier.empty
 	}
-	b, err := v.V.MarshalText()
+	b, err := v.v.MarshalText()
 	if err != nil {
-		return ""
+		return v.prettier.empty
 	}
-	buf := bufPool.Get().(*bytes.Buffer)
+	buf := pool.Get().(*bytes.Buffer)
 	buf.Reset()
-	defer bufPool.Put(buf)
+	defer pool.Put(buf)
 
 	err = pencode.Bytes(buf, b)
 	if err != nil {
-		return ""
+		return v.prettier.empty
 	}
 	return buf.String()
 }
 
 func (v TextV) MarshalText() ([]byte, error) {
-	if v.V == nil {
+	if v.v == nil {
 		return nil, nil
 	}
-	b, err := v.V.MarshalText()
+	b, err := v.v.MarshalText()
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +64,7 @@ func (v TextV) MarshalText() ([]byte, error) {
 }
 
 func (v TextV) MarshalJSON() ([]byte, error) {
-	if v.V == nil {
+	if v.v == nil {
 		return []byte("null"), nil
 	}
 	b, err := v.MarshalText()

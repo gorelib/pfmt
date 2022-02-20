@@ -10,9 +10,20 @@ import (
 )
 
 // Times returns stringer/JSON/text marshaler for the slice of byte slice type.
-func Times(s []time.Time) TimeS { return TimeS{s: s} }
+func Times(s []time.Time) TimeS { return New().Times(s) }
 
-type TimeS struct{ s []time.Time }
+// Times returns stringer/JSON/text marshaler for the slice of byte slice type.
+func (pretty Pretty) Times(s []time.Time) TimeS {
+	return TimeS{
+		s:        s,
+		prettier: pretty,
+	}
+}
+
+type TimeS struct {
+	s        []time.Time
+	prettier Pretty
+}
 
 func (s TimeS) String() string {
 	b, _ := s.MarshalText()
@@ -21,16 +32,16 @@ func (s TimeS) String() string {
 
 func (s TimeS) MarshalText() ([]byte, error) {
 	if s.s == nil {
-		return []byte("null"), nil
+		return []byte(s.prettier.nil), nil
 	}
 	var buf bytes.Buffer
 	for i, v := range s.s {
-		b, err := TimeV{V: v}.MarshalText()
+		b, err := s.prettier.Time(v).MarshalText()
 		if err != nil {
 			return nil, err
 		}
 		if i != 0 {
-			buf.WriteString(" ")
+			buf.WriteString(s.prettier.separator)
 		}
 		_, err = buf.Write(b)
 		if err != nil {
@@ -47,7 +58,7 @@ func (s TimeS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, v := range s.s {
-		b, err := TimeV{V: v}.MarshalJSON()
+		b, err := s.prettier.Time(v).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}

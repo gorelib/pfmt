@@ -7,9 +7,20 @@ package pfmt
 import "bytes"
 
 // Boolps returns stringer/JSON/text marshaler for slice of bool pointers type.
-func Boolps(s []*bool) BoolPS { return BoolPS{s: s} }
+func Boolps(s []*bool) BoolPS { return New().Boolps(s) }
 
-type BoolPS struct{ s []*bool }
+// Boolps returns stringer/JSON/text marshaler for slice of bool pointers type.
+func (pretty Pretty) Boolps(s []*bool) BoolPS {
+	return BoolPS{
+		s:        s,
+		prettier: pretty,
+	}
+}
+
+type BoolPS struct {
+	s        []*bool
+	prettier Pretty
+}
 
 func (s BoolPS) String() string {
 	t, _ := s.MarshalText()
@@ -18,16 +29,16 @@ func (s BoolPS) String() string {
 
 func (s BoolPS) MarshalText() ([]byte, error) {
 	if s.s == nil {
-		return []byte("null"), nil
+		return []byte(s.prettier.nil), nil
 	}
 	var buf bytes.Buffer
 	for i, p := range s.s {
-		b, err := Boolp(p).MarshalText()
+		b, err := s.prettier.Boolp(p).MarshalText()
 		if err != nil {
 			return nil, err
 		}
 		if i != 0 {
-			buf.WriteString(" ")
+			buf.WriteString(s.prettier.separator)
 		}
 		_, err = buf.Write(b)
 		if err != nil {

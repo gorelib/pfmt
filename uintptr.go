@@ -7,12 +7,19 @@ package pfmt
 import "strconv"
 
 // Uintptr returns stringer/JSON/text marshaler for the uintptr type.
-func Uintptr(v uintptr) UintptrV { return UintptrV{V: v} }
+func Uintptr(v uintptr) UintptrV { return New().Uintptr(v) }
 
-type UintptrV struct{ V uintptr }
+// Uintptr returns stringer/JSON/text marshaler for the uintptr type.
+func (pretty Pretty) Uintptr(v uintptr) UintptrV {
+	return UintptrV{v: v}
+}
+
+type UintptrV struct {
+	v uintptr
+}
 
 func (v UintptrV) String() string {
-	return strconv.FormatUint(uint64(v.V), 10)
+	return strconv.FormatUint(uint64(v.v), 10)
 }
 
 func (v UintptrV) MarshalText() ([]byte, error) {

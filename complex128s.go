@@ -7,9 +7,20 @@ package pfmt
 import "bytes"
 
 // Complex128s returns stringer/JSON/text marshaler for the complex128 slice type.
-func Complex128s(s []complex128) Complex128S { return Complex128S{s: s} }
+func Complex128s(s []complex128) Complex128S { return New().Complex128s(s) }
 
-type Complex128S struct{ s []complex128 }
+// Complex128s returns stringer/JSON/text marshaler for the complex128 slice type.
+func (pretty Pretty) Complex128s(s []complex128) Complex128S {
+	return Complex128S{
+		s:        s,
+		prettier: pretty,
+	}
+}
+
+type Complex128S struct {
+	s        []complex128
+	prettier Pretty
+}
 
 func (s Complex128S) String() string {
 	b, _ := s.MarshalText()
@@ -18,16 +29,16 @@ func (s Complex128S) String() string {
 
 func (s Complex128S) MarshalText() ([]byte, error) {
 	if s.s == nil {
-		return []byte("null"), nil
+		return []byte(s.prettier.nil), nil
 	}
 	var buf bytes.Buffer
 	for i, v := range s.s {
-		b, err := Complex128(v).MarshalText()
+		b, err := s.prettier.Complex128(v).MarshalText()
 		if err != nil {
 			return nil, err
 		}
 		if i != 0 {
-			buf.WriteString(" ")
+			buf.WriteString(s.prettier.separator)
 		}
 		_, err = buf.Write(b)
 		if err != nil {
@@ -44,7 +55,7 @@ func (s Complex128S) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, v := range s.s {
-		b, err := Complex128(v).MarshalJSON()
+		b, err := s.prettier.Complex128(v).MarshalJSON()
 		if err != nil {
 			return nil, err
 		}
