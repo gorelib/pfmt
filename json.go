@@ -4,7 +4,10 @@
 
 package pfmt
 
-import "bytes"
+import (
+	"bytes"
+	"fmt"
+)
 
 // JSON returns stringer/JSON/text marshaler for the KV slice type.
 func JSON(s []KV) JSONV { return New().JSON(s) }
@@ -70,7 +73,7 @@ func (s JSONV) MarshalJSON() ([]byte, error) {
 			buf.WriteString(",")
 		}
 		if j == nil {
-			buf.WriteString("null")
+			buf.WriteString(`"":""`)
 			continue
 		}
 		k, err := j.MarshalText()
@@ -90,5 +93,6 @@ func (s JSONV) MarshalJSON() ([]byte, error) {
 		}
 	}
 	buf.WriteString("}")
+	fmt.Println(buf.String())
 	return buf.Bytes(), nil
 }
