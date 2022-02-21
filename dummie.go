@@ -43,7 +43,7 @@ func (v DummieV) MarshalJSON() ([]byte, error) {
 	}
 	p, err := json.Marshal(v.v)
 	if _, ok := err.(*json.UnsupportedTypeError); ok {
-		return []byte(reflect.TypeOf(v.v).String()), nil
+		return append([]byte(`"`), append([]byte(reflect.TypeOf(v.v).String()), []byte(`"`)...)...), nil
 	}
 	return p, err
 }

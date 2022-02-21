@@ -62,5 +62,5 @@ func (v FuncV) MarshalJSON() ([]byte, error) {
 		return []byte("null"), nil
 	}
 
-	return []byte(reflect.TypeOf(v.v).String()), nil
+	return append([]byte(`"`), append([]byte(reflect.TypeOf(v.v).String()), []byte(`"`)...)...), nil
 }
