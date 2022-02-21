@@ -134,13 +134,20 @@ func (v SliceV) MarshalJSON() ([]byte, error) {
 		it := elem.Interface()
 		var j []byte
 
-		if marsh, ok := it.(json.Marshaler); ok {
+		if it == nil {
+			return []byte("null"), nil
+
+		} else if marsh, ok := it.(json.Marshaler); ok {
 			j, err = marsh.MarshalJSON()
 			if err != nil {
 				return nil, err
 			}
 		} else {
-			j, err = json.Marshal(it)
+			j, err := v.prettier.Reflect(it).MarshalJSON()
+			if err != nil {
+				return nil, err
+			}
+			_, err = buf.Write(j)
 			if err != nil {
 				return nil, err
 			}

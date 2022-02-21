@@ -5,7 +5,6 @@
 package pfmt
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"reflect"
@@ -63,5 +62,5 @@ func (v ChanV) MarshalJSON() ([]byte, error) {
 		return []byte("null"), nil
 	}
 
-	return json.Marshal(v.v)
+	return []byte(reflect.TypeOf(v.v).String()), nil
 }

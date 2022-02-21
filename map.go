@@ -5,9 +5,7 @@
 package pfmt
 
 import (
-	"encoding/json"
 	"errors"
-	"fmt"
 	"reflect"
 )
 
@@ -46,7 +44,7 @@ func (v MapV) MarshalText() ([]byte, error) {
 		return []byte(v.prettier.nil), nil
 	}
 
-	return []byte(fmt.Sprint(v.v)), nil
+	return v.prettier.Dummie(v.v).MarshalText()
 }
 
 func (v MapV) MarshalJSON() ([]byte, error) {
@@ -63,5 +61,5 @@ func (v MapV) MarshalJSON() ([]byte, error) {
 		return []byte("null"), nil
 	}
 
-	return json.Marshal(v.v)
+	return []byte(reflect.TypeOf(v.v).String()), nil
 }

@@ -10,14 +10,14 @@ import "strconv"
 func Uint16(v uint16) Uint16V { return New().Uint16(v) }
 
 // Uint16 returns stringer/JSON/text marshaler for the uint16 type.
-func (Pretty) Uint16(v uint16) Uint16V { return Uint16V{V: v} }
+func (Pretty) Uint16(v uint16) Uint16V { return Uint16V{v: v} }
 
 type Uint16V struct {
-	V uint16
+	v uint16
 }
 
 func (v Uint16V) String() string {
-	return strconv.FormatUint(uint64(v.V), 10)
+	return strconv.FormatUint(uint64(v.v), 10)
 }
 
 func (v Uint16V) MarshalText() ([]byte, error) {

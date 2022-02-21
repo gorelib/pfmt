@@ -11,15 +11,15 @@ func Int8(v int8) Int8V { return New().Int8(v) }
 
 // Int8 returns stringer/JSON/text marshaler for the int8 type.
 func (Pretty) Int8(v int8) Int8V {
-	return Int8V{V: v}
+	return Int8V{v: v}
 }
 
 type Int8V struct {
-	V int8
+	v int8
 }
 
 func (v Int8V) String() string {
-	return strconv.Itoa(int(v.V))
+	return strconv.Itoa(int(v.v))
 }
 
 func (v Int8V) MarshalText() ([]byte, error) {

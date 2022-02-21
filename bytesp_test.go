@@ -114,11 +114,13 @@ func TestMarshalBytesp(t *testing.T) {
 		}`,
 		},
 		{
-			line:      line(),
-			input:     map[string]json.Marshaler{"reflect complex128": pfmt.Reflect(complex(1, 23))},
-			want:      "1+23i",
-			wantText:  "1+23i",
-			wantError: errors.New("json: error calling MarshalJSON for type json.Marshaler: json: unsupported type: complex128"),
+			line:     line(),
+			input:    map[string]json.Marshaler{"reflect complex128": pfmt.Reflect(complex(1, 23))},
+			want:     "1+23i",
+			wantText: "1+23i",
+			wantJSON: `{
+			"reflect complex128":"1+23i"
+		}`,
 		},
 		{
 			line: line(),
@@ -159,9 +161,11 @@ func TestMarshalBytesp(t *testing.T) {
 				var c complex128 = complex(1, 23)
 				return map[string]json.Marshaler{"reflect complex128 pointer": pfmt.Reflect(&c)}
 			}(),
-			want:      "1+23i",
-			wantText:  "1+23i",
-			wantError: errors.New("json: error calling MarshalJSON for type json.Marshaler: json: unsupported type: complex128"),
+			want:     "1+23i",
+			wantText: "1+23i",
+			wantJSON: `{
+			"reflect complex128 pointer":"1+23i"
+		}`,
 		},
 		{
 			line:     line(),
@@ -182,11 +186,13 @@ func TestMarshalBytesp(t *testing.T) {
 		}`,
 		},
 		{
-			line:      line(),
-			input:     map[string]json.Marshaler{"reflect complex64": pfmt.Reflect(complex(3, 21))},
-			want:      "3+21i",
-			wantText:  "3+21i",
-			wantError: errors.New("json: error calling MarshalJSON for type json.Marshaler: json: unsupported type: complex128"),
+			line:     line(),
+			input:    map[string]json.Marshaler{"reflect complex64": pfmt.Reflect(complex(3, 21))},
+			want:     "3+21i",
+			wantText: "3+21i",
+			wantJSON: `{
+			"reflect complex64":"3+21i"
+		}`,
 		},
 		{
 			line:     line(),
@@ -290,9 +296,11 @@ func TestMarshalBytesp(t *testing.T) {
 				var c complex64 = complex(1, 23)
 				return map[string]json.Marshaler{"reflect complex64 pointer": pfmt.Reflect(&c)}
 			}(),
-			want:      "1+23i",
-			wantText:  "1+23i",
-			wantError: errors.New("json: error calling MarshalJSON for type json.Marshaler: json: unsupported type: complex64"),
+			want:     "1+23i",
+			wantText: "1+23i",
+			wantJSON: `{
+			"reflect complex64 pointer":"1+23i"
+		}`,
 		},
 		{
 			line:     line(),

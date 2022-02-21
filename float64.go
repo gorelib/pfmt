@@ -4,20 +4,20 @@
 
 package pfmt
 
-import "strconv"
+import "fmt"
 
 // Float64 returns stringer/JSON/text marshaler for the float64 type.
 func Float64(v float64) Float64V { return New().Float64(v) }
 
 // Float64 returns stringer/JSON/text marshaler for the float64 type.
-func (Pretty) Float64(v float64) Float64V { return Float64V{V: v} }
+func (Pretty) Float64(v float64) Float64V { return Float64V{v: v} }
 
 type Float64V struct {
-	V float64
+	v float64
 }
 
 func (v Float64V) String() string {
-	return strconv.FormatFloat(float64(v.V), 'f', -1, 64)
+	return fmt.Sprint(v.v)
 }
 
 func (v Float64V) MarshalText() ([]byte, error) {

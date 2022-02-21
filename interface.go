@@ -7,7 +7,6 @@ package pfmt
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"reflect"
 )
 
@@ -46,7 +45,7 @@ func (v InterfaceV) MarshalText() ([]byte, error) {
 		return []byte(v.prettier.nil), nil
 	}
 
-	return []byte(fmt.Sprint(v.v)), nil
+	return v.prettier.Dummie(v.v).MarshalText()
 }
 
 func (v InterfaceV) MarshalJSON() ([]byte, error) {
@@ -67,5 +66,5 @@ func (v InterfaceV) MarshalJSON() ([]byte, error) {
 		return marsh.MarshalJSON()
 	}
 
-	return json.Marshal(v.v)
+	return v.prettier.Dummie(v.v).MarshalJSON()
 }

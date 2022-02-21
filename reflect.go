@@ -7,10 +7,7 @@ package pfmt
 import (
 	"bytes"
 	"encoding/base64"
-	"encoding/json"
-	"fmt"
 	"reflect"
-	"unicode"
 )
 
 // Reflect returns stringer/JSON/text marshaler uses reflection.
@@ -133,16 +130,16 @@ func (v ReflectV) String() string {
 		return v.prettier.String(val.String()).String()
 
 	case reflect.Struct:
-		if val.Type().Name() == "" || !unicode.IsUpper(rune(val.Type().Name()[0])) {
-			return fmt.Sprint(v.v)
-		}
+		// if val.Type().Name() == "" || !unicode.IsUpper(rune(val.Type().Name()[0])) {
+		// 	return v.prettier.Dummie(v.v).String()
+		// }
 		return v.prettier.Struct(v.v).String()
 
 	case reflect.UnsafePointer:
-		return fmt.Sprint(v.v)
+		return v.prettier.Dummie(v.v).String()
 	}
 
-	return fmt.Sprint(v.v)
+	return v.prettier.Dummie(v.v).String()
 }
 
 func (v ReflectV) MarshalText() ([]byte, error) {
@@ -150,5 +147,113 @@ func (v ReflectV) MarshalText() ([]byte, error) {
 }
 
 func (v ReflectV) MarshalJSON() ([]byte, error) {
-	return json.Marshal(v.v)
+	if v.v == nil {
+		return []byte("null"), nil
+	}
+
+	val := reflect.ValueOf(v.v)
+
+	switch val.Kind() {
+	case reflect.Bool:
+		return v.prettier.Bool(val.Bool()).MarshalJSON()
+
+	case reflect.Int:
+		return v.prettier.Int(int(val.Int())).MarshalJSON()
+
+	case reflect.Int8:
+		return v.prettier.Int8(int8(val.Int())).MarshalJSON()
+
+	case reflect.Int16:
+		return v.prettier.Int16(int16(val.Int())).MarshalJSON()
+
+	case reflect.Int32:
+		return v.prettier.Int32(int32(val.Int())).MarshalJSON()
+
+	case reflect.Int64:
+		return v.prettier.Int64(int64(val.Int())).MarshalJSON()
+
+	case reflect.Uint:
+		return v.prettier.Uint(uint(val.Uint())).MarshalJSON()
+
+	case reflect.Uint8:
+		return v.prettier.Uint8(uint8(val.Uint())).MarshalJSON()
+
+	case reflect.Uint16:
+		return v.prettier.Uint16(uint16(val.Uint())).MarshalJSON()
+
+	case reflect.Uint32:
+		return v.prettier.Uint32(uint32(val.Uint())).MarshalJSON()
+
+	case reflect.Uint64:
+		return v.prettier.Uint64(uint64(val.Uint())).MarshalJSON()
+
+	case reflect.Uintptr:
+		return v.prettier.Uintptr(uintptr(val.Uint())).MarshalJSON()
+
+	case reflect.Float32:
+		return v.prettier.Float32(float32(val.Float())).MarshalJSON()
+
+	case reflect.Float64:
+		return v.prettier.Float64(float64(val.Float())).MarshalJSON()
+
+	case reflect.Complex64:
+		return v.prettier.Complex64(complex64(val.Complex())).MarshalJSON()
+
+	case reflect.Complex128:
+		return v.prettier.Complex128(complex128(val.Complex())).MarshalJSON()
+
+	case reflect.Array:
+		return v.prettier.Array(v.v).MarshalJSON()
+
+	case reflect.Chan:
+		return v.prettier.Chan(v.v).MarshalJSON()
+
+	case reflect.Func:
+		return v.prettier.Func(v.v).MarshalJSON()
+
+	case reflect.Interface:
+		return v.prettier.Interface(v.v).MarshalJSON()
+
+	case reflect.Map:
+		return v.prettier.Map(v.v).MarshalJSON()
+
+	case reflect.Ptr:
+		if val.IsNil() {
+			return []byte("null"), nil
+		}
+		return v.prettier.Reflect(val.Elem().Interface()).MarshalJSON()
+
+	case reflect.Slice:
+		if val.IsNil() {
+			return []byte("null"), nil
+
+		} else if val.Kind() == reflect.Slice && val.Type().Elem().Kind() == reflect.Uint8 { // Byte slice.
+			buf := pool.Get().(*bytes.Buffer)
+			buf.Reset()
+			defer pool.Put(buf)
+
+			p := val.Bytes()
+			enc := base64.NewEncoder(base64.StdEncoding, buf)
+			_, _ = enc.Write(p)
+			enc.Close()
+
+			return []byte(`"` + buf.String() + `"`), nil
+		}
+
+		return v.prettier.Slice(v.v).MarshalJSON()
+
+	case reflect.String:
+		return v.prettier.String(val.String()).MarshalJSON()
+
+	case reflect.Struct:
+		// if val.Type().Name() == "" || !unicode.IsUpper(rune(val.Type().Name()[0])) {
+		// 	return v.prettier.Dummie(v.v).MarshalJSON()
+		// }
+		return v.prettier.Struct(v.v).MarshalJSON()
+
+	case reflect.UnsafePointer:
+		return v.prettier.Dummie(v.v).MarshalJSON()
+	}
+
+	return v.prettier.Dummie(v.v).MarshalJSON()
 }

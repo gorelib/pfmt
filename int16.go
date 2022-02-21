@@ -10,14 +10,14 @@ import "strconv"
 func Int16(v int16) Int16V { return New().Int16(v) }
 
 // Int16 returns stringer/JSON/text marshaler for the int16 type.
-func (Pretty) Int16(v int16) Int16V { return Int16V{V: v} }
+func (Pretty) Int16(v int16) Int16V { return Int16V{v: v} }
 
 type Int16V struct {
-	V int16
+	v int16
 }
 
 func (v Int16V) String() string {
-	return strconv.Itoa(int(v.V))
+	return strconv.Itoa(int(v.v))
 }
 
 func (v Int16V) MarshalText() ([]byte, error) {

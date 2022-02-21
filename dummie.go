@@ -7,6 +7,7 @@ package pfmt
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
 )
 
 // Dummie returns stringer/JSON/text marshaler for the dummie type.
@@ -40,5 +41,9 @@ func (v DummieV) MarshalJSON() ([]byte, error) {
 	if v.v == nil {
 		return []byte("null"), nil
 	}
-	return json.Marshal(v.v)
+	p, err := json.Marshal(v.v)
+	if _, ok := err.(*json.UnsupportedTypeError); ok {
+		return []byte(reflect.TypeOf(v.v).String()), nil
+	}
+	return p, err
 }

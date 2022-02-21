@@ -6,7 +6,6 @@ package pfmt_test
 
 import (
 	"encoding/json"
-	"errors"
 	"testing"
 
 	"github.com/pprint/pfmt"
@@ -53,9 +52,11 @@ func TestMarshalComplex64p(t *testing.T) {
 				var c complex64 = complex(1, 23)
 				return map[string]json.Marshaler{"reflect complex64 pointer": pfmt.Reflect(&c)}
 			}(),
-			want:      "1+23i",
-			wantText:  "1+23i",
-			wantError: errors.New("json: error calling MarshalJSON for type json.Marshaler: json: unsupported type: complex64"),
+			want:     "1+23i",
+			wantText: "1+23i",
+			wantJSON: `{
+			"reflect complex64 pointer":"1+23i"
+		}`,
 		},
 	}
 

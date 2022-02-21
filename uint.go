@@ -11,15 +11,15 @@ func Uint(v uint) UintV { return New().Uint(v) }
 
 // Uint returns stringer/JSON/text marshaler for the uint type.
 func (pretty Pretty) Uint(v uint) UintV {
-	return UintV{V: v}
+	return UintV{v: v}
 }
 
 type UintV struct {
-	V uint
+	v uint
 }
 
 func (v UintV) String() string {
-	return strconv.FormatUint(uint64(v.V), 10)
+	return strconv.FormatUint(uint64(v.v), 10)
 }
 
 func (v UintV) MarshalText() ([]byte, error) {
