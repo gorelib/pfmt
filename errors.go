@@ -36,20 +36,18 @@ func (s ErrorS) MarshalText() ([]byte, error) {
 		return []byte(s.prettier.nil), nil
 	}
 	var buf bytes.Buffer
-	var tail bool
-
-	for _, v := range s.s {
-		if v == nil {
-			continue
-		}
-		if tail {
+	for i, v := range s.s {
+		if i != 0 {
 			buf.WriteString(s.prettier.separator)
+		}
+		if v == nil {
+			buf.WriteString(s.prettier.nil)
+			continue
 		}
 		err := pencode.String(&buf, v.Error())
 		if err != nil {
 			return nil, err
 		}
-		tail = true
 	}
 	return buf.Bytes(), nil
 }
@@ -61,12 +59,12 @@ func (s ErrorS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, v := range s.s {
+		if i != 0 {
+			buf.WriteString(",")
+		}
 		b, err := s.prettier.Err(v).MarshalJSON()
 		if err != nil {
 			return nil, err
-		}
-		if i != 0 {
-			buf.WriteString(",")
 		}
 		_, err = buf.Write(b)
 		if err != nil {

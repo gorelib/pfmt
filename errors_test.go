@@ -24,8 +24,10 @@ func TestMarshalErrors(t *testing.T) {
 		}`,
 		},
 		{
-			line:  line(),
-			input: map[string]json.Marshaler{"nil errors": pfmt.Errs([]error{nil, nil})},
+			line:     line(),
+			input:    map[string]json.Marshaler{"nil errors": pfmt.Errs([]error{nil, nil})},
+			want:     "null null",
+			wantText: "null null",
 			wantJSON: `{
 			"nil errors":[null,null]
 		}`,

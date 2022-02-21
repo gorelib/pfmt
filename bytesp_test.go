@@ -224,8 +224,8 @@ func TestMarshalBytesp(t *testing.T) {
 		{
 			line:     line(),
 			input:    map[string]json.Marshaler{"nil errors": pfmt.Errs([]error{nil, nil})},
-			want:     "",
-			wantText: "",
+			want:     "null null",
+			wantText: "null null",
 			wantJSON: `{
 			"nil errors":[null,null]
 		}`,

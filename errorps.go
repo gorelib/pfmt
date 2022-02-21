@@ -32,24 +32,22 @@ func (s ErrorPS) MarshalText() ([]byte, error) {
 		return []byte(s.prettier.nil), nil
 	}
 	var buf bytes.Buffer
-	var tail bool
-
-	for _, p := range s.s {
+	for i, p := range s.s {
+		if i != 0 {
+			buf.WriteString(s.prettier.separator)
+		}
 		if p == nil {
+			buf.WriteString(s.prettier.nil)
 			continue
 		}
 		b, err := s.prettier.Errp(p).MarshalText()
 		if err != nil {
 			return nil, err
 		}
-		if tail {
-			buf.WriteString(s.prettier.separator)
-		}
 		_, err = buf.Write(b)
 		if err != nil {
 			return nil, err
 		}
-		tail = true
 	}
 	return buf.Bytes(), nil
 }
@@ -61,12 +59,12 @@ func (s ErrorPS) MarshalJSON() ([]byte, error) {
 	var buf bytes.Buffer
 	buf.WriteString("[")
 	for i, p := range s.s {
+		if i != 0 {
+			buf.WriteString(",")
+		}
 		b, err := s.prettier.Errp(p).MarshalJSON()
 		if err != nil {
 			return nil, err
-		}
-		if i != 0 {
-			buf.WriteString(",")
 		}
 		_, err = buf.Write(b)
 		if err != nil {

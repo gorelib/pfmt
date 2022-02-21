@@ -7,10 +7,19 @@ package pfmt
 import "bytes"
 
 // JSON returns stringer/JSON/text marshaler for the KV slice type.
-func JSON(s ...KV) JSONV { return JSONV{s: s} }
+func JSON(s []KV) JSONV { return New().JSON(s) }
+
+// JSON returns stringer/JSON/text marshaler for the KV slice type.
+func (pretty Pretty) JSON(s []KV) JSONV {
+	return JSONV{
+		s:        s,
+		prettier: pretty,
+	}
+}
 
 type JSONV struct {
-	s []KV
+	s        []KV
+	prettier Pretty
 }
 
 func (s JSONV) String() string {
@@ -23,30 +32,29 @@ func (s JSONV) MarshalText() ([]byte, error) {
 		return nil, nil
 	}
 	var buf bytes.Buffer
-	var tail bool
-	for _, s := range s.s {
-		if s == nil {
+	for i, j := range s.s {
+		if i != 0 {
+			buf.WriteString(s.prettier.separator)
+		}
+		if j == nil {
+			buf.WriteString(s.prettier.nil)
 			continue
 		}
-		k, err := s.MarshalText()
+		k, err := j.MarshalText()
 		if err != nil {
 			return nil, err
 		}
 		if k == nil {
 			continue
 		}
-		v, err := s.MarshalJSON()
+		v, err := j.MarshalJSON()
 		if err != nil {
 			return nil, err
 		}
-		if tail {
-			buf.WriteString(" ")
-		}
-		_, err = buf.Write(append(k, append([]byte(" "), v...)...))
+		_, err = buf.Write(append(k, append([]byte(s.prettier.separator), v...)...))
 		if err != nil {
 			return nil, err
 		}
-		tail = true
 	}
 	return buf.Bytes(), nil
 }
@@ -57,30 +65,29 @@ func (s JSONV) MarshalJSON() ([]byte, error) {
 	}
 	var buf bytes.Buffer
 	buf.WriteString("{")
-	var tail bool
-	for _, s := range s.s {
-		if s == nil {
+	for i, j := range s.s {
+		if i != 0 {
+			buf.WriteString(",")
+		}
+		if j == nil {
+			buf.WriteString("null")
 			continue
 		}
-		k, err := s.MarshalText()
+		k, err := j.MarshalText()
 		if err != nil {
 			return nil, err
 		}
 		if k == nil {
-			continue
+			k = []byte("null")
 		}
-		v, err := s.MarshalJSON()
+		v, err := j.MarshalJSON()
 		if err != nil {
 			return nil, err
-		}
-		if tail {
-			buf.WriteString(",")
 		}
 		_, err = buf.Write(append([]byte(`"`), append(k, append([]byte(`":`), v...)...)...))
 		if err != nil {
 			return nil, err
 		}
-		tail = true
 	}
 	buf.WriteString("}")
 	return buf.Bytes(), nil

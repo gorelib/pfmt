@@ -43,14 +43,12 @@ func (s JSONMarshalerS) MarshalJSON() ([]byte, error) {
 	}
 	var buf bytes.Buffer
 	buf.WriteString("[")
-	var tail bool
-	for _, v := range s.s {
-		if tail {
+	for i, v := range s.s {
+		if i != 0 {
 			buf.WriteString(",")
 		}
 		if v == nil {
 			buf.WriteString("null")
-			tail = true
 			continue
 		}
 		b, err := v.MarshalJSON()
@@ -61,7 +59,6 @@ func (s JSONMarshalerS) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		tail = true
 	}
 	buf.WriteString("]")
 	return buf.Bytes(), nil
