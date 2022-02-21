@@ -78,7 +78,7 @@ func (s JSONV) MarshalJSON() ([]byte, error) {
 			return nil, err
 		}
 		if k == nil {
-			k = []byte("null")
+			k = []byte("")
 		}
 		v, err := j.MarshalJSON()
 		if err != nil {
