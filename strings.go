@@ -62,10 +62,7 @@ func (s StringS) MarshalJSON() ([]byte, error) {
 		if i != 0 {
 			buf.WriteString(",")
 		}
-		_, err = buf.Write(b)
-		if err != nil {
-			return nil, err
-		}
+		buf.Write(b)
 	}
 	buf.WriteString("]")
 	return buf.Bytes(), nil

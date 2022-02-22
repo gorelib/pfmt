@@ -62,28 +62,16 @@ func (v SliceV) MarshalText() ([]byte, error) {
 	buf.Reset()
 	defer pool.Put(buf)
 
-	_, err := buf.WriteString("[")
-	if err != nil {
-		return nil, err
-	}
+	buf.WriteString("[")
 
 	for i := 0; i < num; i++ {
 		if i != 0 {
-			_, err = buf.WriteString(v.prettier.separator)
-			if err != nil {
-				return nil, err
-			}
+			buf.WriteString(v.prettier.separator)
 		}
-		_, err = buf.WriteString(v.prettier.Reflect(values[i]).String())
-		if err != nil {
-			return nil, err
-		}
+		buf.WriteString(v.prettier.Reflect(values[i]).String())
 	}
 
-	_, err = buf.WriteString("]")
-	if err != nil {
-		return nil, err
-	}
+	buf.WriteString("]")
 
 	p := make([]byte, len(buf.Bytes()))
 	copy(p, buf.Bytes())
@@ -109,10 +97,7 @@ func (v SliceV) MarshalJSON() ([]byte, error) {
 	buf.Reset()
 	defer pool.Put(buf)
 
-	_, err := buf.WriteString("[")
-	if err != nil {
-		return nil, err
-	}
+	buf.WriteString("[")
 
 	num := 0
 
@@ -124,10 +109,7 @@ func (v SliceV) MarshalJSON() ([]byte, error) {
 		}
 
 		if num != 0 {
-			_, err = buf.WriteString(",")
-			if err != nil {
-				return nil, err
-			}
+			buf.WriteString(",")
 		}
 
 		num++
@@ -138,31 +120,25 @@ func (v SliceV) MarshalJSON() ([]byte, error) {
 			return []byte("null"), nil
 
 		} else if marsh, ok := it.(json.Marshaler); ok {
+			var err error
 			j, err = marsh.MarshalJSON()
 			if err != nil {
 				return nil, err
 			}
+
 		} else {
+			var err error
 			j, err := v.prettier.Reflect(it).MarshalJSON()
 			if err != nil {
 				return nil, err
 			}
-			_, err = buf.Write(j)
-			if err != nil {
-				return nil, err
-			}
+			buf.Write(j)
 		}
 
-		_, err = buf.Write(j)
-		if err != nil {
-			return nil, err
-		}
+		buf.Write(j)
 	}
 
-	_, err = buf.WriteString("]")
-	if err != nil {
-		return nil, err
-	}
+	buf.WriteString("]")
 
 	p := make([]byte, len(buf.Bytes()))
 	copy(p, buf.Bytes())

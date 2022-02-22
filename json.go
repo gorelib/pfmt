@@ -54,10 +54,7 @@ func (s JSONV) MarshalText() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		_, err = buf.Write(append(k, append([]byte(s.prettier.separator), v...)...))
-		if err != nil {
-			return nil, err
-		}
+		buf.Write(append(k, append([]byte(s.prettier.separator), v...)...))
 	}
 	return buf.Bytes(), nil
 }
@@ -87,10 +84,7 @@ func (s JSONV) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		_, err = buf.Write(append([]byte(`"`), append(k, append([]byte(`":`), v...)...)...))
-		if err != nil {
-			return nil, err
-		}
+		buf.Write(append([]byte(`"`), append(k, append([]byte(`":`), v...)...)...))
 	}
 	buf.WriteString("}")
 	fmt.Println(buf.String())

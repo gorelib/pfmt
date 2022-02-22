@@ -44,10 +44,7 @@ func (s ErrorPS) MarshalText() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		_, err = buf.Write(b)
-		if err != nil {
-			return nil, err
-		}
+		buf.Write(b)
 	}
 	return buf.Bytes(), nil
 }
@@ -66,10 +63,7 @@ func (s ErrorPS) MarshalJSON() ([]byte, error) {
 		if err != nil {
 			return nil, err
 		}
-		_, err = buf.Write(b)
-		if err != nil {
-			return nil, err
-		}
+		buf.Write(b)
 	}
 	buf.WriteString("]")
 	return buf.Bytes(), nil

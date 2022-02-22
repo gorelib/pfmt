@@ -40,10 +40,7 @@ func (s Complex64S) MarshalText() ([]byte, error) {
 		if i != 0 {
 			buf.WriteString(s.prettier.separator)
 		}
-		_, err = buf.Write(b)
-		if err != nil {
-			return nil, err
-		}
+		buf.Write(b)
 	}
 	return buf.Bytes(), nil
 }
@@ -62,10 +59,7 @@ func (s Complex64S) MarshalJSON() ([]byte, error) {
 		if i != 0 {
 			buf.WriteString(",")
 		}
-		_, err = buf.Write(b)
-		if err != nil {
-			return nil, err
-		}
+		buf.Write(b)
 	}
 	buf.WriteString("]")
 	return buf.Bytes(), nil
