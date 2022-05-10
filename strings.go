@@ -8,7 +8,7 @@ import (
 	"bytes"
 	"strings"
 
-	"github.com/pprint/pfmt/pencode"
+	"github.com/gorelib/pfmt/pencode"
 )
 
 // Strings returns stringer/JSON/text marshaler for the string slice type.

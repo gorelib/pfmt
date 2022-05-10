@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/pprint/pfmt"
+	"github.com/gorelib/pfmt"
 )
 
 func TestMarshalInts(t *testing.T) {

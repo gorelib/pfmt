@@ -7,7 +7,7 @@ package pfmt
 import (
 	"bytes"
 
-	"github.com/pprint/pfmt/pencode"
+	"github.com/gorelib/pfmt/pencode"
 )
 
 // Errs returns stringer/JSON/text marshaler for the error slice type.

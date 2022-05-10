@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/pprint/pfmt"
+	"github.com/gorelib/pfmt"
 )
 
 func TestTimeMarshalTest(t *testing.T) {
