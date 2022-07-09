@@ -9,7 +9,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/gorelib/pfmt"
+	"github.com/pfmt/pfmt"
 )
 
 func TestMarshalRaw(t *testing.T) {

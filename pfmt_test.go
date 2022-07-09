@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gorelib/pfmt"
+	"github.com/pfmt/pfmt"
 )
 
 func TestSprint(t *testing.T) {

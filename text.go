@@ -8,7 +8,7 @@ import (
 	"bytes"
 	"encoding"
 
-	"github.com/gorelib/pfmt/pencode"
+	"github.com/pfmt/pfmt/pencode"
 )
 
 // Text returns stringer/JSON/text marshaler for the encoding.TextMarshaler type.

@@ -1,4 +1,4 @@
-module github.com/gorelib/pfmt
+module github.com/pfmt/pfmt
 
 go 1.17
 

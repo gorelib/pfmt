@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/gorelib/pfmt"
+	"github.com/pfmt/pfmt"
 )
 
 func TestMarshalFloat64(t *testing.T) {

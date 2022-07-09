@@ -1,7 +1,7 @@
 # pfmt
 
-[![Build Status](https://cloud.drone.io/api/badges/gorelib/pfmt/status.svg)](https://cloud.drone.io/gorelib/pfmt)
-[![Go Reference](https://pkg.go.dev/badge/github.com/gorelib/pfmt.svg)](https://pkg.go.dev/github.com/gorelib/pfmt)
+[![Build Status](https://cloud.drone.io/api/badges/pfmt/pfmt/status.svg)](https://cloud.drone.io/pfmt/pfmt)
+[![Go Reference](https://pkg.go.dev/badge/github.com/pfmt/pfmt.svg)](https://pkg.go.dev/github.com/pfmt/pfmt)
 
 String formatting for Go.
 Source files are distributed under the BSD-style license.

@@ -7,7 +7,7 @@ package pfmt
 import (
 	"bytes"
 
-	"github.com/gorelib/pfmt/pencode"
+	"github.com/pfmt/pfmt/pencode"
 )
 
 // Runes returns stringer/JSON/text marshaler for the rune slice type.

@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/gorelib/pfmt"
+	"github.com/pfmt/pfmt"
 )
 
 func TestMarshalBytesp(t *testing.T) {

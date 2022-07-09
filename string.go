@@ -7,7 +7,7 @@ package pfmt
 import (
 	"bytes"
 
-	"github.com/gorelib/pfmt/pencode"
+	"github.com/pfmt/pfmt/pencode"
 )
 
 // String returns stringer/JSON/text marshaler for the string type.

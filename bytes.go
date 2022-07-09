@@ -7,7 +7,7 @@ package pfmt
 import (
 	"bytes"
 
-	"github.com/gorelib/pfmt/pencode"
+	"github.com/pfmt/pfmt/pencode"
 )
 
 // Bytes returns stringer/JSON/text marshaler for slice of bytes type.
